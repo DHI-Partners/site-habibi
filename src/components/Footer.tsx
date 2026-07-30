@@ -1,5 +1,5 @@
 import { LiquidButton } from './ui/liquid-glass-button'
-import { scrollToId } from '@/lib/utils'
+import { useContact } from './ContactProvider'
 
 const FOOTER_LINKS = [
   { label: 'Возможности', href: '#vozmozhnosti' },
@@ -8,6 +8,8 @@ const FOOTER_LINKS = [
 ]
 
 export default function Footer() {
+  const { open } = useContact()
+
   return (
     <footer id="kontakty" className="bg-black px-6 py-14 md:px-12 lg:px-16">
       <div className="mx-auto max-w-6xl">
@@ -35,7 +37,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             <LiquidButton
               size="sm"
-              onClick={() => scrollToId('tarify')}
+              onClick={() => open('Habibi')}
               className="w-fit rounded-full text-white"
             >
               Начать бесплатно

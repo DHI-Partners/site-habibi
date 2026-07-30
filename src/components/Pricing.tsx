@@ -1,6 +1,6 @@
 import HlsVideo from './HlsVideo'
 import { PricingGlass, type TierType } from './ui/pricing-glass'
-import { scrollToId } from '@/lib/utils'
+import { useContact } from './ContactProvider'
 
 const VIDEO_URL =
   'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
@@ -57,6 +57,8 @@ const TIERS: TierType[] = [
 ]
 
 export default function Pricing() {
+  const { open } = useContact()
+
   return (
     <section
       id="tarify"
@@ -76,7 +78,7 @@ export default function Pricing() {
           tiers={TIERS}
           ctaLabel="Начать"
           currency="€"
-          onGetStarted={() => scrollToId('kontakty')}
+          onGetStarted={(tier) => open(tier.name)}
         />
       </div>
     </section>

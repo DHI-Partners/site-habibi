@@ -1,12 +1,14 @@
 import { ArrowRight } from 'lucide-react'
 import { Reveal } from './Reveal'
 import { LiquidButton } from './ui/liquid-glass-button'
-import { scrollToId } from '@/lib/utils'
+import { useContact } from './ContactProvider'
 
 const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260424_064411_9e9d7f84-9277-41f4-ab10-59172d89e6be.mp4'
 
 export default function Closing() {
+  const { open } = useContact()
+
   return (
     <section className="relative overflow-hidden bg-black px-6 py-24 md:px-12 md:py-32 lg:px-16">
       {/* Фоновое видео */}
@@ -39,7 +41,7 @@ export default function Closing() {
         <Reveal delay={0.2}>
           <LiquidButton
             size="xl"
-            onClick={() => scrollToId('tarify')}
+            onClick={() => open('Habibi')}
             className="mt-9 rounded-full text-white"
           >
             Начать с бесплатного тарифа

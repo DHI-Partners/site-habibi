@@ -2,11 +2,14 @@ import { ArrowRight } from 'lucide-react'
 import Navbar from './Navbar'
 import { LiquidButton } from './ui/liquid-glass-button'
 import { scrollToId } from '@/lib/utils'
+import { useContact } from './ContactProvider'
 
 const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4'
 
 export default function Hero() {
+  const { open } = useContact()
+
   return (
     <section id="top" className="relative h-screen w-full overflow-hidden bg-black">
       {/* Фоновое видео */}
@@ -50,7 +53,7 @@ export default function Hero() {
           <div className="flex flex-wrap items-center gap-3 [animation:fadeSlideUp_0.8s_ease_0.9s_both]">
             <LiquidButton
               size="lg"
-              onClick={() => scrollToId('tarify')}
+              onClick={() => open('Habibi')}
               className="rounded-full text-white"
             >
               Начать бесплатно

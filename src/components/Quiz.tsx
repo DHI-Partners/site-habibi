@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, RotateCcw, Sparkles } from 'lucide-react'
 import { LiquidButton } from './ui/liquid-glass-button'
-import { scrollToId } from '@/lib/utils'
+import { useContact } from './ContactProvider'
 
 /* ──────────────────────────────────────────────────────────────
    Данные квиза
@@ -430,6 +430,7 @@ export default function Quiz() {
    ────────────────────────────────────────────────────────────── */
 
 function Result({ answers, onReset }: { answers: Answers; onReset: () => void }) {
+  const { open } = useContact()
   const tier = recommend(answers)
   const info = TIERS_INFO[tier]
   const map = computeMap(answers)
@@ -529,7 +530,7 @@ function Result({ answers, onReset }: { answers: Answers; onReset: () => void })
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <LiquidButton
             size="lg"
-            onClick={() => scrollToId('tarify')}
+            onClick={() => open(info.name)}
             className="rounded-full text-white"
           >
             Выбрать {info.name}
@@ -548,7 +549,7 @@ function Result({ answers, onReset }: { answers: Answers; onReset: () => void })
           <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">
             Можно начать бесплатно с{' '}
             <button
-              onClick={() => scrollToId('tarify')}
+              onClick={() => open('Habibi')}
               className="font-medium text-white underline-offset-4 hover:underline"
             >
               Habibi

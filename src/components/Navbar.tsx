@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { LiquidButton } from './ui/liquid-glass-button'
-import { scrollToId } from '@/lib/utils'
+import { useContact } from './ContactProvider'
 
 const NAV_LINKS = [
   { label: 'Возможности', href: '#vozmozhnosti' },
@@ -13,6 +13,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { open } = useContact()
 
   return (
     <>
@@ -43,7 +44,7 @@ export default function Navbar() {
         {/* Десктоп CTA */}
         <LiquidButton
           size="sm"
-          onClick={() => scrollToId('tarify')}
+          onClick={() => open('Habibi')}
           className="hidden rounded-full text-white md:inline-flex"
         >
           Начать бесплатно
@@ -98,7 +99,7 @@ export default function Navbar() {
             size="xl"
             onClick={() => {
               setMobileMenuOpen(false)
-              scrollToId('tarify')
+              open('Habibi')
             }}
             className="mt-6 w-fit rounded-full text-white"
           >

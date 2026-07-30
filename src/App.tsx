@@ -1,3 +1,4 @@
+import { ContactProvider } from './components/ContactProvider'
 import Hero from './components/Hero'
 import Benefits from './components/Benefits'
 import Modules from './components/Modules'
@@ -8,14 +9,16 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <div className="min-h-screen w-full bg-black font-geist text-white">
-      <Hero />
-      <Benefits />
-      <Modules />
-      <Quiz />
-      <Pricing />
-      <Closing />
-      <Footer />
-    </div>
+    <ContactProvider>
+      <div className="min-h-screen w-full bg-black font-geist text-white">
+        <Hero />
+        <Benefits />
+        <Modules />
+        <Quiz />
+        <Pricing />
+        <Closing />
+        <Footer />
+      </div>
+    </ContactProvider>
   )
 }
