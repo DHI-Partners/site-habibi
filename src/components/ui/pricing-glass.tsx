@@ -9,11 +9,14 @@ const NOISE_PATTERN = 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 
 export type TierType = {
   name: string;
   priceMonthly: string;
+  priceSemiAnnual: string;
   priceAnnual: string;
   description: string;
   isPopular?: boolean;
   features: string[];
 };
+
+type BillingPeriod = "monthly" | "semi" | "annual";
 
 export interface PricingGlassProps {
   title?: string;
@@ -22,21 +25,32 @@ export interface PricingGlassProps {
   className?: string;
   /** Текст CTA-кнопки на карточке. */
   ctaLabel?: string;
+  /** Символ валюты перед ценой (по умолчанию $). */
+  currency?: string;
   /** Вызывается при клике по CTA тарифа. */
   onGetStarted?: (tier: TierType) => void;
 }
 
 function PricingCard({
   tier,
-  isAnnual,
+  period,
   ctaLabel,
+  currency,
   onGetStarted,
 }: {
   tier: TierType;
-  isAnnual: boolean;
+  period: BillingPeriod;
   ctaLabel: string;
+  currency: string;
   onGetStarted?: (tier: TierType) => void;
 }) {
+  const price =
+    period === "monthly"
+      ? tier.priceMonthly
+      : period === "semi"
+        ? tier.priceSemiAnnual
+        : tier.priceAnnual;
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -110,18 +124,18 @@ function PricingCard({
         </motion.h3>
 
         <motion.div variants={legoVariant} className="flex items-baseline gap-1 mt-4 mb-2">
-          <span className="text-white/40 text-2xl font-medium tracking-tight">$</span>
+          <span className="text-white/40 text-2xl font-medium tracking-tight">{currency}</span>
           <div className="h-[60px] overflow-hidden flex items-center">
              <AnimatePresence mode="popLayout">
                <motion.span
-                 key={isAnnual ? tier.priceAnnual : tier.priceMonthly}
+                 key={price}
                  initial={{ y: 40, opacity: 0, filter: "blur(4px)" }}
                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                  exit={{ y: -40, opacity: 0, filter: "blur(4px)" }}
                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
                  className="block text-[60px] font-bold text-white tracking-tighter leading-none"
                >
-                 {isAnnual ? tier.priceAnnual : tier.priceMonthly}
+                 {price}
                </motion.span>
              </AnimatePresence>
           </div>
@@ -167,9 +181,11 @@ export function PricingGlass({
   tiers,
   className,
   ctaLabel = "Начать",
+  currency = "$",
   onGetStarted,
 }: PricingGlassProps) {
-  const [isAnnual, setIsAnnual] = useState(false);
+  const [period, setPeriod] = useState<BillingPeriod>("monthly");
+  const isDiscounted = period !== "monthly";
 
   const legoVariant: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.8 },
@@ -190,7 +206,7 @@ export function PricingGlass({
 
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-white/5 blur-[120px] rounded-full pointer-events-none z-0"
-        animate={{ scale: isAnnual ? 1.05 : 1, opacity: isAnnual ? 0.08 : 0.05 }}
+        animate={{ scale: isDiscounted ? 1.05 : 1, opacity: isDiscounted ? 0.08 : 0.05 }}
         transition={{ duration: 1 }}
       />
 
@@ -202,32 +218,39 @@ export function PricingGlass({
           </motion.p>
         </div>
 
-        <motion.div variants={legoVariant} className="relative p-1.5 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] flex items-center">
+        <motion.div variants={legoVariant} className="relative flex w-full max-w-md items-center rounded-full border border-white/10 bg-white/5 p-1.5 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] backdrop-blur-3xl">
+          {/* Скользящий индикатор — треть ширины */}
+          <motion.div
+            className="absolute left-1.5 top-1.5 bottom-1.5 w-[calc((100%-0.75rem)/3)] rounded-full border border-white/20 bg-white/10 shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+            animate={{ x: period === "monthly" ? "0%" : period === "semi" ? "100%" : "200%" }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          />
           <button
-            onClick={() => setIsAnnual(false)}
-            className={`relative px-6 md:px-8 py-3 rounded-full text-sm font-semibold transition-colors duration-300 z-10 ${!isAnnual ? "text-white" : "text-white/50 hover:text-white/80"}`}
+            onClick={() => setPeriod("monthly")}
+            className={`relative z-10 flex-1 whitespace-nowrap rounded-full px-2 py-3 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${period === "monthly" ? "text-white" : "text-white/50 hover:text-white/80"}`}
           >
             Помесячно
           </button>
           <button
-            onClick={() => setIsAnnual(true)}
-            className={`relative px-6 md:px-8 py-3 rounded-full text-sm font-semibold transition-colors duration-300 z-10 ${isAnnual ? "text-white" : "text-white/50 hover:text-white/80"}`}
+            onClick={() => setPeriod("semi")}
+            className={`relative z-10 inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 py-3 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${period === "semi" ? "text-white" : "text-white/50 hover:text-white/80"}`}
+          >
+            За полгода
+            <span className="rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-black">−10%</span>
+          </button>
+          <button
+            onClick={() => setPeriod("annual")}
+            className={`relative z-10 inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 py-3 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${period === "annual" ? "text-white" : "text-white/50 hover:text-white/80"}`}
           >
             Ежегодно
-            <span className="absolute -top-3 -right-3 md:-right-6 px-2 py-1 bg-white/90 text-black text-[10px] font-bold rounded-full tracking-wider shadow-lg">−20%</span>
+            <span className="rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-black">−30%</span>
           </button>
-
-          <motion.div
-            className="absolute left-1.5 top-1.5 bottom-1.5 w-[calc(50%-6px)] rounded-full bg-white/10 border border-white/20 shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
-            animate={{ x: isAnnual ? "100%" : "0%" }}
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          />
         </motion.div>
       </div>
 
       <div className="relative w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch z-20">
         {tiers.map((tier) => (
-          <PricingCard key={tier.name} tier={tier} isAnnual={isAnnual} ctaLabel={ctaLabel} onGetStarted={onGetStarted} />
+          <PricingCard key={tier.name} tier={tier} period={period} ctaLabel={ctaLabel} currency={currency} onGetStarted={onGetStarted} />
         ))}
       </div>
 

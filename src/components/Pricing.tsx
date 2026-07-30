@@ -9,8 +9,9 @@ const TIERS: TierType[] = [
   {
     name: 'Habibi',
     priceMonthly: '0',
+    priceSemiAnnual: '0',
     priceAnnual: '0',
-    description: 'Бесплатный тариф для знакомства с CRM.',
+    description: 'Бесплатный тариф для знакомства с системой.',
     features: [
       'CRM и продажи',
       'Проекты и задачи',
@@ -25,24 +26,27 @@ const TIERS: TierType[] = [
   {
     name: 'Habibi +',
     priceMonthly: '49',
-    priceAnnual: '39',
+    priceSemiAnnual: '44',
+    priceAnnual: '34',
     description: 'Для команд, которым нужны интеграции.',
     isPopular: true,
     features: [
       'Все 10 модулей системы',
       'До 5 пользователей',
       'До 5 интеграций',
-      '100 МБ дискового пространства',
+      '500 МБ дискового пространства',
       'Базовая техподдержка',
     ],
   },
   {
     name: 'Habibi Premium',
     priceMonthly: '199',
-    priceAnnual: '159',
+    priceSemiAnnual: '179',
+    priceAnnual: '139',
     description: 'Для компаний с интеграциями и сопровождением.',
     features: [
       'Всё из тарифа «Habibi +»',
+      '1 ГБ дискового пространства',
       'Персональное сопровождение',
       'Приоритетная поддержка',
       'Расширенная аналитика',
@@ -70,6 +74,7 @@ export default function Pricing() {
           description="Выберите подходящий план и растите вместе с Habibi. При годовой оплате — выгоднее."
           tiers={TIERS}
           ctaLabel="Начать"
+          currency="€"
           onGetStarted={() => scrollToId('kontakty')}
         />
       </div>
