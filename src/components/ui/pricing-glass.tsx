@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence, useMotionValue, useMotionTemplate, Variants } from "framer-motion";
+import { motion, useMotionValue, useMotionTemplate, Variants } from "framer-motion";
 import { Check } from "lucide-react";
 
 const NOISE_PATTERN = 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")';
@@ -50,6 +50,13 @@ function PricingCard({
       : period === "semi"
         ? tier.priceSemiAnnual
         : tier.priceAnnual;
+
+  // Экономия за выбранный период (в валюте), относительно помесячной оплаты.
+  const monthlyNum = parseFloat(tier.priceMonthly) || 0;
+  const currentNum = parseFloat(price) || 0;
+  const months = period === "semi" ? 6 : period === "annual" ? 12 : 1;
+  const savings = Math.round((monthlyNum - currentNum) * months);
+  const savingsLabel = period === "semi" ? "за полгода" : "в год";
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -126,21 +133,28 @@ function PricingCard({
         <motion.div variants={legoVariant} className="flex items-baseline gap-1 mt-4 mb-2">
           <span className="text-white/40 text-2xl font-medium tracking-tight">{currency}</span>
           <div className="h-[60px] overflow-hidden flex items-center">
-             <AnimatePresence mode="popLayout">
-               <motion.span
-                 key={price}
-                 initial={{ y: 40, opacity: 0, filter: "blur(4px)" }}
-                 animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                 exit={{ y: -40, opacity: 0, filter: "blur(4px)" }}
-                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                 className="block text-[60px] font-bold text-white tracking-tighter leading-none"
-               >
-                 {price}
-               </motion.span>
-             </AnimatePresence>
+             <span
+               key={price}
+               className="block text-[60px] font-bold text-white tracking-tighter leading-none [animation:priceIn_0.4s_cubic-bezier(0.16,1,0.3,1)]"
+             >
+               {price}
+             </span>
           </div>
           <span className="text-white/40 text-lg font-medium ml-1">/мес</span>
         </motion.div>
+
+        {/* Экономия за выбранный период — резервируем высоту, чтобы не прыгал layout */}
+        <div className="mb-3 h-7">
+          {savings > 0 && (
+            <span
+              key={`${period}-${savings}`}
+              className="inline-flex items-center rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-semibold text-emerald-300 ring-1 ring-emerald-400/20 [animation:priceIn_0.35s_ease]"
+            >
+              Экономия {currency}
+              {savings} {savingsLabel}
+            </span>
+          )}
+        </div>
 
         <motion.p variants={legoVariant} className="text-white/40 text-sm leading-relaxed mb-8 min-h-[40px]">
           {tier.description}
