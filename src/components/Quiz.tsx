@@ -211,6 +211,9 @@ interface Answers {
 
 const EMPTY: Answers = { biz: null, problems: [], team: null, complexity: null, support: null }
 
+const VIDEO_URL =
+  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_055001_8e16d972-3b2b-441c-86ad-2901a54682f9.mp4'
+
 /* ──────────────────────────────────────────────────────────────
    Логика рекомендации и карты бизнеса
    ────────────────────────────────────────────────────────────── */
@@ -287,10 +290,20 @@ export default function Quiz() {
       id="podbor"
       className="relative overflow-hidden bg-black px-6 py-24 md:px-12 md:py-32 lg:px-16"
     >
-      {/* Мягкое свечение по центру */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.04] blur-[130px]" />
+      {/* Фоновое видео */}
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src={VIDEO_URL} type="video/mp4" />
+      </video>
+      {/* Сбалансированное затемнение (не тёмное, не пересветленное) */}
+      <div className="pointer-events-none absolute inset-0 bg-black/40" />
       {/* Края — в чёрный, для бесшовного стыка */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/15 to-black" />
 
       <div className="relative z-10 mx-auto max-w-3xl">
         {/* ── Интро ── */}
@@ -350,10 +363,10 @@ export default function Quiz() {
                     key={opt.id}
                     type="button"
                     onClick={() => selectOption(q, opt.id)}
-                    className={`group flex items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-200 ${
+                    className={`group flex items-start gap-3 rounded-2xl border p-4 text-left backdrop-blur-md transition-all duration-200 ${
                       selected
-                        ? 'border-white/40 bg-white/[0.12] shadow-[0_0_24px_rgba(255,255,255,0.10)]'
-                        : 'border-white/10 bg-white/[0.03] hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.07]'
+                        ? 'border-white/40 bg-white/[0.14] shadow-[0_0_24px_rgba(255,255,255,0.12)]'
+                        : 'border-white/10 bg-black/30 hover:-translate-y-0.5 hover:border-white/25 hover:bg-black/45'
                     }`}
                   >
                     <span className="text-xl leading-none">{opt.emoji}</span>
@@ -442,7 +455,7 @@ function Result({ answers, onReset }: { answers: Answers; onReset: () => void })
 
       <div className="mt-10 grid gap-4 lg:grid-cols-2">
         {/* Основные задачи */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md">
+        <div className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur-md">
           <h3 className="mb-4 text-lg font-medium text-white">Сейчас ваши основные задачи</h3>
           {tasks.length > 0 ? (
             <ul className="space-y-3">
@@ -463,7 +476,7 @@ function Result({ answers, onReset }: { answers: Answers; onReset: () => void })
         </div>
 
         {/* Карта бизнеса */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md">
+        <div className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur-md">
           <h3 className="mb-4 text-lg font-medium text-white">Карта цифровизации бизнеса</h3>
           <div className="space-y-3">
             {map.map((m) => (
@@ -489,7 +502,7 @@ function Result({ answers, onReset }: { answers: Answers; onReset: () => void })
       </div>
 
       {/* Карточка рекомендованного тарифа */}
-      <div className="mt-4 overflow-hidden rounded-2xl border border-white/20 bg-white/[0.06] p-7 backdrop-blur-md">
+      <div className="mt-4 overflow-hidden rounded-2xl border border-white/20 bg-black/40 p-7 backdrop-blur-md">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium uppercase tracking-widest text-white/40">
