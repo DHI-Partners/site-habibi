@@ -90,7 +90,9 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
 
             {/* Имя */}
             <label className="mt-6 block">
-              <span className="mb-1.5 block text-sm font-medium text-white/70">Имя</span>
+              <span className="mb-1.5 block text-sm font-medium text-white/70">
+                Имя <span className="text-red-400">*</span>
+              </span>
               <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 focus-within:border-white/30">
                 <User size={16} className="shrink-0 text-white/40" />
                 <input
@@ -105,7 +107,7 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
             {/* Способ связи */}
             <div className="mt-4">
               <span className="mb-1.5 block text-sm font-medium text-white/70">
-                Как с вами связаться?
+                Как с вами связаться? <span className="text-red-400">*</span>
               </span>
               <div className="grid grid-cols-2 gap-2.5">
                 <ChannelButton
@@ -128,7 +130,8 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
             {/* Контакт для выбранного канала */}
             <label className="mt-4 block">
               <span className="mb-1.5 block text-sm font-medium text-white/70">
-                {channel === 'telegram' ? 'Ник в Telegram' : 'Номер WhatsApp'}
+                {channel === 'telegram' ? 'Ник в Telegram' : 'Номер WhatsApp'}{' '}
+                <span className="text-red-400">*</span>
               </span>
               <input
                 value={contact}
@@ -141,7 +144,9 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
 
             {/* Email */}
             <label className="mt-4 block">
-              <span className="mb-1.5 block text-sm font-medium text-white/70">Email</span>
+              <span className="mb-1.5 block text-sm font-medium text-white/70">
+                Email <span className="text-red-400">*</span>
+              </span>
               <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 focus-within:border-white/30">
                 <Mail size={16} className="shrink-0 text-white/40" />
                 <input
