@@ -6,6 +6,7 @@ import { scrollToId } from '@/lib/utils'
 const NAV_LINKS = [
   { label: 'Возможности', href: '#vozmozhnosti' },
   { label: 'Модули', href: '#moduli' },
+  { label: 'Подбор', href: '#podbor' },
   { label: 'Тарифы', href: '#tarify' },
   { label: 'Контакты', href: '#kontakty' },
 ]

@@ -126,6 +126,12 @@ body {
   to { transform: rotate(360deg); }
 }
 
+/* Рост полос «карты бизнеса» в квизе */
+@keyframes barGrow {
+  from { transform: scaleX(0); transform-origin: left; }
+  to { transform: scaleX(1); transform-origin: left; }
+}
+
 /* Смена цены/экономии в тарифах — плавное появление при переключении периода */
 @keyframes priceIn {
   from {
