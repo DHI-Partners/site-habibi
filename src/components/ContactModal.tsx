@@ -13,12 +13,17 @@ interface ContactModalProps {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+// Публичный ключ формы Web3Forms (заявки уходят на привязанную почту).
+const WEB3FORMS_ACCESS_KEY = '686dfc9a-134b-42f6-b0ee-8cc7f9451edb'
+
 export default function ContactModal({ open, onClose, tierName }: ContactModalProps) {
   const [name, setName] = useState('')
   const [channel, setChannel] = useState<Channel | null>(null)
   const [contact, setContact] = useState('')
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState(false)
 
   // Сброс формы при каждом открытии + Esc + блокировка прокрутки фона.
   useEffect(() => {
@@ -28,6 +33,8 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
     setContact('')
     setEmail('')
     setSubmitted(false)
+    setSending(false)
+    setError(false)
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -46,10 +53,38 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
   const valid =
     name.trim().length > 1 && channel !== null && contact.trim().length > 2 && EMAIL_RE.test(email)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!valid) return
-    setSubmitted(true)
+    if (!valid || sending) return
+    setSending(true)
+    setError(false)
+    const channelLabel = channel === 'telegram' ? 'Telegram' : 'WhatsApp'
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Новая заявка с сайта Habibi — тариф ${tierName || '—'}`,
+          from_name: 'Habibi — сайт',
+          Имя: name,
+          Тариф: tierName || '—',
+          'Способ связи': channelLabel,
+          [channelLabel]: contact,
+          email, // email клиента → Reply-To
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setSubmitted(true)
+      } else {
+        setError(true)
+      }
+    } catch {
+      setError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -161,15 +196,20 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
 
             <button
               type="submit"
-              disabled={!valid}
+              disabled={!valid || sending}
               className={`mt-7 w-full rounded-xl py-3.5 text-sm font-semibold transition-all duration-200 ${
-                valid
+                valid && !sending
                   ? 'bg-white text-black hover:scale-[1.02]'
                   : 'cursor-not-allowed bg-white/15 text-white/40'
               }`}
             >
-              Отправить заявку
+              {sending ? 'Отправляем…' : 'Отправить заявку'}
             </button>
+            {error && (
+              <p className="mt-3 text-center text-xs text-red-400">
+                Не удалось отправить. Проверьте соединение и попробуйте ещё раз.
+              </p>
+            )}
             <p className="mt-3 text-center text-xs text-white/35">
               Нажимая кнопку, вы соглашаетесь на обработку контактных данных.
             </p>
