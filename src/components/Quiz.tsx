@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, RotateCcw, Sparkles } from 'lucide-react'
 import { LiquidButton } from './ui/liquid-glass-button'
 import { useContact } from './ContactProvider'
@@ -256,6 +256,22 @@ export default function Quiz() {
   // step: 0 — интро, 1..5 — вопросы, 6 — результат
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Answers>(EMPTY)
+  const sectionRef = useRef<HTMLElement>(null)
+  const firstRender = useRef(true)
+
+  // При смене шага мгновенно прокручиваем к началу секции, чтобы новый вопрос был
+  // сверху (важно на мобильном: иначе после «Далее» экран остаётся внизу).
+  // Прямое присвоение scrollTop гарантированно мгновенное и не конфликтует со
+  // сменой высоты секции (короткий вопрос после длинного).
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+    const el = sectionRef.current
+    if (!el) return
+    el.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior })
+  }, [step])
 
   const totalQ = QUESTIONS.length
   const q = step >= 1 && step <= totalQ ? QUESTIONS[step - 1] : null
@@ -288,6 +304,7 @@ export default function Quiz() {
   return (
     <section
       id="podbor"
+      ref={sectionRef}
       className="relative overflow-hidden bg-black px-6 py-24 md:px-12 md:py-32 lg:px-16"
     >
       {/* Фоновое видео */}
