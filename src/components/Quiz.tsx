@@ -322,7 +322,7 @@ export default function Quiz() {
             <p className="mt-3 text-sm text-white/40">Это займёт меньше минуты.</p>
             <div className="mt-9 flex justify-center">
               <LiquidButton size="lg" onClick={() => setStep(1)} className="rounded-full text-white">
-                Пройти квиз
+                Хочу узнать сейчас
                 <ArrowRight size={16} />
               </LiquidButton>
             </div>
