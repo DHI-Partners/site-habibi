@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import {
   Target,
   Package,
@@ -9,6 +10,8 @@ import {
   Wrench,
   ShoppingCart,
   Globe,
+  Maximize2,
+  X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Reveal } from './Reveal'
@@ -17,6 +20,8 @@ interface Module {
   icon: LucideIcon
   title: string
   text: string
+  /** Если задан — карточка кликабельна и открывает изображение на весь экран. */
+  preview?: string
 }
 
 const MODULES: Module[] = [
@@ -24,6 +29,7 @@ const MODULES: Module[] = [
     icon: Target,
     title: 'CRM и продажи',
     text: 'Все заявки, клиенты и сделки — в одной системе. Ничего не теряется, каждый шаг клиента виден в реальном времени.',
+    preview: '/crm-preview.png',
   },
   {
     icon: Package,
@@ -76,6 +82,29 @@ const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260419_065931_e3ca7b53-d32e-4ad5-81de-dc9d6fcfda6d.mp4'
 
 export default function Modules() {
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null)
+  const [imgError, setImgError] = useState(false)
+
+  const openPreview = (src: string) => {
+    setImgError(false)
+    setPreviewSrc(src)
+  }
+
+  // Закрытие модалки по Esc + блокировка прокрутки фона, пока открыто.
+  useEffect(() => {
+    if (!previewSrc) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPreviewSrc(null)
+    }
+    window.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [previewSrc])
+
   return (
     <section
       id="moduli"
@@ -111,19 +140,92 @@ export default function Modules() {
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {MODULES.map((mod, i) => (
-            <Reveal key={mod.title} delay={(i % 3) * 0.06}>
-              <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md transition-colors hover:border-white/20 hover:bg-black/50">
-                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-transform group-hover:scale-105">
-                  <mod.icon size={20} strokeWidth={1.75} />
+          {MODULES.map((mod, i) => {
+            const clickable = Boolean(mod.preview)
+            return (
+              <Reveal key={mod.title} delay={(i % 3) * 0.06}>
+                <div
+                  role={clickable ? 'button' : undefined}
+                  tabIndex={clickable ? 0 : undefined}
+                  onClick={clickable ? () => openPreview(mod.preview!) : undefined}
+                  onKeyDown={
+                    clickable
+                      ? (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            openPreview(mod.preview!)
+                          }
+                        }
+                      : undefined
+                  }
+                  className={`group flex h-full flex-col rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md transition-colors hover:border-white/20 hover:bg-black/50 ${
+                    clickable
+                      ? 'cursor-pointer outline-none ring-white/30 focus-visible:ring-2 hover:border-white/30'
+                      : ''
+                  }`}
+                >
+                  <div className="mb-5 flex items-center justify-between">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-transform group-hover:scale-105">
+                      <mod.icon size={20} strokeWidth={1.75} />
+                    </div>
+                    {clickable && (
+                      <span className="badge-glow inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-black">
+                        <Maximize2 size={13} strokeWidth={2.5} />
+                        Смотреть пример
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="mb-2 text-lg font-medium text-white">{mod.title}</h3>
+                  <p className="text-sm leading-relaxed text-white/60">{mod.text}</p>
                 </div>
-                <h3 className="mb-2 text-lg font-medium text-white">{mod.title}</h3>
-                <p className="text-sm leading-relaxed text-white/60">{mod.text}</p>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            )
+          })}
         </div>
       </div>
+
+      {/* Полноэкранная модалка с изображением */}
+      {previewSrc && (
+        <div
+          onClick={() => setPreviewSrc(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md [animation:fadeSlideUp_0.25s_ease_both] sm:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Пример интерфейса Habibi"
+        >
+          <button
+            type="button"
+            aria-label="Закрыть"
+            onClick={() => setPreviewSrc(null)}
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur transition-transform hover:scale-105 active:scale-95 sm:right-6 sm:top-6"
+          >
+            <X size={20} />
+          </button>
+          {imgError ? (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-md rounded-xl border border-white/15 bg-white/5 p-8 text-center backdrop-blur"
+            >
+              <p className="text-base font-medium text-white">Скриншот ещё не добавлен</p>
+              <p className="mt-2 text-sm leading-relaxed text-white/60">
+                Сохраните изображение как{' '}
+                <code className="rounded bg-white/10 px-1.5 py-0.5 text-white/80">
+                  public/crm-preview.png
+                </code>{' '}
+                — и оно откроется здесь на весь экран.
+              </p>
+            </div>
+          ) : (
+            <img
+              src={previewSrc}
+              alt="Пример интерфейса Habibi — CRM и продажи"
+              onClick={(e) => e.stopPropagation()}
+              onError={() => setImgError(true)}
+              className="max-h-[90vh] max-w-[92vw] rounded-xl border border-white/10 object-contain shadow-2xl"
+            />
+          )}
+        </div>
+      )}
     </section>
   )
 }

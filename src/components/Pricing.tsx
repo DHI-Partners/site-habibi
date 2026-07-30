@@ -7,14 +7,14 @@ const VIDEO_URL =
 
 const TIERS: TierType[] = [
   {
-    name: 'Хабиби',
+    name: 'Habibi',
     priceMonthly: '0',
     priceAnnual: '0',
     description: 'Бесплатный тариф для знакомства с CRM.',
     features: ['CRM и продажи', 'До 1 рабочего пространства', 'База знаний'],
   },
   {
-    name: 'Хабиби +',
+    name: 'Habibi +',
     priceMonthly: '49',
     priceAnnual: '39',
     description: 'Для команд, которым нужны интеграции.',
@@ -28,12 +28,12 @@ const TIERS: TierType[] = [
     ],
   },
   {
-    name: 'Хабиби Премиум',
+    name: 'Habibi Premium',
     priceMonthly: '199',
     priceAnnual: '159',
     description: 'Для компаний с интеграциями и сопровождением.',
     features: [
-      'Всё из тарифа «Хабиби +»',
+      'Всё из тарифа «Habibi +»',
       'Персональное сопровождение',
       'Приоритетная поддержка',
       'Расширенная аналитика',
