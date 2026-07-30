@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn-совместимые токены (тёмная тема — под общий стиль сайта) */
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 4%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 64%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 0 0% 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reveal-on-scroll: hidden until .is-visible is added by IntersectionObserver */
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: fadeSlideUp 0.8s ease both;
+}
+
+/* ── Анимированные иконки блока «Возможности» ── */
+
+/* Прозрачность: глаз моргает + зрачок осматривается */
+.bi-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: biBlink 5s ease-in-out infinite;
+}
+@keyframes biBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.12); }
+}
+.bi-look {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: biLook 5s ease-in-out infinite;
+}
+@keyframes biLook {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(2px, -1px); }
+  55% { transform: translate(-2px, 1px); }
+  80% { transform: translate(0, 0); }
+}
+
+/* Рост показателей: трендовая линия рисуется по кругу */
+.bi-draw {
+  stroke-dasharray: 42;
+  animation: biDraw 3s ease-in-out infinite;
+}
+@keyframes biDraw {
+  0% { stroke-dashoffset: 42; }
+  55%, 100% { stroke-dashoffset: 0; }
+}
+
+/* Лояльность: сердце бьётся + расходящийся пульс */
+.bi-beat {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: biBeat 1.7s ease-in-out infinite;
+}
+@keyframes biBeat {
+  0%, 45%, 100% { transform: scale(1); }
+  15% { transform: scale(1.18); }
+  30% { transform: scale(1.04); }
+}
+.bi-pulsering {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: biPulse 1.7s ease-out infinite;
+}
+@keyframes biPulse {
+  0% { transform: scale(0.5); opacity: 0.45; }
+  70%, 100% { transform: scale(1.15); opacity: 0; }
+}
+
+/* Свободное время: стрелки часов идут */
+.bi-hand-hour {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+  animation: biSpin 9s linear infinite;
+}
+.bi-hand-min {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+  animation: biSpin 2.4s linear infinite;
+}
+@keyframes biSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Уважаем настройку «меньше движения» */
+@media (prefers-reduced-motion: reduce) {
+  .bi-blink, .bi-look, .bi-draw, .bi-beat, .bi-pulsering, .bi-hand-hour, .bi-hand-min {
+    animation: none;
+  }
+}
