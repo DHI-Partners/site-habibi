@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useContact } from './ContactProvider'
 import { CopperplateHatch } from './ui/copperplate-hatch'
+import KineticGrid from './ui/kinetic-grid'
 
 interface FaqItem {
   q: string
@@ -103,31 +104,33 @@ export default function Faq() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.4fr] lg:items-stretch">
-          {/* Анимированный градиентный CTA */}
-          <div
-            className="c5-animated-gradient flex flex-col items-center justify-center rounded-[24px] px-8 py-14 text-center text-white"
-            style={{ boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)' }}
+          {/* Интерактивный CTA с кинетической сеткой */}
+          <KineticGrid
+            globalColor="monochrome"
+            className="min-h-[340px] rounded-[24px] border border-white/10"
           >
-            <h3
-              className="mb-3 font-medium leading-[1.1]"
-              style={{ fontSize: '2.4rem', letterSpacing: '-0.03em' }}
-            >
-              Остались
-              <br />
-              вопросы?
-            </h3>
-            <p className="mb-7 max-w-xs text-sm font-normal opacity-90">
-              Напишите нам — ответим и поможем подобрать тариф под ваш бизнес.
-            </p>
-            <button
-              type="button"
-              onClick={() => open('Habibi')}
-              className="cursor-pointer rounded-xl border-none bg-neutral-900 px-8 py-3.5 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
-              style={{ boxShadow: '0 10px 20px rgba(0,0,0,0.35)' }}
-            >
-              Оставить заявку
-            </button>
-          </div>
+            <div className="flex h-full flex-col items-center justify-center px-8 py-14 text-center text-white">
+              <h3
+                className="mb-3 font-medium leading-[1.1]"
+                style={{ fontSize: '2.4rem', letterSpacing: '-0.03em' }}
+              >
+                Остались
+                <br />
+                вопросы?
+              </h3>
+              <p className="mb-7 max-w-xs text-sm font-normal text-white/70">
+                Напишите нам — ответим и поможем подобрать тариф под ваш бизнес.
+              </p>
+              <button
+                type="button"
+                onClick={() => open('Habibi')}
+                className="cursor-pointer rounded-xl border-none bg-white px-8 py-3.5 text-sm font-semibold text-black transition-transform duration-200 hover:-translate-y-0.5"
+                style={{ boxShadow: '0 10px 24px rgba(0,0,0,0.45)' }}
+              >
+                Оставить заявку
+              </button>
+            </div>
+          </KineticGrid>
 
           {/* Аккордеон */}
           <div className="flex flex-col justify-center gap-3">
