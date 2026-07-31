@@ -5,6 +5,7 @@ const FOOTER_LINKS = [
   { label: 'Возможности', href: '#vozmozhnosti' },
   { label: 'Модули', href: '#moduli' },
   { label: 'Тарифы', href: '#tarify' },
+  { label: 'Отрасли', href: '#biznes' },
   { label: 'Вопросы', href: '#faq' },
 ]
 

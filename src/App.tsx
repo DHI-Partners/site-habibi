@@ -4,6 +4,7 @@ import Benefits from './components/Benefits'
 import Modules from './components/Modules'
 import Quiz from './components/Quiz'
 import Pricing from './components/Pricing'
+import BusinessTypes from './components/BusinessTypes'
 import Faq from './components/Faq'
 import Closing from './components/Closing'
 import Footer from './components/Footer'
@@ -17,6 +18,7 @@ export default function App() {
         <Modules />
         <Quiz />
         <Pricing />
+        <BusinessTypes />
         <Faq />
         <Closing />
         <Footer />
