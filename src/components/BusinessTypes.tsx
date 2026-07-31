@@ -22,6 +22,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Reveal } from './Reveal'
+import Starfield from './Starfield'
 
 interface Business {
   Icon: LucideIcon
@@ -62,6 +63,8 @@ export default function BusinessTypes() {
       id="biznes"
       className="relative overflow-hidden bg-black px-6 py-24 md:px-12 md:py-32 lg:px-16"
     >
+      {/* Звёздный фон */}
+      <Starfield className="pointer-events-none absolute inset-0" />
       {/* Мягкое свечение + края в чёрный для бесшовного стыка */}
       <div className="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.03] blur-[140px]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
