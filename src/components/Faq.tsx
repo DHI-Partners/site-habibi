@@ -83,15 +83,15 @@ export default function Faq() {
       {/* Анимированный фон — гравюрная штриховка со «светом гравёра» */}
       <CopperplateHatch
         className="pointer-events-none absolute inset-0"
-        density={0.85}
-        intensity={0.95}
-        speed={0.7}
+        density={1}
+        intensity={1.2}
+        speed={0.8}
         seed={7}
         interactive
         safeArea={{ x: 0.05, y: 0.1, w: 0.9, h: 0.8 }}
       />
-      {/* Приглушение для читаемости + края в чёрный для бесшовного стыка */}
-      <div className="pointer-events-none absolute inset-0 bg-black/45" />
+      {/* Лёгкое приглушение для читаемости + края в чёрный для бесшовного стыка */}
+      <div className="pointer-events-none absolute inset-0 bg-black/25" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
