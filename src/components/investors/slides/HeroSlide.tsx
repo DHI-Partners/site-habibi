@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
+import { Download } from 'lucide-react'
 import AnimatedHeading from '../AnimatedHeading'
 import FadeIn from '../FadeIn'
-import type { SlideProps } from './types'
+import { FIN_MODEL_URL } from '../constants'
 
 /** Слайд 1 — титульный, в стиле VEX-hero (контент прижат к низу). */
-export default function HeroSlide({ onNext }: SlideProps) {
+export default function HeroSlide() {
   return (
     <div className="flex flex-1 flex-col justify-end pb-12 lg:pb-16">
       <div className="lg:grid lg:grid-cols-2 lg:items-end">
@@ -24,12 +25,14 @@ export default function HeroSlide({ onNext }: SlideProps) {
           </FadeIn>
           <FadeIn delay={1200} duration={1000}>
             <div className="flex flex-wrap gap-4">
-              <button
-                onClick={onNext}
-                className="rounded-lg bg-white px-8 py-3 font-medium text-black transition-colors hover:bg-gray-100"
+              <a
+                href={FIN_MODEL_URL}
+                download
+                className="flex items-center gap-2 rounded-lg bg-white px-8 py-3 font-medium text-black transition-colors hover:bg-gray-100"
               >
-                Смотреть дек
-              </button>
+                <Download className="h-5 w-5" />
+                Скачать фин модель
+              </a>
               <Link
                 to="/"
                 className="liquid-glass rounded-lg border border-white/20 px-8 py-3 font-medium text-white transition-colors hover:bg-white hover:text-black"

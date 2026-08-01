@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
+import { FIN_MODEL_URL } from './constants'
 import BackgroundVideo from './BackgroundVideo'
 import HeroSlide from './slides/HeroSlide'
 import ProblemSlide from './slides/ProblemSlide'
@@ -11,7 +12,7 @@ import ClosingSlide from './slides/ClosingSlide'
 
 /** Слайды дека. `onNext` используется только теми, где есть кнопка «дальше». */
 const SLIDES: Array<(onNext: () => void) => ReactNode> = [
-  (onNext) => <HeroSlide onNext={onNext} />,
+  () => <HeroSlide />,
   () => <ProblemSlide />,
   () => <SolutionSlide />,
   () => <MarketSlide />,
@@ -78,12 +79,22 @@ export default function InvestorDeck() {
             <span className="text-gray-300">PropTech</span>
             <span className="text-gray-300">Pre-Seed 2026</span>
           </div>
-          <Link
-            to="/"
-            className="rounded-lg bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100"
-          >
-            Написать нам
-          </Link>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href={FIN_MODEL_URL}
+              download
+              className="liquid-glass flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white hover:text-black sm:px-5"
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Скачать фин модель</span>
+            </a>
+            <Link
+              to="/"
+              className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100 sm:px-6"
+            >
+              Написать нам
+            </Link>
+          </div>
         </div>
 
         {/* Активный слайд — key ремонтирует контент, чтобы анимации играли заново.
