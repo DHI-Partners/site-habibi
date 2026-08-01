@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { label: 'Подбор', href: '#podbor' },
   { label: 'Тарифы', href: '#tarify' },
   { label: 'Контакты', href: '#kontakty' },
+  { label: 'Инвесторам', href: '/investors' },
 ]
 
 export default function Navbar() {

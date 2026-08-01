@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         geist: ['Geist', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

@@ -7,6 +7,7 @@ const FOOTER_LINKS = [
   { label: 'Тарифы', href: '#tarify' },
   { label: 'Отрасли', href: '#biznes' },
   { label: 'Вопросы', href: '#faq' },
+  { label: 'Инвесторам', href: '/investors' },
 ]
 
 export default function Footer() {
