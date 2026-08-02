@@ -35,7 +35,14 @@ export default function DirectionSelector() {
 
       {/* Навбар */}
       <nav className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
-        <span className="font-dancing text-2xl text-white md:text-3xl">Habibi</span>
+        <Link to="/" className="flex flex-col leading-none">
+          <span className="font-geist text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Habibi
+          </span>
+          <span className="mt-1.5 font-geist text-[10px] font-medium uppercase tracking-[0.16em] text-white/45 sm:text-[11px]">
+            Цифровая экосистема для вашего бизнеса
+          </span>
+        </Link>
         <Link
           to="/"
           className="rounded-full bg-white px-6 py-2.5 text-sm font-medium tracking-wide text-black transition-all duration-300 hover:bg-white/90"

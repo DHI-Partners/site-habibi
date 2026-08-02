@@ -81,7 +81,7 @@ export default function InvestorDeck() {
         {/* Навбар */}
         <div className="liquid-glass flex items-center justify-between rounded-xl px-4 py-2">
           <div className="flex items-center gap-3">
-            <span className="text-2xl font-semibold tracking-tight">Habibi</span>
+            <span className="font-geist text-2xl font-semibold tracking-tight">Habibi</span>
             <span className="hidden text-sm text-gray-300 sm:inline">PropTech</span>
           </div>
           <Link

@@ -117,7 +117,7 @@ export default function TourismDeck() {
       {/* Навбар */}
       <nav className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-5 md:px-12">
         <div className="flex items-center gap-3">
-          <span className="font-dancing text-2xl text-white md:text-3xl">Habibi</span>
+          <span className="font-geist text-2xl font-semibold tracking-tight text-white md:text-3xl">Habibi</span>
           <span className="hidden text-xs uppercase tracking-[0.2em] text-white/50 sm:inline">
             Hajj &amp; Umrah
           </span>
