@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { X, Check, Mail, User } from 'lucide-react'
+import { X, Check, Mail, User, Download } from 'lucide-react'
 
 interface RequestMaterialsModalProps {
   open: boolean
@@ -11,17 +11,29 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 // Тот же ключ Web3Forms, что и у контактной формы — лиды на привязанную почту.
 const WEB3FORMS_ACCESS_KEY = '686dfc9a-134b-42f6-b0ee-8cc7f9451edb'
 
+const FILE_URL = '/Habibi_Hajj_Umrah_Financial_Model.xlsx'
+const FILE_NAME = 'Habibi_Hajj_Umrah_Financial_Model.xlsx'
+
+/** Программно инициирует скачивание файла финмодели. */
+function triggerDownload() {
+  const a = document.createElement('a')
+  a.href = FILE_URL
+  a.download = FILE_NAME
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
 /**
- * Serene-модалка «Запросить материалы» (финмодель, бизнес-план, презентация)
- * для направления «Туризм». Собирает Имя + Email и отправляет заявку в
- * Web3Forms. Файл не отдаётся — материалы высылаются вручную на email.
+ * Serene-модалка-«шлюз» перед скачиванием финмодели направления «Туризм».
+ * Собирает Имя + Email, отправляет лид в Web3Forms и сразу скачивает
+ * xlsx с финмоделью Habibi Hajj & Umrah.
  */
 export default function RequestMaterialsModal({ open, onClose }: RequestMaterialsModalProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
-  const [error, setError] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -29,7 +41,6 @@ export default function RequestMaterialsModal({ open, onClose }: RequestMaterial
     setEmail('')
     setSending(false)
     setDone(false)
-    setError(false)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -50,29 +61,26 @@ export default function RequestMaterialsModal({ open, onClose }: RequestMaterial
     e.preventDefault()
     if (!valid || sending) return
     setSending(true)
-    setError(false)
+    // Отправляем лид, но не блокируем скачивание, если отправка не удалась.
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: 'Запрос материалов Habibi Hajj & Umrah — новый лид',
+          subject: 'Скачивание финмодели Habibi Hajj & Umrah — новый лид',
           from_name: 'Habibi — инвест-дек (Туризм)',
           Имя: name,
           email,
-          Запрос: 'Финмодель, бизнес-план и презентация',
-          Источник: 'Дек «Туризм» Hajj & Umrah (/investors/tourism)',
+          Источник: 'Кнопка «Скачать фин модель» (/investors/tourism)',
         }),
       })
-      const data = await res.json()
-      if (data.success) setDone(true)
-      else setError(true)
     } catch {
-      setError(true)
-    } finally {
-      setSending(false)
+      // тихо игнорируем — скачивание всё равно даём
     }
+    setSending(false)
+    setDone(true)
+    triggerDownload()
   }
 
   return (
@@ -98,10 +106,10 @@ export default function RequestMaterialsModal({ open, onClose }: RequestMaterial
 
         {!done ? (
           <form onSubmit={handleSubmit}>
-            <h3 className="font-instrument text-3xl text-white">Запросить материалы</h3>
+            <h3 className="font-instrument text-3xl text-white">Скачать финансовую модель</h3>
             <p className="mt-2 text-sm leading-relaxed text-white/55">
-              Оставьте имя и email — вышлем финмодель в Excel, бизнес-план и презентацию
-              Habibi&nbsp;Hajj&nbsp;&&nbsp;Umrah.
+              Оставьте имя и email — и мы откроем доступ к финмодели
+              Habibi&nbsp;Hajj&nbsp;&&nbsp;Umrah в Excel.
             </p>
 
             <label className="mt-6 block">
@@ -138,19 +146,15 @@ export default function RequestMaterialsModal({ open, onClose }: RequestMaterial
             <button
               type="submit"
               disabled={!valid || sending}
-              className={`button-glow mt-7 w-full rounded-full py-3.5 text-sm font-semibold transition-all duration-200 ${
+              className={`button-glow mt-7 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition-all duration-200 ${
                 valid && !sending
                   ? 'bg-white text-black hover:bg-white/90'
                   : 'cursor-not-allowed bg-white/15 text-white/40'
               }`}
             >
-              {sending ? 'Отправляем…' : 'Запросить материалы'}
+              <Download size={16} />
+              {sending ? 'Готовим файл…' : 'Скачать фин модель'}
             </button>
-            {error && (
-              <p className="mt-3 text-center text-xs text-rose-300">
-                Не удалось отправить. Проверьте соединение и попробуйте ещё раз.
-              </p>
-            )}
             <p className="mt-3 text-center text-xs text-white/35">
               Нажимая кнопку, вы соглашаетесь на обработку контактных данных.
             </p>
@@ -160,9 +164,13 @@ export default function RequestMaterialsModal({ open, onClose }: RequestMaterial
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-black">
               <Check size={32} strokeWidth={3} />
             </div>
-            <h3 className="mt-5 font-instrument text-3xl text-white">Заявка принята</h3>
+            <h3 className="mt-5 font-instrument text-3xl text-white">Скачивание началось</h3>
             <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/60">
-              Спасибо! Вышлем финмодель, бизнес-план и презентацию на ваш email в ближайшее время.
+              Спасибо! Если загрузка не началась автоматически —{' '}
+              <a href={FILE_URL} download={FILE_NAME} className="text-white underline">
+                скачайте вручную
+              </a>
+              .
             </p>
             <button
               type="button"

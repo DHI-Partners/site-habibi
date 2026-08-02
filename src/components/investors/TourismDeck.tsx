@@ -135,7 +135,7 @@ export default function TourismDeck() {
             onClick={openRequest}
             className="button-glow rounded-full bg-white px-5 py-2.5 text-sm font-medium tracking-wide text-black transition-all duration-300 hover:bg-white/90 sm:px-6"
           >
-            Запросить материалы
+            Скачать фин модель
           </button>
         </div>
       </nav>
@@ -158,7 +158,7 @@ export default function TourismDeck() {
             onClick={openRequest}
             className="button-glow mt-8 rounded-full bg-white px-8 py-3.5 text-sm font-medium tracking-wide text-black transition-all duration-300 hover:bg-white/90"
           >
-            Запросить материалы
+            Скачать фин модель
           </button>
         </div>
         <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-white/50">
@@ -282,15 +282,15 @@ export default function TourismDeck() {
             Станьте партнёром Habibi Hajj &amp; Umrah
           </h2>
           <p className="mt-5 max-w-xl text-sm text-white/70 md:text-base">
-            Запросите подробную финансовую модель в Excel, бизнес-план и презентацию проекта
-            для инвесторов через форму.
+            Оставьте имя и email — и скачайте подробную финансовую модель проекта в Excel.
+            Бизнес-план и презентацию вышлем на почту.
           </p>
           <button
             type="button"
             onClick={openRequest}
             className="button-glow mt-8 rounded-full bg-white px-8 py-3.5 text-sm font-medium tracking-wide text-black transition-all duration-300 hover:bg-white/90"
           >
-            Запросить материалы
+            Скачать фин модель
           </button>
           <Link
             to="/investors"
