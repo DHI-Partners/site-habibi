@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ChevronDown } from 'lucide-react'
 import SereneBackground from './serene/SereneBackground'
+import SereneStarfield from './serene/SereneStarfield'
 import RequestMaterialsModal from './serene/RequestMaterialsModal'
 
 /* ─────────────────────────  Контент  ───────────────────────── */
@@ -164,8 +165,12 @@ export default function TourismDeck() {
         </div>
       </section>
 
-      {/* ── 01 · Проблема ── */}
-      <section className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+      {/* ── Звёздное небо с падающими звёздами за контентными секциями ── */}
+      <div className="relative bg-gradient-to-b from-[#0a0a1c] via-[#0a0814] to-[#0a0608]">
+        <SereneStarfield className="pointer-events-none absolute inset-0" />
+        <div className="relative z-10">
+          {/* ── 01 · Проблема ── */}
+          <section className="mx-auto max-w-6xl px-6 py-24 md:py-32">
         <Kicker>01 · Проблема</Kicker>
         <SectionTitle>Хаос в организации туров Хаджа и Умры</SectionTitle>
         <div className="mt-12 grid gap-5 md:grid-cols-3">
@@ -263,6 +268,9 @@ export default function TourismDeck() {
           ))}
         </div>
       </section>
+
+        </div>
+      </div>
 
       {/* ── Closing ── */}
       <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-6 py-24 text-center">
