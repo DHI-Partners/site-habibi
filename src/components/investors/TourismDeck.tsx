@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ChevronDown } from 'lucide-react'
-import SereneBackground from './serene/SereneBackground'
+import KaabaTawaf from './serene/KaabaTawaf'
 import SereneStarfield from './serene/SereneStarfield'
 import RequestMaterialsModal from './serene/RequestMaterialsModal'
 
@@ -142,7 +142,8 @@ export default function TourismDeck() {
 
       {/* ── Hero ── */}
       <section className="relative flex h-screen items-center justify-center overflow-hidden px-6 text-center">
-        <SereneBackground overlayClassName="bg-black/40" />
+        <KaabaTawaf className="absolute inset-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0608]/40 via-transparent to-[#0a0608]/70" />
         <div className="relative z-10 -mt-10 flex flex-col items-center">
           <Kicker>Habibi Hajj &amp; Umrah · Pre-Seed 2026</Kicker>
           <h1 className="text-glow mt-5 max-w-4xl font-instrument text-4xl leading-[1.02] tracking-tight text-white md:text-7xl lg:text-[92px]">
@@ -274,7 +275,8 @@ export default function TourismDeck() {
 
       {/* ── Closing ── */}
       <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-6 py-24 text-center">
-        <SereneBackground overlayClassName="bg-black/55" />
+        <KaabaTawaf className="absolute inset-0" />
+        <div className="absolute inset-0 bg-[#0a0608]/55" />
         <div className="relative z-10 flex flex-col items-center">
           <h2 className="text-glow max-w-3xl font-instrument text-4xl leading-tight text-white md:text-6xl">
             Станьте партнёром Habibi Hajj &amp; Umrah
