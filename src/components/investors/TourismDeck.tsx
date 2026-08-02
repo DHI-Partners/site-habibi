@@ -167,7 +167,7 @@ export default function TourismDeck() {
       </section>
 
       {/* ── Звёздное небо с падающими звёздами за контентными секциями ── */}
-      <div className="relative bg-gradient-to-b from-[#0a0a1c] via-[#0a0814] to-[#0a0608]">
+      <div className="relative bg-gradient-to-b from-[#0a1430] via-[#0a1022] to-[#0a0810]">
         <SereneStarfield className="pointer-events-none absolute inset-0" />
         <div className="relative z-10">
           {/* ── 01 · Проблема ── */}

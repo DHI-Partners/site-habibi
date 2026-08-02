@@ -63,7 +63,7 @@ export default function SereneStarfield({ className = '' }: { className?: string
       canvas.height = Math.max(1, Math.round(H * dpr))
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       seed = 7331 >>> 0
-      const count = Math.min(460, Math.round((W * H) / 5200))
+      const count = Math.min(580, Math.round((W * H) / 4300))
       stars = Array.from({ length: count }, () => {
         const big = rng() > 0.93
         return {
@@ -82,7 +82,7 @@ export default function SereneStarfield({ className = '' }: { className?: string
       // Стартуем сверху, летим по диагонали вниз-влево (классическая падающая).
       const startX = W * (0.3 + Math.random() * 0.75)
       const startY = -20 - Math.random() * H * 0.15
-      const speed = 6 + Math.random() * 5
+      const speed = 7.5 + Math.random() * 6
       const angle = (Math.PI / 180) * (115 + Math.random() * 25) // ~вниз-влево
       meteors.push({
         x: startX,
@@ -102,7 +102,7 @@ export default function SereneStarfield({ className = '' }: { className?: string
 
     let last = 0
     let sinceMeteor = 0
-    let nextMeteorIn = 700
+    let nextMeteorIn = 500
 
     const draw = (nowMs: number) => {
       const t = nowMs * 0.001
@@ -116,8 +116,8 @@ export default function SereneStarfield({ className = '' }: { className?: string
         const alpha = s.a * twinkle
         if (s.big && !reduce) {
           const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4)
-          g.addColorStop(0, `rgba(255,255,255,${(alpha * 0.5).toFixed(3)})`)
-          g.addColorStop(1, 'rgba(255,255,255,0)')
+          g.addColorStop(0, `rgba(202,220,255,${(alpha * 0.5).toFixed(3)})`)
+          g.addColorStop(1, 'rgba(202,220,255,0)')
           ctx.fillStyle = g
           ctx.beginPath()
           ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2)
@@ -125,7 +125,7 @@ export default function SereneStarfield({ className = '' }: { className?: string
         }
         ctx.beginPath()
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`
+        ctx.fillStyle = `rgba(219,231,255,${alpha.toFixed(3)})`
         ctx.fill()
       }
 
@@ -134,7 +134,7 @@ export default function SereneStarfield({ className = '' }: { className?: string
         sinceMeteor += dt
         if (sinceMeteor >= nextMeteorIn) {
           sinceMeteor = 0
-          nextMeteorIn = 1400 + Math.random() * 2600
+          nextMeteorIn = 850 + Math.random() * 1900
           spawnMeteor()
         }
         for (let i = meteors.length - 1; i >= 0; i--) {
