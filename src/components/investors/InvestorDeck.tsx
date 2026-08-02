@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
-import { FIN_MODEL_URL } from './constants'
+import { DownloadGateContext } from './gateContext'
+import FinModelGateModal from './FinModelGateModal'
 import BackgroundVideo from './BackgroundVideo'
 import HeroSlide from './slides/HeroSlide'
 import ProblemSlide from './slides/ProblemSlide'
@@ -25,7 +26,11 @@ const TOTAL = SLIDES.length
 /** Инвестиционный дек Habibi (маршрут /investors), стиль VEX. */
 export default function InvestorDeck() {
   const [current, setCurrent] = useState(0)
+  const [gateOpen, setGateOpen] = useState(false)
   const touchStartX = useRef<number | null>(null)
+
+  const openGate = useCallback(() => setGateOpen(true), [])
+  const closeGate = useCallback(() => setGateOpen(false), [])
 
   const goTo = useCallback((index: number) => {
     setCurrent((prev) => {
@@ -57,6 +62,7 @@ export default function InvestorDeck() {
   }
 
   return (
+    <DownloadGateContext.Provider value={openGate}>
     <div
       className="relative h-screen w-full overflow-hidden bg-black font-inter text-white"
       onTouchStart={onTouchStart}
@@ -80,14 +86,14 @@ export default function InvestorDeck() {
             <span className="text-gray-300">Pre-Seed 2026</span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href={FIN_MODEL_URL}
-              download
+            <button
+              type="button"
+              onClick={openGate}
               className="liquid-glass flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white hover:text-black sm:px-5"
             >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Скачать фин модель</span>
-            </a>
+            </button>
             <Link
               to="/"
               className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100 sm:px-6"
@@ -146,6 +152,9 @@ export default function InvestorDeck() {
           {current + 1} / {TOTAL}
         </span>
       </div>
+
+      <FinModelGateModal open={gateOpen} onClose={closeGate} />
     </div>
+    </DownloadGateContext.Provider>
   )
 }
