@@ -1,10 +1,52 @@
-/* Шрифт Inter для инвест-дека (/investors). Подключается здесь, а не в
-   index.html, чтобы не затрагивать сторонние правки в index.html. */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+/* Шрифты для инвест-деков (/investors): Inter — тело, Instrument Serif —
+   заголовки Serene, Dancing Script — логотип Serene. Подключаются здесь,
+   а не в index.html, чтобы не затрагивать сторонние правки в index.html. */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Serene-стиль (страница-селектор /investors и дек «Туризм») ── */
+.font-instrument {
+  font-family: 'Instrument Serif', serif;
+}
+.font-dancing {
+  font-family: 'Dancing Script', cursive;
+}
+.text-glow {
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 80px rgba(255, 255, 255, 0.2),
+    0 0 120px rgba(255, 255, 255, 0.1);
+}
+.button-glow {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+}
+/* Светлое «жидкое стекло» Serene — отдельно от .liquid-glass дека недвижимости. */
+.serene-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.serene-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
 
 /* shadcn-совместимые токены (тёмная тема — под общий стиль сайта) */
 :root {

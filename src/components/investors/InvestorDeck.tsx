@@ -80,11 +80,17 @@ export default function InvestorDeck() {
       <div className="relative z-10 flex h-full flex-col px-6 pt-6 md:px-12 lg:px-16 [text-shadow:0_1px_14px_rgba(0,0,0,0.55)]">
         {/* Навбар */}
         <div className="liquid-glass flex items-center justify-between rounded-xl px-4 py-2">
-          <span className="text-2xl font-semibold tracking-tight">Habibi</span>
-          <div className="hidden items-center gap-8 text-sm md:flex">
-            <span className="text-gray-300">PropTech</span>
-            <span className="text-gray-300">Pre-Seed 2026</span>
+          <div className="flex items-center gap-3">
+            <span className="text-2xl font-semibold tracking-tight">Habibi</span>
+            <span className="hidden text-sm text-gray-300 sm:inline">PropTech</span>
           </div>
+          <Link
+            to="/investors"
+            className="hidden items-center gap-1.5 text-sm text-gray-300 transition-colors hover:text-white md:flex"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Направления
+          </Link>
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"

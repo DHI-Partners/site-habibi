@@ -10,6 +10,8 @@ import Faq from './components/Faq'
 import Closing from './components/Closing'
 import Footer from './components/Footer'
 import InvestorDeck from './components/investors/InvestorDeck'
+import DirectionSelector from './components/investors/DirectionSelector'
+import TourismDeck from './components/investors/TourismDeck'
 
 function LandingPage() {
   return (
@@ -33,7 +35,9 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/investors" element={<InvestorDeck />} />
+      <Route path="/investors" element={<DirectionSelector />} />
+      <Route path="/investors/real-estate" element={<InvestorDeck />} />
+      <Route path="/investors/tourism" element={<TourismDeck />} />
     </Routes>
   )
 }
