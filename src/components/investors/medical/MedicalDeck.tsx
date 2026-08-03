@@ -192,7 +192,7 @@ export default function MedicalDeck() {
               whileTap={{ scale: 0.97 }}
               className="mt-8 rounded-full bg-[#0a152d] px-7 py-3 text-sm font-semibold text-white shadow-lg"
             >
-              Запросить материалы
+              Скачать фин модель
             </motion.button>
           </motion.div>
 
@@ -228,7 +228,7 @@ export default function MedicalDeck() {
                 onClick={openRequest}
                 className="ml-1 flex items-center gap-1 rounded-full border border-slate-200/60 bg-white px-5 py-2 text-[12px] font-semibold text-[#0a1b33] shadow-sm transition-all hover:border-slate-300"
               >
-                Запросить материалы
+                Скачать фин модель
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </motion.nav>
@@ -359,8 +359,8 @@ export default function MedicalDeck() {
             Станьте партнёром Habibi Medical
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-sm text-slate-500 md:text-base">
-            Запросите подробную финансовую модель в Excel, бизнес-план и презентацию проекта для
-            инвесторов через форму.
+            Оставьте имя и email — и скачайте подробную финансовую модель проекта в Excel.
+            Бизнес-план и презентацию вышлем на почту.
           </p>
           <motion.button
             type="button"
@@ -369,7 +369,7 @@ export default function MedicalDeck() {
             whileTap={{ scale: 0.97 }}
             className="mt-8 rounded-full bg-[#0a152d] px-8 py-3.5 text-sm font-semibold text-white shadow-lg"
           >
-            Запросить материалы
+            Скачать фин модель
           </motion.button>
           <div className="mt-6">
             <Link

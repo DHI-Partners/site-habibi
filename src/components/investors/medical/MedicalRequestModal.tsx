@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { X, Check, Mail, User } from 'lucide-react'
+import { X, Check, Mail, User, Download } from 'lucide-react'
 
 interface MedicalRequestModalProps {
   open: boolean
@@ -9,17 +9,28 @@ interface MedicalRequestModalProps {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const WEB3FORMS_ACCESS_KEY = '686dfc9a-134b-42f6-b0ee-8cc7f9451edb'
 
+const FILE_URL = '/Habibi_Medical_Financial_Model.xlsx'
+const FILE_NAME = 'Habibi_Medical_Financial_Model.xlsx'
+
+function triggerDownload() {
+  const a = document.createElement('a')
+  a.href = FILE_URL
+  a.download = FILE_NAME
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
 /**
- * Светлая модалка «Запросить материалы» для дека «Медицина». Собирает
- * Имя + Email и отправляет заявку в Web3Forms (финмодель/бизнес-план/
- * презентация высылаются на email вручную).
+ * Светлая модалка-«шлюз» перед скачиванием финмодели дека «Медицина».
+ * Собирает Имя + Email, отправляет лид в Web3Forms и сразу скачивает xlsx
+ * с финмоделью Habibi Medical (бизнес-план и презентация — на email вручную).
  */
 export default function MedicalRequestModal({ open, onClose }: MedicalRequestModalProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
-  const [error, setError] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -27,7 +38,6 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
     setEmail('')
     setSending(false)
     setDone(false)
-    setError(false)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -48,29 +58,26 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
     e.preventDefault()
     if (!valid || sending) return
     setSending(true)
-    setError(false)
+    // Отправляем лид, но не блокируем скачивание при ошибке сети.
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: 'Запрос материалов Habibi Medical — новый лид',
+          subject: 'Скачивание финмодели Habibi Medical — новый лид',
           from_name: 'Habibi — инвест-дек (Медицина)',
           Имя: name,
           email,
-          Запрос: 'Финмодель, бизнес-план и презентация',
-          Источник: 'Дек «Медицина» (/investors/medical)',
+          Источник: 'Кнопка «Скачать фин модель» (/investors/medical)',
         }),
       })
-      const data = await res.json()
-      if (data.success) setDone(true)
-      else setError(true)
     } catch {
-      setError(true)
-    } finally {
-      setSending(false)
+      // тихо игнорируем
     }
+    setSending(false)
+    setDone(true)
+    triggerDownload()
   }
 
   return (
@@ -96,11 +103,11 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
         {!done ? (
           <form onSubmit={handleSubmit}>
             <h3 className="font-display text-2xl font-medium tracking-tight text-[#0a1b33]">
-              Запросить материалы
+              Скачать финансовую модель
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
-              Оставьте имя и email — вышлем финмодель в Excel, бизнес-план и презентацию
-              Habibi&nbsp;Medical.
+              Оставьте имя и email — финмодель Habibi Medical в Excel скачается сразу. Бизнес-план
+              и презентацию вышлем на почту.
             </p>
 
             <label className="mt-6 block">
@@ -137,19 +144,15 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
             <button
               type="submit"
               disabled={!valid || sending}
-              className={`mt-7 w-full rounded-full py-3.5 text-sm font-semibold transition-all duration-200 ${
+              className={`mt-7 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition-all duration-200 ${
                 valid && !sending
                   ? 'bg-[#0a152d] text-white hover:scale-[1.02]'
                   : 'cursor-not-allowed bg-slate-200 text-slate-400'
               }`}
             >
-              {sending ? 'Отправляем…' : 'Запросить материалы'}
+              <Download size={16} />
+              {sending ? 'Готовим файл…' : 'Скачать фин модель'}
             </button>
-            {error && (
-              <p className="mt-3 text-center text-xs text-rose-500">
-                Не удалось отправить. Проверьте соединение и попробуйте ещё раз.
-              </p>
-            )}
             <p className="mt-3 text-center text-xs text-slate-400">
               Нажимая кнопку, вы соглашаетесь на обработку контактных данных.
             </p>
@@ -160,10 +163,14 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
               <Check size={32} strokeWidth={3} />
             </div>
             <h3 className="mt-5 font-display text-2xl font-medium tracking-tight text-[#0a1b33]">
-              Заявка принята
+              Скачивание началось
             </h3>
             <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
-              Спасибо! Вышлем финмодель, бизнес-план и презентацию на ваш email в ближайшее время.
+              Спасибо! Если загрузка не началась автоматически —{' '}
+              <a href={FILE_URL} download={FILE_NAME} className="font-medium text-[#0a1b33] underline">
+                скачайте вручную
+              </a>
+              . Бизнес-план и презентацию вышлем на email.
             </p>
             <button
               type="button"
