@@ -31,6 +31,7 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
   const [email, setEmail] = useState('')
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
+  const [emailed, setEmailed] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -38,6 +39,7 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
     setEmail('')
     setSending(false)
     setDone(false)
+    setEmailed(false)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -58,7 +60,7 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
     e.preventDefault()
     if (!valid || sending) return
     setSending(true)
-    // Отправляем лид, но не блокируем скачивание при ошибке сети.
+    // 1) Уведомление бизнесу (Web3Forms) — не блокируем при ошибке сети.
     try {
       await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -75,6 +77,20 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
     } catch {
       // тихо игнорируем
     }
+    // 2) Письмо пользователю с финмоделью (наша serverless-функция + Resend).
+    let sent = false
+    try {
+      const r = await fetch('/api/send-model', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, product: 'medical' }),
+      })
+      const j = await r.json().catch(() => ({}))
+      sent = r.ok && j.ok === true
+    } catch {
+      // почтовый сервис недоступен — не критично, файл всё равно скачаем
+    }
+    setEmailed(sent)
     setSending(false)
     setDone(true)
     triggerDownload()
@@ -163,10 +179,17 @@ export default function MedicalRequestModal({ open, onClose }: MedicalRequestMod
               <Check size={32} strokeWidth={3} />
             </div>
             <h3 className="mt-5 font-display text-2xl font-medium tracking-tight text-[#0a1b33]">
-              Скачивание началось
+              {emailed ? 'Финмодель отправлена' : 'Скачивание началось'}
             </h3>
-            <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
-              Спасибо! Если загрузка не началась автоматически —{' '}
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-slate-500">
+              {emailed ? (
+                <>
+                  Мы отправили финмодель на <b className="text-[#0a1b33]">{email}</b> и запустили
+                  скачивание. Не пришло письмо — проверьте «Спам» или{' '}
+                </>
+              ) : (
+                <>Спасибо! Если загрузка не началась автоматически — </>
+              )}
               <a href={FILE_URL} download={FILE_NAME} className="font-medium text-[#0a1b33] underline">
                 скачайте вручную
               </a>
