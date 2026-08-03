@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ChevronRight, ArrowLeft } from 'lucide-react'
 import Marquee from './Marquee'
+import MedicalPillsBackground from './MedicalPillsBackground'
 import MedicalRequestModal from './MedicalRequestModal'
 
 const VIDEO_URL =
@@ -240,6 +241,10 @@ export default function MedicalDeck() {
         <Marquee />
       </div>
 
+      {/* ── Фон с падающими таблетками за 4 контентными секциями ── */}
+      <div className="relative">
+        <MedicalPillsBackground className="pointer-events-none absolute inset-0 z-0" />
+        <div className="relative z-10">
       {/* ── 01 · Проблема ── */}
       <Section>
         <Kicker>01 · Проблема</Kicker>
@@ -343,6 +348,9 @@ export default function MedicalDeck() {
           ))}
         </div>
       </Section>
+
+        </div>
+      </div>
 
       {/* ── Closing ── */}
       <Section>
