@@ -7,6 +7,8 @@ export default {
       fontFamily: {
         geist: ['Geist', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
+        display: ['Outfit', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

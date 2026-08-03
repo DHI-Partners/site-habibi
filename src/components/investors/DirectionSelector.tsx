@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Building2, Plane, ArrowUpRight, Sparkles } from 'lucide-react'
+import { Building2, Plane, Stethoscope, ArrowUpRight, Sparkles } from 'lucide-react'
 import SereneBackground from './serene/SereneBackground'
 
 interface Direction {
@@ -24,6 +24,13 @@ const DIRECTIONS: Direction[] = [
     title: 'Туризм',
     subtitle: 'Habibi Hajj & Umrah',
     desc: 'ERP для туроператоров и паломнических центров — Хадж и Умра в СНГ.',
+  },
+  {
+    to: '/investors/medical',
+    icon: Stethoscope,
+    title: 'Медицина',
+    subtitle: 'Habibi Medical',
+    desc: 'ERP для клиник, медцентров и стоматологий — ЭМК, склад, CRM и финансы.',
   },
 ]
 
@@ -65,7 +72,7 @@ export default function DirectionSelector() {
         </p>
 
         {/* Карточки направлений */}
-        <div className="mt-12 grid w-full max-w-4xl gap-5 sm:grid-cols-2">
+        <div className="mt-12 grid w-full max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {DIRECTIONS.map((d) => {
             const Icon = d.icon
             return (
