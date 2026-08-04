@@ -23,6 +23,8 @@ export default function LogisticsHero({ onRequest }: LogisticsHeroProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-[#7c2d12]/25 via-transparent to-[#0E3A44]/15 mix-blend-multiply" />
       {/* Скрим слева для читаемости текста */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#0b2b33]/85 via-[#0b2b33]/45 to-transparent" />
+      {/* Плавный переход низа фото в кремовый фон следующей секции */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-52 bg-gradient-to-b from-transparent via-[#FBF7F0]/40 to-[#FBF7F0]" />
 
       {/* Контент */}
       <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
