@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { X, Check, Mail, User } from 'lucide-react'
+import { X, Check, Mail, User, Download } from 'lucide-react'
 
 interface LogisticsRequestModalProps {
   open: boolean
@@ -9,17 +9,29 @@ interface LogisticsRequestModalProps {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const WEB3FORMS_ACCESS_KEY = '686dfc9a-134b-42f6-b0ee-8cc7f9451edb'
 
+const FILE_URL = '/Habibi_Logistics_Financial_Model.xlsx'
+const FILE_NAME = 'Habibi_Logistics_Financial_Model.xlsx'
+
+function triggerDownload() {
+  const a = document.createElement('a')
+  a.href = FILE_URL
+  a.download = FILE_NAME
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
 /**
- * Модалка «Запросить материалы» для дека «Логистика» (CargoX-стиль).
- * Собирает Имя + Email → заявка в Web3Forms. Pitch deck и финмодель
- * высылаются на email вручную.
+ * Модалка-«шлюз» перед скачиванием финмодели дека «Логистика» (CargoX-стиль).
+ * Имя + Email → лид в Web3Forms + письмо с финмоделью (Resend) + скачивание
+ * xlsx. Pitch deck высылается на email вручную.
  */
 export default function LogisticsRequestModal({ open, onClose }: LogisticsRequestModalProps) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [sending, setSending] = useState(false)
   const [done, setDone] = useState(false)
-  const [error, setError] = useState(false)
+  const [emailed, setEmailed] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -27,7 +39,7 @@ export default function LogisticsRequestModal({ open, onClose }: LogisticsReques
     setEmail('')
     setSending(false)
     setDone(false)
-    setError(false)
+    setEmailed(false)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -48,29 +60,40 @@ export default function LogisticsRequestModal({ open, onClose }: LogisticsReques
     e.preventDefault()
     if (!valid || sending) return
     setSending(true)
-    setError(false)
+    // 1) Уведомление бизнесу (Web3Forms).
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: 'Запрос материалов Habibi Logistics — новый лид',
+          subject: 'Скачивание финмодели Habibi Logistics — новый лид',
           from_name: 'Habibi — инвест-дек (Логистика)',
           Имя: name,
           email,
-          Запрос: 'Pitch Deck (PDF) и Financial Model (Excel)',
-          Источник: 'Дек «Логистика» (/investors/logistics)',
+          Источник: 'Кнопка финмодели (/investors/logistics)',
         }),
       })
-      const data = await res.json()
-      if (data.success) setDone(true)
-      else setError(true)
     } catch {
-      setError(true)
-    } finally {
-      setSending(false)
+      // тихо игнорируем
     }
+    // 2) Письмо пользователю с финмоделью (Resend через нашу функцию).
+    let sent = false
+    try {
+      const r = await fetch('/api/send-model', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, product: 'logistics' }),
+      })
+      const j = await r.json().catch(() => ({}))
+      sent = r.ok && j.ok === true
+    } catch {
+      // почтовый сервис недоступен — не критично, файл скачаем
+    }
+    setEmailed(sent)
+    setSending(false)
+    setDone(true)
+    triggerDownload()
   }
 
   return (
@@ -96,11 +119,11 @@ export default function LogisticsRequestModal({ open, onClose }: LogisticsReques
         {!done ? (
           <form onSubmit={handleSubmit}>
             <h3 className="font-display text-2xl font-bold tracking-tight text-[#0E3A44]">
-              Запросить материалы
+              Скачать финансовую модель
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
-              Оставьте имя и email — вышлем Pitch Deck (PDF) и Financial Model (Excel) по
-              Habibi&nbsp;Logistics.
+              Оставьте имя и email — финмодель Habibi&nbsp;Logistics в Excel скачается сразу. Pitch
+              Deck вышлем на почту.
             </p>
 
             <label className="mt-6 block">
@@ -137,19 +160,15 @@ export default function LogisticsRequestModal({ open, onClose }: LogisticsReques
             <button
               type="submit"
               disabled={!valid || sending}
-              className={`mt-7 w-full rounded-full py-3.5 text-sm font-semibold transition-all duration-200 ${
+              className={`mt-7 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold transition-all duration-200 ${
                 valid && !sending
                   ? 'bg-[#0E3A44] text-white hover:scale-[1.02]'
                   : 'cursor-not-allowed bg-slate-200 text-slate-400'
               }`}
             >
-              {sending ? 'Отправляем…' : 'Запросить материалы'}
+              <Download size={16} />
+              {sending ? 'Готовим файл…' : 'Скачать фин модель'}
             </button>
-            {error && (
-              <p className="mt-3 text-center text-xs text-red-500">
-                Не удалось отправить. Проверьте соединение и попробуйте ещё раз.
-              </p>
-            )}
             <p className="mt-3 text-center text-xs text-slate-400">
               Нажимая кнопку, вы соглашаетесь на обработку контактных данных.
             </p>
@@ -160,10 +179,21 @@ export default function LogisticsRequestModal({ open, onClose }: LogisticsReques
               <Check size={32} strokeWidth={3} />
             </div>
             <h3 className="mt-5 font-display text-2xl font-bold tracking-tight text-[#0E3A44]">
-              Заявка принята
+              {emailed ? 'Финмодель отправлена' : 'Скачивание началось'}
             </h3>
-            <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
-              Спасибо! Вышлем Pitch Deck и Financial Model на ваш email в ближайшее время.
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-slate-500">
+              {emailed ? (
+                <>
+                  Мы отправили финмодель на <b className="text-[#0E3A44]">{email}</b> и запустили
+                  скачивание. Не пришло письмо — проверьте «Спам» или{' '}
+                </>
+              ) : (
+                <>Спасибо! Если загрузка не началась автоматически — </>
+              )}
+              <a href={FILE_URL} download={FILE_NAME} className="font-medium text-[#0E3A44] underline">
+                скачайте вручную
+              </a>
+              . Pitch Deck вышлем на email.
             </p>
             <button
               type="button"

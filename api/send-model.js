@@ -20,6 +20,11 @@ const FILES = {
     name: 'Habibi_PropTech_Financial_Model.xlsx',
     title: 'Habibi PropTech',
   },
+  logistics: {
+    path: '/Habibi_Logistics_Financial_Model.xlsx',
+    name: 'Habibi_Logistics_Financial_Model.xlsx',
+    title: 'Habibi Logistics',
+  },
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
