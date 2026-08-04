@@ -60,6 +60,7 @@ const TIERS: TierType[] = [
     priceSemiAnnual: '',
     priceAnnual: '',
     priceLabel: 'После аудита',
+    isExclusive: true,
     description: 'Индивидуальное решение. Стоимость рассчитывается после аудита вашего бизнеса.',
     ctaLabel: 'Оставить заявку',
     features: [

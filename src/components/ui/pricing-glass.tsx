@@ -13,6 +13,8 @@ export type TierType = {
   priceAnnual: string;
   description: string;
   isPopular?: boolean;
+  /** Тёмная карточка с золотой рамкой (премиум-тариф без цены). */
+  isExclusive?: boolean;
   features: string[];
   /** Если задано — вместо цены/валюты/«/мес» показывается эта подпись
    *  (например, «После аудита» для тарифа без фиксированной цены). */
@@ -93,10 +95,12 @@ function PricingCard({
         }
       }}
       onMouseMove={handleMouseMove}
-      className={`group relative w-full overflow-hidden rounded-[32px] bg-white/1 backdrop-blur-3xl backdrop-saturate-200 backdrop-brightness-110 flex flex-col transition-all duration-500 ${
-        tier.isPopular
-        ? "border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(255,255,255,0.05),0_32px_64px_-12px_rgba(0,0,0,0.6),0_0_80px_rgba(255,255,255,0.05)] 2xl:-translate-y-4"
-        : "border border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_32px_64px_-12px_rgba(0,0,0,0.6)]"
+      className={`group relative w-full overflow-hidden rounded-[32px] backdrop-blur-3xl backdrop-saturate-200 backdrop-brightness-110 flex flex-col transition-all duration-500 ${
+        tier.isExclusive
+        ? "bg-gradient-to-b from-[#17120a]/95 to-[#0b0b0b]/92 border border-amber-400/40 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.7),0_0_60px_rgba(212,175,55,0.14),inset_0_1px_1px_rgba(255,214,140,0.3)]"
+        : tier.isPopular
+        ? "bg-white/1 border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(255,255,255,0.05),0_32px_64px_-12px_rgba(0,0,0,0.6),0_0_80px_rgba(255,255,255,0.05)] 2xl:-translate-y-4"
+        : "bg-white/1 border border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_32px_64px_-12px_rgba(0,0,0,0.6)]"
       }`}
     >
       <motion.div
@@ -122,6 +126,19 @@ function PricingCard({
         </div>
       )}
 
+      {tier.isExclusive && (
+        <div
+          className="absolute inset-0 z-0 rounded-[32px] pointer-events-none p-px"
+          style={{
+            background:
+              "linear-gradient(140deg, rgba(245,215,130,0.95), rgba(150,110,40,0.25) 45%, rgba(245,215,130,0.85))",
+            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+          }}
+        />
+      )}
+
       <div className="absolute inset-0 z-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: NOISE_PATTERN }} />
 
       {tier.isPopular && (
@@ -130,15 +147,28 @@ function PricingCard({
         </div>
       )}
 
+      {tier.isExclusive && (
+        <div className="absolute top-0 left-1/2 z-10 -translate-x-1/2 px-4 py-1 bg-amber-400/15 backdrop-blur-md border-b border-x border-amber-400/30 rounded-b-xl text-xs font-semibold tracking-wide text-amber-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+          Эксклюзив
+        </div>
+      )}
+
       <div className="relative z-10 flex flex-col p-8 md:p-10 flex-1 pointer-events-none">
-        <motion.h3 variants={legoVariant} className="text-xl font-semibold text-white/80 tracking-wide">
+        <motion.h3
+          variants={legoVariant}
+          className={`text-xl font-semibold tracking-wide ${tier.isExclusive ? "text-amber-100/90" : "text-white/80"}`}
+        >
           {tier.name}
         </motion.h3>
 
         <motion.div variants={legoVariant} className="flex items-baseline gap-1 mt-4 mb-2">
           {tier.priceLabel ? (
             <div className="h-[60px] flex items-center">
-              <span className="block text-[34px] md:text-[38px] font-bold text-white tracking-tight leading-none">
+              <span
+                className={`block text-[34px] md:text-[38px] font-bold tracking-tight leading-none ${
+                  tier.isExclusive ? "text-amber-200" : "text-white"
+                }`}
+              >
                 {tier.priceLabel}
               </span>
             </div>
@@ -175,13 +205,15 @@ function PricingCard({
           {tier.description}
         </motion.p>
 
-        <motion.div variants={legoVariant} className="w-full h-px bg-white/10 mb-8" />
+        <motion.div variants={legoVariant} className={`w-full h-px mb-8 ${tier.isExclusive ? "bg-amber-400/20" : "bg-white/10"}`} />
 
         <div className="flex flex-col gap-4 mb-10 flex-1">
           {tier.features.map((feat: string, i: number) => (
             <motion.div key={i} variants={legoVariant} className="flex items-start gap-3">
-              <div className="shrink-0 flex items-center justify-center w-5 h-5 mt-0.5 rounded-full bg-white/10 border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]">
-                <Check className="w-3 h-3 text-white/90" strokeWidth={3} />
+              <div className={`shrink-0 flex items-center justify-center w-5 h-5 mt-0.5 rounded-full border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] ${
+                tier.isExclusive ? "bg-amber-400/15 border-amber-400/30" : "bg-white/10 border-white/10"
+              }`}>
+                <Check className={`w-3 h-3 ${tier.isExclusive ? "text-amber-300" : "text-white/90"}`} strokeWidth={3} />
               </div>
               <span className="text-white/70 font-medium text-[14px] leading-tight">{feat}</span>
             </motion.div>
@@ -192,7 +224,9 @@ function PricingCard({
           <button
             onClick={() => onGetStarted?.(tier)}
             className={`w-full py-4 rounded-[16px] font-semibold text-[15px] transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] ${
-            tier.isPopular
+            tier.isExclusive
+            ? "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:from-amber-200 hover:to-amber-400 hover:scale-[1.02]"
+            : tier.isPopular
             ? "bg-white text-black hover:bg-white/90 hover:scale-[1.02]"
             : "bg-white/10 text-white hover:bg-white/20 border border-white/10 hover:scale-[1.02]"
           }`}>
