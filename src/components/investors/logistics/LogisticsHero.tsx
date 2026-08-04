@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FileText, FileSpreadsheet } from 'lucide-react'
+import { FileSpreadsheet } from 'lucide-react'
 
 interface LogisticsHeroProps {
   onRequest: () => void
@@ -47,25 +47,17 @@ export default function LogisticsHero({ onRequest }: LogisticsHeroProps) {
             учёт топлива и P&amp;L-аналитика — в единой облачной платформе.
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
-            Pre-Seed раунд · <span className="text-[#FFC61A]">$200,000</span> за 10% доли
+            Pre-Seed раунд · <span className="text-[#FFC61A]">$200,000</span> за 30% доли
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
             <button
               type="button"
               onClick={onRequest}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-[#0E3A44] shadow-lg transition-transform hover:scale-[1.03]"
-            >
-              <FileText className="h-4 w-4" />
-              Скачать Pitch Deck
-            </button>
-            <button
-              type="button"
-              onClick={onRequest}
-              className="inline-flex items-center gap-2 rounded-full bg-[#FFC61A] px-6 py-3.5 text-sm font-semibold text-[#0E3A44] shadow-lg transition-transform hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#FFC61A] px-7 py-3.5 text-sm font-semibold text-[#0E3A44] shadow-lg transition-transform hover:scale-[1.03]"
             >
               <FileSpreadsheet className="h-4 w-4" />
-              Financial Model (Excel)
+              Скачать фин модель
             </button>
           </div>
         </motion.div>
