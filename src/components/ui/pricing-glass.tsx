@@ -14,6 +14,11 @@ export type TierType = {
   description: string;
   isPopular?: boolean;
   features: string[];
+  /** Если задано — вместо цены/валюты/«/мес» показывается эта подпись
+   *  (например, «После аудита» для тарифа без фиксированной цены). */
+  priceLabel?: string;
+  /** Индивидуальная подпись CTA-кнопки (иначе — общий ctaLabel). */
+  ctaLabel?: string;
 };
 
 type BillingPeriod = "monthly" | "semi" | "annual";
@@ -90,7 +95,7 @@ function PricingCard({
       onMouseMove={handleMouseMove}
       className={`group relative w-full overflow-hidden rounded-[32px] bg-white/1 backdrop-blur-3xl backdrop-saturate-200 backdrop-brightness-110 flex flex-col transition-all duration-500 ${
         tier.isPopular
-        ? "border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(255,255,255,0.05),0_32px_64px_-12px_rgba(0,0,0,0.6),0_0_80px_rgba(255,255,255,0.05)] md:-translate-y-4"
+        ? "border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(255,255,255,0.05),0_32px_64px_-12px_rgba(0,0,0,0.6),0_0_80px_rgba(255,255,255,0.05)] 2xl:-translate-y-4"
         : "border border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_32px_64px_-12px_rgba(0,0,0,0.6)]"
       }`}
     >
@@ -131,21 +136,31 @@ function PricingCard({
         </motion.h3>
 
         <motion.div variants={legoVariant} className="flex items-baseline gap-1 mt-4 mb-2">
-          <span className="text-white/40 text-2xl font-medium tracking-tight">{currency}</span>
-          <div className="h-[60px] overflow-hidden flex items-center">
-             <span
-               key={price}
-               className="block text-[60px] font-bold text-white tracking-tighter leading-none [animation:priceIn_0.4s_cubic-bezier(0.16,1,0.3,1)]"
-             >
-               {price}
-             </span>
-          </div>
-          <span className="text-white/40 text-lg font-medium ml-1">/мес</span>
+          {tier.priceLabel ? (
+            <div className="h-[60px] flex items-center">
+              <span className="block text-[34px] md:text-[38px] font-bold text-white tracking-tight leading-none">
+                {tier.priceLabel}
+              </span>
+            </div>
+          ) : (
+            <>
+              <span className="text-white/40 text-2xl font-medium tracking-tight">{currency}</span>
+              <div className="h-[60px] overflow-hidden flex items-center">
+                <span
+                  key={price}
+                  className="block text-[60px] font-bold text-white tracking-tighter leading-none [animation:priceIn_0.4s_cubic-bezier(0.16,1,0.3,1)]"
+                >
+                  {price}
+                </span>
+              </div>
+              <span className="text-white/40 text-lg font-medium ml-1">/мес</span>
+            </>
+          )}
         </motion.div>
 
         {/* Экономия за выбранный период — резервируем высоту, чтобы не прыгал layout */}
         <div className="mb-3 h-7">
-          {savings > 0 && (
+          {!tier.priceLabel && savings > 0 && (
             <span
               key={`${period}-${savings}`}
               className="inline-flex items-center rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-semibold text-emerald-300 ring-1 ring-emerald-400/20 [animation:priceIn_0.35s_ease]"
@@ -181,7 +196,7 @@ function PricingCard({
             ? "bg-white text-black hover:bg-white/90 hover:scale-[1.02]"
             : "bg-white/10 text-white hover:bg-white/20 border border-white/10 hover:scale-[1.02]"
           }`}>
-            {ctaLabel}
+            {tier.ctaLabel ?? ctaLabel}
           </button>
         </motion.div>
       </div>
@@ -262,7 +277,7 @@ export function PricingGlass({
         </motion.div>
       </div>
 
-      <div className="relative w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch z-20">
+      <div className="relative w-full grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6 lg:gap-8 items-stretch z-20">
         {tiers.map((tier) => (
           <PricingCard key={tier.name} tier={tier} period={period} ctaLabel={ctaLabel} currency={currency} onGetStarted={onGetStarted} />
         ))}

@@ -54,6 +54,24 @@ const TIERS: TierType[] = [
       'Гибкие права доступа',
     ],
   },
+  {
+    name: 'Habibi Exclusive',
+    priceMonthly: '',
+    priceSemiAnnual: '',
+    priceAnnual: '',
+    priceLabel: 'После аудита',
+    description: 'Индивидуальное решение. Стоимость рассчитывается после аудита вашего бизнеса.',
+    ctaLabel: 'Оставить заявку',
+    features: [
+      'Всё из тарифа «Habibi Premium»',
+      'Аудит и оптимизация бизнес-процессов',
+      'Индивидуальная настройка под ваш бизнес',
+      'Кастомные модули и интеграции',
+      'Выделенный менеджер',
+      'Внедрение и обучение команды',
+      'SLA и поддержка 24/7',
+    ],
+  },
 ]
 
 export default function Pricing() {
@@ -71,7 +89,7 @@ export default function Pricing() {
       <div className="absolute inset-0 bg-black/35" />
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/10 to-black" />
 
-      <div className="relative z-10 mx-auto max-w-6xl">
+      <div className="relative z-10 mx-auto max-w-7xl">
         <PricingGlass
           title="Начните с бесплатного тарифа"
           description="Выберите подходящий план и растите вместе с Habibi. При годовой оплате — выгоднее."
