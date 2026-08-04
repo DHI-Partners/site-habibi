@@ -128,21 +128,6 @@ function SectionTitle({ children }: { children: ReactNode }) {
   )
 }
 
-/** Ключевая фраза с золотым маркером-подсветкой (как выделение маркером). */
-function Mark({ children }: { children: ReactNode }) {
-  return (
-    <span
-      className="px-0.5 font-bold text-[#0E3A44]"
-      style={{
-        background:
-          'linear-gradient(transparent 58%, rgba(255,198,26,0.55) 58%, rgba(255,198,26,0.55) 92%, transparent 92%)',
-      }}
-    >
-      {children}
-    </span>
-  )
-}
-
 function Card({ children }: { children: ReactNode }) {
   return (
     <div className="h-full rounded-3xl border border-[#0E3A44]/10 bg-white p-6 shadow-[0_16px_40px_-24px_rgba(14,58,68,0.25)] md:p-7">
@@ -219,10 +204,10 @@ export default function LogisticsDeck() {
         <Kicker>01 · Проблема и рынок</Kicker>
         <SectionTitle>Огромный недоавтоматизированный рынок B2B-логистики СНГ</SectionTitle>
         <div className="mt-6 max-w-3xl rounded-r-xl border-l-[3px] border-[#FFC61A] bg-gradient-to-r from-[#FFC61A]/12 to-transparent py-4 pl-5 pr-4 shadow-[0_10px_30px_-20px_rgba(255,198,26,0.6)]">
-          <p className="text-base leading-relaxed text-[#0E3A44]/80 md:text-lg">
+          <p className="text-base leading-[2] text-[#0E3A44]/80 underline decoration-[#FFC61A] decoration-2 underline-offset-[6px] md:text-lg">
             Малый и средний логистический бизнес использует 3–4 разрозненных сервиса (отдельно GPS,
-            Excel, TMS), переплачивая от <Mark>$350/мес</Mark> и теряя до <Mark>20% маржи</Mark> на
-            сливах топлива и простоях.
+            Excel, TMS), переплачивая от <b className="text-[#0E3A44]">$350/мес</b> и теряя до{' '}
+            <b className="text-[#0E3A44]">20% маржи</b> на сливах топлива и простоях.
           </p>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
