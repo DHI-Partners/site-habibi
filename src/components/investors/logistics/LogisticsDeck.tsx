@@ -144,10 +144,18 @@ function Section({ id, children }: { id?: string; children: ReactNode }) {
   )
 }
 
-function IconChip({ icon: Icon }: { icon: typeof Satellite }) {
+function IconChip({ icon: Icon, delay = 0 }: { icon: typeof Satellite; delay?: number }) {
   return (
-    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFC61A]/20 text-[#0E3A44]">
-      <Icon className="h-5 w-5" />
+    <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFC61A]/20 text-[#0E3A44]">
+      {/* Пульсирующее кольцо-«пинг» */}
+      <span
+        className="absolute inset-0 rounded-2xl bg-[#FFC61A]/40"
+        style={{ animation: `logiChipPulse 2.6s ease-out ${delay}s infinite` }}
+      />
+      <Icon
+        className="relative h-5 w-5"
+        style={{ animation: `logiIconFloat 3s ease-in-out ${delay}s infinite` }}
+      />
     </div>
   )
 }
@@ -218,10 +226,10 @@ export default function LogisticsDeck() {
         <Kicker>02 · Продукт и экосистема</Kicker>
         <SectionTitle>Единая операционная система для автопарков</SectionTitle>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {MODULES.map((m) => (
+          {MODULES.map((m, i) => (
             <Card key={m.title}>
               <div className="flex items-start gap-4">
-                <IconChip icon={m.icon} />
+                <IconChip icon={m.icon} delay={i * 0.4} />
                 <div>
                   <h3 className="text-lg font-bold text-[#0E3A44]">{m.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-[#0E3A44]/60">{m.body}</p>
@@ -285,11 +293,11 @@ export default function LogisticsDeck() {
         <Kicker>05 · Использование инвестиций</Kicker>
         <SectionTitle>Куда пойдут $200,000</SectionTitle>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {USE_OF_FUNDS.map((f) => (
+          {USE_OF_FUNDS.map((f, i) => (
             <Card key={f.title}>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <IconChip icon={f.icon} />
+                  <IconChip icon={f.icon} delay={i * 0.3} />
                   <h3 className="text-base font-bold text-[#0E3A44]">{f.title}</h3>
                 </div>
                 <span className="shrink-0 text-sm font-semibold text-[#b8860b]">{f.amount}</span>
