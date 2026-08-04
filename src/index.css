@@ -34,6 +34,65 @@
 .marquee-wrap:hover .marquee-track {
   animation-play-state: paused;
 }
+
+/* ── Логистический дек (/investors/logistics), CargoX-стиль ── */
+@keyframes logiWheel {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes logiBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes logiRoad {
+  to {
+    background-position: -160px 0;
+  }
+}
+@keyframes logiRouteFlow {
+  to {
+    stroke-dashoffset: -60;
+  }
+}
+@keyframes logiFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(4deg);
+  }
+}
+@keyframes logiPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+@keyframes logiWhoosh {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-26px);
+  }
+}
 .text-glow {
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 80px rgba(255, 255, 255, 0.2),
     0 0 120px rgba(255, 255, 255, 0.1);

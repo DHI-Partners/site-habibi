@@ -13,6 +13,7 @@ import InvestorDeck from './components/investors/InvestorDeck'
 import DirectionSelector from './components/investors/DirectionSelector'
 import TourismDeck from './components/investors/TourismDeck'
 import MedicalDeck from './components/investors/medical/MedicalDeck'
+import LogisticsDeck from './components/investors/logistics/LogisticsDeck'
 
 function LandingPage() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
       <Route path="/investors/real-estate" element={<InvestorDeck />} />
       <Route path="/investors/tourism" element={<TourismDeck />} />
       <Route path="/investors/medical" element={<MedicalDeck />} />
+      <Route path="/investors/logistics" element={<LogisticsDeck />} />
     </Routes>
   )
 }
