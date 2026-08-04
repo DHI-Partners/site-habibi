@@ -35,6 +35,7 @@ const MODULES: Module[] = [
     icon: Package,
     title: 'Закупки',
     text: 'Прозрачный выбор поставщиков, контроль цен и сроков — без ручных сверок.',
+    preview: '/purchases-preview.png',
   },
   {
     icon: Warehouse,
@@ -50,6 +51,7 @@ const MODULES: Module[] = [
     icon: Wallet,
     title: 'Финансы',
     text: 'Актуальная картина по деньгам: отчёты, дебиторка, прогноз денежного потока — без ожидания конца месяца.',
+    preview: '/finance-preview.png',
   },
   {
     icon: Users,
@@ -75,6 +77,7 @@ const MODULES: Module[] = [
     icon: Globe,
     title: 'Сайт и заявки',
     text: 'Каждое обращение с сайта сразу становится задачей в работе.',
+    preview: '/site-leads-preview.jpg',
   },
 ]
 
@@ -218,7 +221,7 @@ export default function Modules() {
           ) : (
             <img
               src={previewSrc}
-              alt="Пример интерфейса Habibi — CRM и продажи"
+              alt="Пример интерфейса Habibi"
               onClick={(e) => e.stopPropagation()}
               onError={() => setImgError(true)}
               className="max-h-[90vh] max-w-[92vw] rounded-xl border border-white/10 object-contain shadow-2xl"
