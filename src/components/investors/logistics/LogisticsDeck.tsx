@@ -13,6 +13,7 @@ import {
   Code2,
 } from 'lucide-react'
 import LogisticsHero from './LogisticsHero'
+import LogisticsCargoBackground from './LogisticsCargoBackground'
 import LogisticsRequestModal from './LogisticsRequestModal'
 
 const TEAL = 'text-[#0E3A44]'
@@ -186,6 +187,10 @@ export default function LogisticsDeck() {
 
       <LogisticsHero onRequest={openRequest} />
 
+      {/* ── Фон с падающими грузами за секциями 01–05 ── */}
+      <div className="relative">
+        <LogisticsCargoBackground className="pointer-events-none absolute inset-0 z-0" />
+        <div className="relative z-10">
       {/* ── 01 · Проблема и рынок ── */}
       <Section>
         <Kicker>01 · Проблема и рынок</Kicker>
@@ -300,6 +305,9 @@ export default function LogisticsDeck() {
           ))}
         </div>
       </Section>
+
+        </div>
+      </div>
 
       {/* ── 06 · CTA ── */}
       <Section>
