@@ -48,7 +48,7 @@ export default function InvestmentSlide() {
             style={{ letterSpacing: '-0.03em' }}
           >
             Привлекаем{' '}
-            <span className="font-light">$150,000</span>
+            <span className="font-light">$150,000</span> за 10% доли компании
           </h2>
           <div className="flex flex-wrap gap-6">
             {GOALS.map((g) => (

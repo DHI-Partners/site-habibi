@@ -52,7 +52,7 @@ const STATS = [
 
 const TARIFFS = [
   { name: 'Free', price: '€0', note: 'частные кабинеты и врачи' },
-  { name: 'Habibi+', price: '€49', note: 'средние медцентры' },
+  { name: 'Habibi Pro', price: '€49', note: 'средние медцентры' },
   { name: 'Premium', price: '€199', note: 'крупные клиники' },
 ]
 
@@ -185,15 +185,23 @@ export default function MedicalDeck() {
               Единая облачная ERP для клиник, медцентров и стоматологий: расписание врачей, ЭМК,
               складской учёт, медицинская CRM и финансы — в одном окне.
             </p>
-            <motion.button
-              type="button"
-              onClick={openRequest}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-8 rounded-full bg-[#0a152d] px-7 py-3 text-sm font-semibold text-white shadow-lg"
-            >
-              Скачать фин модель
-            </motion.button>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <motion.button
+                type="button"
+                onClick={openRequest}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                className="rounded-full bg-[#0a152d] px-7 py-3 text-sm font-semibold text-white shadow-lg"
+              >
+                Скачать фин модель
+              </motion.button>
+              <Link
+                to="/investors"
+                className="rounded-full border border-slate-300 bg-white/70 px-7 py-3 text-sm font-semibold text-[#0a1b33] backdrop-blur transition-colors hover:border-slate-400 hover:bg-white"
+              >
+                Все направления
+              </Link>
+            </div>
           </motion.div>
 
           {/* Плавающий нижний навбар */}
@@ -319,7 +327,7 @@ export default function MedicalDeck() {
         <Kicker>04 · Pre-Seed Round</Kicker>
         <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <h2 className="font-display text-3xl font-medium tracking-tight text-[#0a1b33] md:text-[44px]">
-            Привлекаем $200,000
+            Привлекаем $200,000 за 10% доли компании
           </h2>
           <div className="flex flex-wrap gap-6">
             {GOALS.map((g) => (

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { LiquidButton } from './ui/liquid-glass-button'
 import { useContact } from './ContactProvider'
+import LangSwitcher from './LangSwitcher'
 
 const NAV_LINKS = [
   { label: 'Возможности', href: '#vozmozhnosti' },
@@ -42,14 +43,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Десктоп CTA */}
-        <LiquidButton
-          size="sm"
-          onClick={() => open('Habibi')}
-          className="hidden rounded-full text-white md:inline-flex"
-        >
-          Начать бесплатно
-        </LiquidButton>
+        {/* Десктоп: переключатель языка + CTA */}
+        <div className="hidden items-center gap-3 md:flex">
+          <LangSwitcher current="ru" />
+          <LiquidButton size="sm" onClick={() => open('Habibi')} className="rounded-full text-white">
+            Начать бесплатно
+          </LiquidButton>
+        </div>
 
         {/* Мобильный гамбургер */}
         <button
@@ -106,6 +106,9 @@ export default function Navbar() {
           >
             Начать бесплатно
           </LiquidButton>
+          <div className="mt-8 w-fit">
+            <LangSwitcher current="ru" align="left" />
+          </div>
         </div>
       </div>
     </>

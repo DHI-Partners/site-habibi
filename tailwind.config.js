@@ -9,6 +9,7 @@ export default {
         inter: ['Inter', 'sans-serif'],
         outfit: ['Outfit', 'sans-serif'],
         display: ['Outfit', 'sans-serif'],
+        arabic: ['Cairo', 'Geist', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

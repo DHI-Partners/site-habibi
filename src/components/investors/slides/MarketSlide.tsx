@@ -9,7 +9,7 @@ const STATS = [
 
 const TARIFFS = [
   { name: 'Free', price: '€0', note: 'воронка частных маклеров' },
-  { name: 'Habibi+', price: '€49', note: 'агентства недвижимости' },
+  { name: 'Habibi Pro', price: '€49', note: 'агентства недвижимости' },
   { name: 'Premium', price: '€199', note: 'девелоперы и УК' },
 ]
 

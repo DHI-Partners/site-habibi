@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, useMotionValue, useMotionTemplate, Variants } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 const NOISE_PATTERN = 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")';
 
@@ -16,6 +16,8 @@ export type TierType = {
   /** Тёмная карточка с золотой рамкой (премиум-тариф без цены). */
   isExclusive?: boolean;
   features: string[];
+  /** Явно НЕ включённые пункты — рендерятся с крестиком и приглушённо. */
+  excludedFeatures?: string[];
   /** Если задано — вместо цены/валюты/«/мес» показывается эта подпись
    *  (например, «После аудита» для тарифа без фиксированной цены). */
   priceLabel?: string;
@@ -216,6 +218,14 @@ function PricingCard({
                 <Check className={`w-3 h-3 ${tier.isExclusive ? "text-amber-300" : "text-white/90"}`} strokeWidth={3} />
               </div>
               <span className="text-white/70 font-medium text-[14px] leading-tight">{feat}</span>
+            </motion.div>
+          ))}
+          {tier.excludedFeatures?.map((feat: string, i: number) => (
+            <motion.div key={`x-${i}`} variants={legoVariant} className="flex items-start gap-3">
+              <div className="shrink-0 flex items-center justify-center w-5 h-5 mt-0.5 rounded-full border border-white/10 bg-white/5">
+                <X className="w-3 h-3 text-white/40" strokeWidth={3} />
+              </div>
+              <span className="text-white/40 font-medium text-[14px] leading-tight">{feat}</span>
             </motion.div>
           ))}
         </div>

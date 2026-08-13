@@ -114,7 +114,7 @@ const TIERS_INFO: Record<
     ],
   },
   plus: {
-    name: 'Habibi +',
+    name: 'Habibi Pro',
     tagline: 'Объедините бизнес в одной системе',
     price: '€49',
     period: '/ мес',
@@ -211,6 +211,9 @@ interface Answers {
 
 const EMPTY: Answers = { biz: null, problems: [], team: null, complexity: null, support: null }
 
+/** Событие запуска квиза снаружи с уже известной отраслью (detail.biz — id варианта первого вопроса). */
+export const QUIZ_START_EVENT = 'habibi:start-quiz'
+
 const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_055001_8e16d972-3b2b-441c-86ad-2901a54682f9.mp4'
 
@@ -259,19 +262,39 @@ export default function Quiz() {
   const sectionRef = useRef<HTMLElement>(null)
   const firstRender = useRef(true)
 
-  // При смене шага мгновенно прокручиваем к началу секции, чтобы новый вопрос был
-  // сверху (важно на мобильном: иначе после «Далее» экран остаётся внизу).
-  // Прямое присвоение scrollTop гарантированно мгновенное и не конфликтует со
-  // сменой высоты секции (короткий вопрос после длинного).
+  // Мгновенно прокручиваем к началу секции, чтобы новый вопрос был сверху (важно на
+  // мобильном: иначе после «Далее» экран остаётся внизу). Считаем позицию сами:
+  // scrollIntoView на этой длинной странице промахивается мимо секции.
+  const scrollToQuizTop = () => {
+    const el = sectionRef.current
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY
+    window.scrollTo({ top, behavior: 'instant' as ScrollBehavior })
+  }
+
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false
       return
     }
-    const el = sectionRef.current
-    if (!el) return
-    el.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior })
+    scrollToQuizTop()
   }, [step])
+
+  // Запуск извне (блок «Чем вы занимаетесь?»): отрасль уже выбрана — начинаем со второго вопроса.
+  useEffect(() => {
+    const onStart = (e: Event) => {
+      const biz = (e as CustomEvent<{ biz?: string }>).detail?.biz ?? null
+      setAnswers({ ...EMPTY, biz })
+      setStep(biz ? 2 : 1)
+      // Секция далеко внизу, и высота страницы над ней ещё меняется (видео, изображения),
+      // поэтому позицию уточняем повторно. Скроллим здесь, а не только в эффекте [step]:
+      // повторный запуск с тем же шагом эффект бы не вызвал.
+      requestAnimationFrame(scrollToQuizTop)
+      window.setTimeout(scrollToQuizTop, 400)
+    }
+    window.addEventListener(QUIZ_START_EVENT, onStart)
+    return () => window.removeEventListener(QUIZ_START_EVENT, onStart)
+  }, [])
 
   const totalQ = QUESTIONS.length
   const q = step >= 1 && step <= totalQ ? QUESTIONS[step - 1] : null

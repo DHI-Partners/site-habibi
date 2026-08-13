@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Target,
   Package,
@@ -22,6 +23,8 @@ interface Module {
   text: string
   /** Если задан — карточка кликабельна и открывает изображение на весь экран. */
   preview?: string
+  /** Если задан — «Смотреть пример» ведёт на страницу модуля (приоритетнее preview). */
+  page?: string
 }
 
 const MODULES: Module[] = [
@@ -30,54 +33,70 @@ const MODULES: Module[] = [
     title: 'CRM и продажи',
     text: 'Все заявки, клиенты и сделки — в одной системе. Ничего не теряется, каждый шаг клиента виден в реальном времени.',
     preview: '/crm-preview.png',
+    page: '/moduli/crm',
   },
   {
     icon: Package,
     title: 'Закупки',
     text: 'Прозрачный выбор поставщиков, контроль цен и сроков — без ручных сверок.',
     preview: '/purchases-preview.png',
+    page: '/moduli/zakupki',
   },
   {
     icon: Warehouse,
     title: 'Склад',
     text: 'Точные остатки в реальном времени и понятная история движения товара.',
+    preview: '/warehouse-preview.png',
+    page: '/moduli/sklad',
   },
   {
     icon: Factory,
     title: 'Производство',
     text: 'Ясная себестоимость, планирование и контроль качества на каждом этапе.',
+    preview: '/production-preview.png',
+    page: '/moduli/proizvodstvo',
   },
   {
     icon: Wallet,
     title: 'Финансы',
     text: 'Актуальная картина по деньгам: отчёты, дебиторка, прогноз денежного потока — без ожидания конца месяца.',
     preview: '/finance-preview.png',
+    page: '/moduli/finansy',
   },
   {
     icon: Users,
     title: 'HR и зарплата',
     text: 'Учёт сотрудников, расчёт зарплат и понятные KPI команды.',
+    preview: '/hr-preview.png',
+    page: '/moduli/hr',
   },
   {
     icon: BarChart3,
     title: 'Проекты и задачи',
     text: 'Сроки, ответственные и статусы — всё в одном экране.',
+    preview: '/projects-preview.png',
+    page: '/moduli/proekty',
   },
   {
     icon: Wrench,
     title: 'Сервис и поддержка',
     text: 'Гарантийные обращения, повторные продажи и отзывы клиентов под контролем.',
+    preview: '/service-preview.png',
+    page: '/moduli/servis',
   },
   {
     icon: ShoppingCart,
     title: 'Розница (POS)',
     text: 'Касса, склад и финансы работают как единое целое.',
+    preview: '/pos-preview.png',
+    page: '/moduli/pos',
   },
   {
     icon: Globe,
     title: 'Сайт и заявки',
     text: 'Каждое обращение с сайта сразу становится задачей в работе.',
     preview: '/site-leads-preview.jpg',
+    page: '/moduli/sait-i-zayavki',
   },
 ]
 
@@ -85,12 +104,22 @@ const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260419_065931_e3ca7b53-d32e-4ad5-81de-dc9d6fcfda6d.mp4'
 
 export default function Modules() {
+  const navigate = useNavigate()
   const [previewSrc, setPreviewSrc] = useState<string | null>(null)
   const [imgError, setImgError] = useState(false)
 
   const openPreview = (src: string) => {
     setImgError(false)
     setPreviewSrc(src)
+  }
+
+  /** Страница модуля приоритетнее модалки с картинкой. */
+  const openModule = (mod: Module) => {
+    if (mod.page) {
+      navigate(mod.page)
+    } else if (mod.preview) {
+      openPreview(mod.preview)
+    }
   }
 
   // Закрытие модалки по Esc + блокировка прокрутки фона, пока открыто.
@@ -144,19 +173,19 @@ export default function Modules() {
 
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {MODULES.map((mod, i) => {
-            const clickable = Boolean(mod.preview)
+            const clickable = Boolean(mod.page || mod.preview)
             return (
               <Reveal key={mod.title} delay={(i % 3) * 0.06}>
                 <div
                   role={clickable ? 'button' : undefined}
                   tabIndex={clickable ? 0 : undefined}
-                  onClick={clickable ? () => openPreview(mod.preview!) : undefined}
+                  onClick={clickable ? () => openModule(mod) : undefined}
                   onKeyDown={
                     clickable
                       ? (e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault()
-                            openPreview(mod.preview!)
+                            openModule(mod)
                           }
                         }
                       : undefined

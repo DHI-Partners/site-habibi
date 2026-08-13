@@ -48,7 +48,7 @@ const STATS = [
 
 const TARIFFS = [
   { name: 'Free', price: '€0', note: 'мелкие турагентства и суб-агенты' },
-  { name: 'Habibi+', price: '€49', note: 'средние туроператоры' },
+  { name: 'Habibi Pro', price: '€49', note: 'средние туроператоры' },
   { name: 'Premium', price: '€199', note: 'крупные туроператоры' },
 ]
 
@@ -240,7 +240,7 @@ export default function TourismDeck() {
         <Kicker>04 · Pre-Seed Round</Kicker>
         <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <h2 className="font-instrument text-3xl text-white md:text-5xl">
-            Привлекаем <span className="text-glow">$150,000</span>
+            Привлекаем <span className="text-glow">$150,000</span> за 10% доли компании
           </h2>
           <div className="flex flex-wrap gap-6">
             {GOALS.map((g) => (

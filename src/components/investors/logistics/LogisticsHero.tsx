@@ -47,7 +47,7 @@ export default function LogisticsHero({ onRequest }: LogisticsHeroProps) {
             учёт топлива и P&amp;L-аналитика — в единой облачной платформе.
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
-            Pre-Seed раунд · <span className="text-[#FFC61A]">$200,000</span> за 30% доли
+            Pre-Seed раунд · <span className="text-[#FFC61A]">$200,000</span> за 10% доли
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">

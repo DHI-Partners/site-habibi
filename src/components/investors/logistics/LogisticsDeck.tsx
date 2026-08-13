@@ -285,7 +285,7 @@ export default function LogisticsDeck() {
           ))}
           <div className="flex h-full flex-col justify-center rounded-3xl bg-[#0E3A44] p-6 text-white shadow-[0_16px_40px_-24px_rgba(14,58,68,0.4)] md:p-7">
             <div className="font-display text-3xl font-bold text-[#FFC61A] md:text-4xl">$200,000</div>
-            <p className="mt-2 text-sm text-white/70">Pre-Seed раунд за 30% доли компании</p>
+            <p className="mt-2 text-sm text-white/70">Pre-Seed раунд за 10% доли компании</p>
           </div>
         </div>
       </Section>

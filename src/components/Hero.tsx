@@ -35,20 +35,20 @@ export default function Hero() {
         {/* Верхний блок */}
         <div className="max-w-3xl">
           <h1 className="text-3xl font-medium leading-[1.1] tracking-tight text-white [animation:fadeSlideUp_0.8s_ease_0.2s_both] sm:text-4xl md:text-5xl lg:text-6xl">
-            Больше контроля.
+            Управляйте всем бизнесом
             <br />
-            Больше времени
-            <br />
-            на развитие.
+            в одном месте
           </h1>
         </div>
 
         {/* Нижний блок */}
         <div>
-          <p className="mb-5 max-w-sm text-sm leading-relaxed text-white/70 [animation:fadeSlideUp_0.8s_ease_0.7s_both] sm:mb-6 sm:max-w-xl sm:text-base md:text-lg">
-            Когда весь бизнес виден в одной системе, управлять становится проще. Вы замечаете рост
-            продаж раньше, видите узкие места до того, как они станут проблемой, и принимаете решения
-            на основе цифр, а не ощущений.
+          <p className="mb-3 max-w-sm text-sm leading-relaxed text-white/70 [animation:fadeSlideUp_0.8s_ease_0.7s_both] sm:max-w-xl sm:text-base md:text-lg">
+            Habibi объединяет клиентов, продажи, финансы, склад, сотрудников, проекты и другие
+            процессы в одной системе.
+          </p>
+          <p className="mb-5 max-w-sm text-sm font-medium leading-relaxed text-white/85 [animation:fadeSlideUp_0.8s_ease_0.8s_both] sm:mb-6 sm:max-w-xl sm:text-base md:text-lg">
+            Меньше Excel, WhatsApp и разрозненных сервисов. Больше контроля над бизнесом.
           </p>
           <div className="flex flex-wrap items-center gap-3 [animation:fadeSlideUp_0.8s_ease_0.9s_both]">
             <LiquidButton
