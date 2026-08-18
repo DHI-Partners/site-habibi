@@ -66,7 +66,7 @@ function ArModulePageContent({ data }: { data: ModulePageData }) {
   }, [data])
 
   return (
-    <div dir="rtl" className="min-h-screen w-full bg-black font-arabic text-white">
+    <div dir="rtl" className="min-h-screen w-full bg-[#12121a] font-arabic text-white">
       {/* الترويسة */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8 md:px-12">
         <a

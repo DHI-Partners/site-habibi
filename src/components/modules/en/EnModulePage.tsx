@@ -59,7 +59,7 @@ function EnModulePageContent({ data }: { data: ModulePageData }) {
   }, [data])
 
   return (
-    <div className="min-h-screen w-full bg-black font-geist text-white">
+    <div className="min-h-screen w-full bg-[#12121a] font-geist text-white">
       {/* Header */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8 md:px-12">
         <a

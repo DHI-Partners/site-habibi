@@ -1,4 +1,9 @@
 {
+  "redirects": [
+    { "source": "/partner", "destination": "https://velorah-five.vercel.app", "permanent": false },
+    { "source": "/partner-en", "destination": "https://velorah-five.vercel.app/en", "permanent": false },
+    { "source": "/partner-ar", "destination": "https://velorah-five.vercel.app/ar", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/ar", "destination": "/ar.html" },
     { "source": "/en", "destination": "/en.html" },

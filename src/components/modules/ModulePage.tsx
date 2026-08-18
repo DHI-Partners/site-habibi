@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, X } from 'lucide-react'
+import Butterflies from '../Butterflies'
 import { ContactProvider, useContact } from '../ContactProvider'
 import Footer from '../Footer'
 import MessengerWidget from '../MessengerWidget'
@@ -47,6 +48,9 @@ function SectionTag({ children }: { children: string }) {
 
 function ModulePageContent({ data }: { data: ModulePageData }) {
   const { open } = useContact()
+  // CRM — про живое общение с клиентами, поэтому на фоне порхают бабочки.
+  // Чтобы добавить их другому модулю, допишите его slug.
+  const airy = data.slug === 'crm'
 
   useEffect(() => {
     document.title = `${data.title} — модуль Habibi ERP`
@@ -57,7 +61,19 @@ function ModulePageContent({ data }: { data: ModulePageData }) {
   }, [data])
 
   return (
-    <div className="min-h-screen w-full bg-black font-geist text-white">
+    <div
+      className={`relative min-h-screen w-full bg-[#12121a] font-geist text-white ${
+        // isolate — иначе слои с -z-10 уходят под фон страницы и бабочек не видно
+        airy ? 'isolate' : ''
+      }`}
+    >
+      {airy && (
+        <>
+          {/* Мягкая подсветка сверху — фон дышит, а не выглядит просто серым */}
+          <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(85%_55%_at_50%_0%,rgba(255,255,255,0.09),transparent_70%)]" />
+          <Butterflies className="pointer-events-none fixed inset-0 -z-10" dense />
+        </>
+      )}
       {/* Шапка */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8 md:px-12">
         <a

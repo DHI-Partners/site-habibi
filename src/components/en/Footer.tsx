@@ -7,6 +7,7 @@ const FOOTER_LINKS = [
   { label: 'Pricing', href: '#tarify' },
   { label: 'Industries', href: '#biznes' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Partner program', href: '/partner-en' },
 ]
 
 export default function Footer() {

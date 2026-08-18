@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ContactProvider } from './components/ContactProvider'
 import Hero from './components/Hero'
 import Benefits from './components/Benefits'
@@ -19,6 +19,7 @@ import MedicalDeck from './components/investors/medical/MedicalDeck'
 import LogisticsDeck from './components/investors/logistics/LogisticsDeck'
 import ArLandingPage from './components/ar/ArLandingPage'
 import EnLandingPage from './components/en/EnLandingPage'
+import PartnerPage from './components/partner/PartnerPage'
 import ModulePage from './components/modules/ModulePage'
 import EnModulePage from './components/modules/en/EnModulePage'
 import ArModulePage from './components/modules/ar/ArModulePage'
@@ -55,14 +56,64 @@ function LandingPage() {
   )
 }
 
+/**
+ * Deep-link scrolling: when the page is opened directly with a hash (e.g.
+ * `/#tarify` shared or opened in a new tab) or navigated to another route + hash,
+ * scroll to that section. SPA content mounts after the browser's own hash jump, so
+ * we retry until the target exists, then re-align once late images shift the layout.
+ */
+function HashScroll() {
+  const { pathname, hash } = useLocation()
+
+  useEffect(() => {
+    if (!hash) return
+    const id = decodeURIComponent(hash.slice(1))
+    if (!id) return
+    if (id === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+
+    let cancelled = false
+    let tries = 0
+    const scroll = () =>
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    const jump = () => {
+      if (cancelled) return
+      const el = document.getElementById(id)
+      if (el) {
+        scroll()
+        // Correct for layout shift as images above the section finish loading.
+        window.setTimeout(() => {
+          if (!cancelled) scroll()
+        }, 500)
+      } else if (tries++ < 40) {
+        window.setTimeout(jump, 100)
+      }
+    }
+
+    const t = window.setTimeout(jump, 80)
+    return () => {
+      cancelled = true
+      window.clearTimeout(t)
+    }
+  }, [pathname, hash])
+
+  return null
+}
+
 export default function App() {
   return (
-    <Routes>
+    <>
+      <HashScroll />
+      <Routes>
       {/* Английская версия — по умолчанию (корень сайта); русская — на /ru */}
       <Route path="/" element={<EnLandingPage />} />
       <Route path="/ru" element={<LandingPage />} />
       <Route path="/ar" element={<ArLandingPage />} />
       <Route path="/en" element={<Navigate to="/" replace />} />
+      <Route path="/partner" element={<PartnerPage />} />
       <Route path="/investors" element={<DirectionSelector />} />
       <Route path="/investors/real-estate" element={<InvestorDeck />} />
       <Route path="/investors/tourism" element={<TourismDeck />} />
@@ -72,5 +123,6 @@ export default function App() {
       <Route path="/en/modules/:slug" element={<EnModulePage />} />
       <Route path="/ar/modules/:slug" element={<ArModulePage />} />
     </Routes>
+    </>
   )
 }
