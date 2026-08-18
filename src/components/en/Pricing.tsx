@@ -8,16 +8,16 @@ const VIDEO_URL =
 const TIERS: TierType[] = [
   {
     name: 'Habibi',
-    priceMonthly: '0',
-    priceSemiAnnual: '0',
-    priceAnnual: '0',
-    description: 'A free plan to get to know the system.',
+    priceMonthly: '19',
+    priceSemiAnnual: '17',
+    priceAnnual: '13',
+    description: 'A starter plan for small teams.',
     features: [
       'CRM & sales',
       'Projects & tasks',
       'Website & leads',
       'Finance',
-      'Up to 2 users',
+      'Up to 10 users',
       'Up to 2 integrations',
       '100 MB storage',
       'Knowledge base',
@@ -32,7 +32,8 @@ const TIERS: TierType[] = [
     isPopular: true,
     features: [
       'All 10 modules',
-      'Up to 5 users',
+      'AI agents',
+      'Up to 50 users',
       'Up to 5 integrations',
       '500 MB storage',
       'Basic support',
@@ -48,7 +49,7 @@ const TIERS: TierType[] = [
     features: [
       'Everything in Habibi Pro',
       '2 hours of custom solution setup',
-      'Unlimited users',
+      'Up to 100 users',
       '1 GB storage',
       'Dedicated onboarding',
       'Priority support',
@@ -63,6 +64,7 @@ const TIERS: TierType[] = [
     priceAnnual: '',
     priceLabel: 'After audit',
     isExclusive: true,
+    noTrial: true,
     description: 'A tailored solution. Pricing is calculated after an audit of your business.',
     ctaLabel: 'Request a quote',
     features: [
@@ -95,11 +97,13 @@ export default function Pricing() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <PricingGlass
-          title="Start with the free plan"
+          title="Choose your plan"
           description="Choose the plan that fits and grow with Habibi. Annual billing saves you more."
           tiers={TIERS}
           ctaLabel="Get started"
           currency="€"
+          trialBadge="14 days free — full demo access to every feature"
+          trialNote="First 14 days free, no card required"
           onGetStarted={(tier) => open(tier.name)}
         />
       </div>

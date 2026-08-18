@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, useMotionValue, useMotionTemplate, Variants } from "framer-motion";
-import { Check, X } from "lucide-react";
+import { Check, Sparkles, X } from "lucide-react";
 
 const NOISE_PATTERN = 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")';
 
@@ -23,6 +23,8 @@ export type TierType = {
   priceLabel?: string;
   /** Индивидуальная подпись CTA-кнопки (иначе — общий ctaLabel). */
   ctaLabel?: string;
+  /** Отключает подпись о демо-периоде под CTA (для тарифов без пробного доступа). */
+  noTrial?: boolean;
 };
 
 type BillingPeriod = "monthly" | "semi" | "annual";
@@ -36,6 +38,10 @@ export interface PricingGlassProps {
   ctaLabel?: string;
   /** Символ валюты перед ценой (по умолчанию $). */
   currency?: string;
+  /** Бейдж о бесплатном демо-периоде в шапке блока. */
+  trialBadge?: string;
+  /** Подпись о демо-периоде под CTA-кнопкой тарифа. */
+  trialNote?: string;
   /** Вызывается при клике по CTA тарифа. */
   onGetStarted?: (tier: TierType) => void;
 }
@@ -45,12 +51,14 @@ function PricingCard({
   period,
   ctaLabel,
   currency,
+  trialNote,
   onGetStarted,
 }: {
   tier: TierType;
   period: BillingPeriod;
   ctaLabel: string;
   currency: string;
+  trialNote?: string;
   onGetStarted?: (tier: TierType) => void;
 }) {
   const price =
@@ -242,6 +250,9 @@ function PricingCard({
           }`}>
             {tier.ctaLabel ?? ctaLabel}
           </button>
+          {trialNote && !tier.noTrial && (
+            <p className="mt-3 text-center text-xs font-medium text-white/40">{trialNote}</p>
+          )}
         </motion.div>
       </div>
     </motion.div>
@@ -255,6 +266,8 @@ export function PricingGlass({
   className,
   ctaLabel = "Начать",
   currency = "$",
+  trialBadge,
+  trialNote,
   onGetStarted,
 }: PricingGlassProps) {
   const [period, setPeriod] = useState<BillingPeriod>("monthly");
@@ -289,6 +302,14 @@ export function PricingGlass({
           <motion.p variants={legoVariant} className="text-white/50 text-lg md:text-xl max-w-2xl mx-auto">
             {description}
           </motion.p>
+          {trialBadge && (
+            <motion.div variants={legoVariant} className="flex justify-center pt-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)] backdrop-blur-md">
+                <Sparkles className="h-4 w-4" strokeWidth={2.5} />
+                {trialBadge}
+              </span>
+            </motion.div>
+          )}
         </div>
 
         <motion.div variants={legoVariant} className="relative flex w-full max-w-md items-center rounded-full border border-white/10 bg-white/5 p-1.5 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] backdrop-blur-3xl">
@@ -323,7 +344,7 @@ export function PricingGlass({
 
       <div className="relative w-full grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6 lg:gap-8 items-stretch z-20">
         {tiers.map((tier) => (
-          <PricingCard key={tier.name} tier={tier} period={period} ctaLabel={ctaLabel} currency={currency} onGetStarted={onGetStarted} />
+          <PricingCard key={tier.name} tier={tier} period={period} ctaLabel={ctaLabel} currency={currency} trialNote={trialNote} onGetStarted={onGetStarted} />
         ))}
       </div>
 

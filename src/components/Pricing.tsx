@@ -8,16 +8,16 @@ const VIDEO_URL =
 const TIERS: TierType[] = [
   {
     name: 'Habibi',
-    priceMonthly: '0',
-    priceSemiAnnual: '0',
-    priceAnnual: '0',
-    description: 'Бесплатный тариф для знакомства с системой.',
+    priceMonthly: '19',
+    priceSemiAnnual: '17',
+    priceAnnual: '13',
+    description: 'Стартовый тариф для небольших команд.',
     features: [
       'CRM и продажи',
       'Проекты и задачи',
       'Сайт и заявки',
       'Финансы',
-      'До 2 пользователей',
+      'До 10 пользователей',
       'До 2 интеграций',
       '100 МБ дискового пространства',
       'База знаний',
@@ -32,7 +32,8 @@ const TIERS: TierType[] = [
     isPopular: true,
     features: [
       'Все 10 модулей системы',
-      'До 5 пользователей',
+      'ИИ-агенты',
+      'До 50 пользователей',
       'До 5 интеграций',
       '500 МБ дискового пространства',
       'Базовая техподдержка',
@@ -48,7 +49,7 @@ const TIERS: TierType[] = [
     features: [
       'Всё из тарифа «Habibi Pro»',
       '2 часа на настройку кастомных решений',
-      'Без ограничений по пользователям',
+      'До 100 пользователей',
       '1 ГБ дискового пространства',
       'Персональное сопровождение',
       'Приоритетная поддержка',
@@ -63,6 +64,7 @@ const TIERS: TierType[] = [
     priceAnnual: '',
     priceLabel: 'После аудита',
     isExclusive: true,
+    noTrial: true,
     description: 'Индивидуальное решение. Стоимость рассчитывается после аудита вашего бизнеса.',
     ctaLabel: 'Оставить заявку',
     features: [
@@ -95,11 +97,13 @@ export default function Pricing() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <PricingGlass
-          title="Начните с бесплатного тарифа"
+          title="Выберите подходящий тариф"
           description="Выберите подходящий план и растите вместе с Habibi. При годовой оплате — выгоднее."
           tiers={TIERS}
           ctaLabel="Начать"
           currency="€"
+          trialBadge="14 дней бесплатно — демо-доступ ко всем функциям"
+          trialNote="Первые 14 дней бесплатно, без карты"
           onGetStarted={(tier) => open(tier.name)}
         />
       </div>

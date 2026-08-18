@@ -35,23 +35,23 @@ const FAQ: FaqItem[] = [
     q: 'Can I add employees?',
     a: [
       'Yes. You can add employees to the system depending on your chosen plan.',
-      '**Habibi** supports up to 2 users, and **Habibi Pro** — up to 5 users. For Habibi Premium, user limits depend on the plan configuration.',
+      '**Habibi** supports up to 10 users, **Habibi Pro** — up to 50, and **Habibi Premium** — up to 100 users.',
       'Each employee can work on their own tasks and business processes, and on Premium you can flexibly manage access rights.',
     ],
   },
   {
-    q: 'Can I start for free?',
+    q: 'Can I try it for free?',
     a: [
-      'Yes. You can start with the **Habibi plan at €0 per month** and get to know the system at no cost.',
-      'The free plan includes CRM and sales, projects and tasks, website and leads, finance, up to 2 users, up to 2 integrations, 100 MB of storage and a knowledge base.',
-      'When your business needs more modules, integrations or capabilities, you can move up to Habibi Pro or Habibi Premium.',
+      'Yes. Every plan comes with a **free 14-day demo period** — you get full access to all the features of your chosen plan and can explore the system at no cost. No credit card required to start.',
+      'Two weeks is enough to move your real processes over, bring your team on board and see whether the system fits your business.',
+      'When the demo period ends, you pick the plan that suits you: **Habibi** from €19 per month, **Habibi Pro** or **Habibi Premium** — depending on your team size and the capabilities you need.',
     ],
   },
   {
     q: 'What happens if my business grows?',
     a: [
-      'Habibi grows with your business. You can start on the free plan and then move up to a more capable plan as your number of employees, processes and integrations increases.',
-      'On Habibi Pro you get access to all 10 modules, up to 5 users and up to 5 integrations. For companies that need dedicated onboarding, advanced analytics, flexible access rights and priority support, there is Habibi Premium.',
+      'Habibi grows with your business. You can start on the entry plan and then move up to a more capable one as your number of employees, processes and integrations increases.',
+      'On Habibi Pro you get access to all 10 modules, AI agents, up to 50 users and up to 5 integrations. For companies that need dedicated onboarding, advanced analytics, flexible access rights and priority support, there is Habibi Premium.',
       'You can grow your business without changing your management system or rebuilding processes from dozens of disconnected services.',
     ],
   },

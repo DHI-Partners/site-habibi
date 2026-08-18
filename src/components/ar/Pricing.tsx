@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion, useMotionValue, useMotionTemplate, type Variants } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { Check, Sparkles } from 'lucide-react'
 import HlsVideo from '../HlsVideo'
 import { useContact } from './ContactProvider'
 
@@ -20,9 +20,30 @@ interface Tier {
   ctaLabel: string
   isPopular?: boolean
   isExclusive?: boolean
+  /** يخفي ملاحظة الفترة التجريبية أسفل الزر (للباقات بدون تجربة مجانية). */
+  noTrial?: boolean
 }
 
+const TRIAL_BADGE = '14 يومًا مجانًا — وصول تجريبي كامل لجميع الإمكانيات'
+const TRIAL_NOTE = 'أول 14 يومًا مجانًا، دون بطاقة بنكية'
+
 const TIERS: Tier[] = [
+  {
+    name: 'Habibi',
+    price: '19',
+    currency: '$',
+    description: 'باقة البداية للفِرق الصغيرة.',
+    features: [
+      'إدارة علاقات العملاء (CRM) والمبيعات',
+      'المشاريع والمهام',
+      'الموقع الإلكتروني والطلبات',
+      'المالية',
+      'حتى 10 مستخدمين',
+      'مساحة تخزين 100 ميجابايت',
+      'قاعدة المعرفة',
+    ],
+    ctaLabel: 'ابدأ الآن',
+  },
   {
     name: 'Habibi Pro',
     price: '290',
@@ -32,7 +53,8 @@ const TIERS: Tier[] = [
     description: 'لفِرق العمل التي تريد النظام كاملاً مع التكاملات والمرافقة.',
     features: [
       'جميع وحدات النظام العشر',
-      'عدد غير محدود من المستخدمين',
+      'وكلاء الذكاء الاصطناعي',
+      'حتى 50 مستخدمًا',
       'التكاملات الأساسية',
       'مساحة تخزين 1 جيجابايت',
       'التحليلات المتقدّمة',
@@ -47,9 +69,11 @@ const TIERS: Tier[] = [
     priceLabel: 'بعد التدقيق',
     badge: 'مخصّص',
     isExclusive: true,
+    noTrial: true,
     description: 'حلّ فردي — تُحدَّد التكلفة بعد تدقيق أعمالك.',
     features: [
       'كل ما في باقة «Habibi Pro»',
+      'حتى 100 مستخدم',
       'تدقيق وتحسين العمليات التشغيلية',
       'إعداد مخصّص يناسب أعمالك',
       'تنفيذ وحدة مخصّصة (CRM، الإنتاج…) — ابتداءً من 300$',
@@ -205,6 +229,9 @@ function PricingCard({ tier, onGetStarted }: { tier: Tier; onGetStarted?: (t: Ti
           >
             {tier.ctaLabel}
           </button>
+          {!tier.noTrial && (
+            <p className="mt-3 text-center text-xs font-medium text-white/40">{TRIAL_NOTE}</p>
+          )}
         </motion.div>
       </div>
     </motion.div>
@@ -236,9 +263,15 @@ export default function Pricing() {
             <motion.p variants={legoVariant} className="mx-auto max-w-2xl text-lg text-white/50 md:text-xl">
               اختر الباقة المناسبة وانمُ مع Habibi.
             </motion.p>
+            <motion.div variants={legoVariant} className="flex justify-center pt-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)] backdrop-blur-md">
+                <Sparkles className="h-4 w-4" strokeWidth={2.5} />
+                {TRIAL_BADGE}
+              </span>
+            </motion.div>
           </div>
 
-          <div className="mx-auto grid w-full max-w-4xl grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:gap-8">
+          <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {TIERS.map((tier) => (
               <PricingCard key={tier.name} tier={tier} onGetStarted={(t) => open(t.name)} />
             ))}
