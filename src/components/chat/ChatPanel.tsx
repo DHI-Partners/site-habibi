@@ -23,6 +23,9 @@ export interface ChatLabels {
   micListening: string
   micDenied: string
   micFailed: string
+  micHint: string
+  micDone: string
+  micCancel: string
 }
 
 export interface ChatPanelProps {
@@ -61,6 +64,19 @@ export default function ChatPanel({
     lang,
     onFinal: (text) => setDraft((d) => (d ? `${d.replace(/\s+$/, '')} ${text}` : text).slice(0, MESSAGE_LIMIT)),
   })
+
+  // Что было в поле до диктовки — чтобы «Отменить» вернуло как было.
+  const draftBeforeMic = useRef('')
+
+  const startMic = () => {
+    draftBeforeMic.current = draft
+    speech.toggle()
+  }
+  const finishMic = () => speech.stop()
+  const cancelMic = () => {
+    speech.stop()
+    setDraft(draftBeforeMic.current)
+  }
 
   const listRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -226,6 +242,16 @@ export default function ChatPanel({
         </div>
       )}
 
+      {/* Диктовка во весь экран: в узком поле ввода надиктованное не проверить */}
+      {speech.listening && (
+        <DictationView
+          text={`${draft}${draft && speech.interim ? ' ' : ''}${speech.interim}`}
+          labels={labels}
+          onDone={finishMic}
+          onCancel={cancelMic}
+        />
+      )}
+
       {/* Ввод */}
       <div className="shrink-0 border-t border-white/10 px-3 pb-3 pt-3">
         <div className="flex items-end gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-3 py-2">
@@ -255,7 +281,7 @@ export default function ChatPanel({
           {speech.supported && (
             <button
               type="button"
-              onClick={speech.toggle}
+              onClick={speech.listening ? finishMic : startMic}
               aria-label={speech.listening ? labels.micStopLabel : labels.micLabel}
               aria-pressed={speech.listening}
               title={speech.listening ? labels.micStopLabel : labels.micLabel}
@@ -293,6 +319,69 @@ export default function ChatPanel({
               ? labels.micFailed
               : labels.disclaimer}
         </p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Экран диктовки. Занимает всю панель, показывает надиктованное крупно —
+ * в однострочном поле ввода проверить текст перед отправкой невозможно.
+ */
+function DictationView({
+  text,
+  labels,
+  onDone,
+  onCancel,
+}: {
+  text: string
+  labels: ChatLabels
+  onDone: () => void
+  onCancel: () => void
+}) {
+  const boxRef = useRef<HTMLDivElement>(null)
+
+  // Держим низ: текст растёт по мере того, как человек говорит.
+  useLayoutEffect(() => {
+    const el = boxRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [text])
+
+  return (
+    <div className="absolute inset-0 z-10 flex flex-col bg-[#0a0a0a]/98 backdrop-blur-xl [animation:fadeSlideUp_0.2s_ease_both]">
+      <div className="flex shrink-0 items-center gap-3 px-5 pt-5">
+        <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-red-500 text-white">
+          <span className="absolute inset-0 animate-ping rounded-full bg-red-500/40" />
+          <Mic size={18} strokeWidth={2.2} />
+        </span>
+        <div className="text-sm font-semibold text-white">{labels.micListening}</div>
+      </div>
+
+      <div ref={boxRef} className="flex-1 overflow-y-auto px-5 py-5">
+        {text ? (
+          <p className="whitespace-pre-wrap break-words text-xl leading-relaxed text-white">
+            {text}
+          </p>
+        ) : (
+          <p className="text-base leading-relaxed text-white/35">{labels.micHint}</p>
+        )}
+      </div>
+
+      <div className="flex shrink-0 gap-2 border-t border-white/10 px-4 py-4">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="flex-1 rounded-xl border border-white/15 py-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          {labels.micCancel}
+        </button>
+        <button
+          type="button"
+          onClick={onDone}
+          className="flex-[2] rounded-xl bg-white py-3 text-sm font-semibold text-black transition-transform hover:scale-[1.02] active:scale-95"
+        >
+          {labels.micDone}
+        </button>
       </div>
     </div>
   )

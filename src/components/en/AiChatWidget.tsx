@@ -20,6 +20,9 @@ const LABELS: ChatLabels = {
   micListening: 'Listening…',
   micDenied: 'No microphone access. Allow it in your browser settings.',
   micFailed: "Couldn't recognise speech. Try again or type your message.",
+  micHint: 'Speak — your words will appear here. You can edit them before sending.',
+  micDone: 'Done',
+  micCancel: 'Cancel',
   errors: {
     rate_limited: 'Too many messages in a row. Please wait a minute.',
     message_too_long: 'That message is too long — please shorten it.',
