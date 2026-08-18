@@ -7,7 +7,6 @@ const FOOTER_LINKS = [
   { label: 'Тарифы', href: '#tarify' },
   { label: 'Отрасли', href: '#biznes' },
   { label: 'Вопросы', href: '#faq' },
-  { label: 'Партнёрская программа', href: '/partner' },
   { label: 'Инвесторам', href: '/investors' },
 ]
 

@@ -8,7 +8,6 @@ export default {
         geist: ['Geist', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         outfit: ['Outfit', 'sans-serif'],
-        urbanist: ['Urbanist', 'Geist', 'sans-serif'],
         display: ['Outfit', 'sans-serif'],
         arabic: ['Cairo', 'Geist', 'sans-serif'],
       },

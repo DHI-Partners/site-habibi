@@ -19,7 +19,6 @@ import MedicalDeck from './components/investors/medical/MedicalDeck'
 import LogisticsDeck from './components/investors/logistics/LogisticsDeck'
 import ArLandingPage from './components/ar/ArLandingPage'
 import EnLandingPage from './components/en/EnLandingPage'
-import PartnerPage from './components/partner/PartnerPage'
 import ModulePage from './components/modules/ModulePage'
 import EnModulePage from './components/modules/en/EnModulePage'
 import ArModulePage from './components/modules/ar/ArModulePage'
@@ -113,7 +112,6 @@ export default function App() {
       <Route path="/ru" element={<LandingPage />} />
       <Route path="/ar" element={<ArLandingPage />} />
       <Route path="/en" element={<Navigate to="/" replace />} />
-      <Route path="/partner" element={<PartnerPage />} />
       <Route path="/investors" element={<DirectionSelector />} />
       <Route path="/investors/real-estate" element={<InvestorDeck />} />
       <Route path="/investors/tourism" element={<TourismDeck />} />
@@ -122,6 +120,8 @@ export default function App() {
       <Route path="/moduli/:slug" element={<ModulePage />} />
       <Route path="/en/modules/:slug" element={<EnModulePage />} />
       <Route path="/ar/modules/:slug" element={<ArModulePage />} />
+      {/* Неизвестный адрес (в т.ч. старые ссылки на /partner) — на главную, а не пустая страница. */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
     </>
   )
