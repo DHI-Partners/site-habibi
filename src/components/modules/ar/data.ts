@@ -272,7 +272,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'نصيحة Habibi: ابدأ بوحدات CRM والمبيعات والمالية — ثم أضف المخزن والمشتريات والإنتاج والموارد البشرية مع نموّ أعمالك.',
     },
-    tariff: { headline: 'وحدة «CRM والمبيعات» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «CRM والمبيعات» ضمن باقة Habibi الأساسية', baseIncludes: true },
     cta: {
       title: 'ابدأ اليوم',
       text: 'فعّل CRM خلال يوم واحد — وبعد أسبوع سترى كل طلب وكل صفقة وكل دولار إعلاني.',
@@ -525,7 +525,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «المشتريات» أقوى مع «المخزن» و«المالية» — معًا تغطّي دورة البضاعة والمال كاملة.',
     },
-    tariff: { headline: 'وحدة «المشتريات» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «المشتريات» ضمن باقة Habibi Pro', baseIncludes: false },
     cta: {
       title: 'خذ المشتريات تحت السيطرة',
       text: 'ابدأ الآن — وستعرف بأي أسعار تشتري شركتك، وممّن، ولماذا.',
@@ -778,7 +778,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «المخزن» أقوى مع «المشتريات» و«التجزئة (POS)» — معًا تغطّي رحلة البضاعة كاملة من المورّد إلى العميل.',
     },
-    tariff: { headline: 'وحدة «المخزن» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «المخزن» ضمن باقة Habibi Pro', baseIncludes: false },
     cta: {
       title: 'اعرف أرصدتك الدقيقة هذا الأسبوع',
       text: 'ابدأ الآن — ورتّب مخزونك وأعد المال المجمّد إلى الدوران.',
@@ -1029,7 +1029,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «الإنتاج» أقوى مع «المخزن» و«المشتريات» — معًا تغطّي الدورة كاملة: خامات ← إنتاج ← منتجات جاهزة.',
     },
-    tariff: { headline: 'وحدة «الإنتاج» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «الإنتاج» ضمن باقة Habibi Pro', baseIncludes: false },
     cta: {
       title: 'اعرف التكلفة الحقيقية لمنتجاتك',
       text: 'ابدأ الآن — وخطّط ورشك واحسب التكلفة بالأرقام.',
@@ -1282,7 +1282,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'نصيحة Habibi: ابدأ بوحدات CRM والمبيعات والمالية — ثم أضف المخزن والمشتريات والإنتاج والموارد البشرية مع نموّ أعمالك.',
     },
-    tariff: { headline: 'وحدة «المالية» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «المالية» ضمن باقة Habibi الأساسية', baseIncludes: true },
     cta: {
       title: 'اعرف ربحك اليوم',
       text: 'ابدأ الآن — وشاهد أموال أعمالك في الوقت الفعلي.',
@@ -1535,7 +1535,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «الموارد البشرية والرواتب» أقوى مع «المالية» — الرواتب تتدفق إلى المصاريف تلقائيًا، والربح يُحسب بصدق.',
     },
-    tariff: { headline: 'وحدة «الموارد البشرية والرواتب» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «الموارد البشرية والرواتب» ضمن باقة Habibi Pro', baseIncludes: false },
     cta: {
       title: 'رتّب فريقك ورواتبك',
       text: 'ابدأ الآن — واحسب أكبر بند مصاريف لديك بالأرقام.',
@@ -1786,7 +1786,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «المشاريع والمهام» من أوائل الوحدات التي تبدأ بها الفرق في Habibi — مع CRM والمالية.',
     },
-    tariff: { headline: 'وحدة «المشاريع والمهام» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «المشاريع والمهام» ضمن باقة Habibi الأساسية', baseIncludes: true },
     cta: {
       title: 'رتّب مشاريعك اليوم',
       text: 'ابدأ الآن — وأدِر اجتماعك القادم في 10 دقائق بدل ساعة.',
@@ -2037,7 +2037,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «الخدمة والدعم» أقوى مع CRM — معًا تغطّيان رحلة العميل كاملة، من أول طلب حتى الشراء المتكرر.',
     },
-    tariff: { headline: 'وحدة «الخدمة والدعم» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «الخدمة والدعم» ضمن باقة Habibi Pro', baseIncludes: false },
     cta: {
       title: 'حوّل الخدمة إلى قناة مبيعات',
       text: 'ابدأ الآن — وأجب كل عميل في وقته.',
@@ -2288,7 +2288,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «التجزئة (POS)» أقوى مع «المخزن» و«المشتريات» — معًا تغطّي الدورة كاملة: مورّد ← رف ← عميل.',
     },
-    tariff: { headline: 'وحدة «التجزئة (POS)» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «التجزئة (POS)» ضمن باقة Habibi Pro', baseIncludes: false },
     cta: {
       title: 'اربط الصندوق والمخزن والمالية',
       text: 'ابدأ الآن — وشاهد كل صندوق وكل إيصال من المكتب.',
@@ -2539,7 +2539,7 @@ export const AR_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'وحدة «الموقع والطلبات» أقوى مع CRM — معًا تغطّيان رحلة العميل من النقرة حتى الصفقة.',
     },
-    tariff: { headline: 'وحدة «الموقع والطلبات» ضمن باقة Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'وحدة «الموقع والطلبات» ضمن باقة Habibi الأساسية', baseIncludes: true },
     cta: {
       title: 'توقّف عن خسارة الطلبات اليوم',
       text: 'ابدأ الآن — وليصل كل دولار إعلاني إلى البيع.',

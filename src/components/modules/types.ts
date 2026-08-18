@@ -46,7 +46,7 @@ export interface ModulePageData {
   /** «Кому подходит». */
   industries: { list: string[]; note: string }
   /** В каком тарифе доступен модуль. */
-  tariff: { headline: string; freeIncludes: boolean }
+  tariff: { headline: string; baseIncludes: boolean }
   /** Финальный призыв. */
   cta: { title: string; text: string }
 }

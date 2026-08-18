@@ -373,8 +373,34 @@ function ArModulePageContent({ data }: { data: ModulePageData }) {
           <SectionTag>الباقات</SectionTag>
           <h2 className="text-2xl font-medium sm:text-3xl md:text-4xl">{data.tariff.headline}</h2>
         </Reveal>
-        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/40 bg-white/[0.07] p-6">
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div
+            className={`rounded-2xl border p-6 ${
+              data.tariff.baseIncludes ? 'border-white/40 bg-white/[0.07]' : 'border-white/10 bg-white/[0.04]'
+            }`}
+          >
+            <h3 className="text-lg font-medium">Habibi</h3>
+            <div className="mt-3 text-4xl font-semibold">
+              $19<span className="text-lg text-white/50"> / شهريًا</span>
+            </div>
+            <p className="mt-1 text-sm text-white/50">باقة البداية للفِرق الصغيرة</p>
+            <ul className="mt-5 space-y-2.5">
+              {(data.tariff.baseIncludes
+                ? [`«${data.title}» — مشمولة في الباقة`, 'إدارة علاقات العملاء والمشاريع والموقع والمالية', 'حتى 10 مستخدمين']
+                : ['إدارة علاقات العملاء والمبيعات', 'المشاريع والمهام والموقع والمالية', 'حتى 10 مستخدمين']
+              ).map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-sm text-white/80">
+                  <Check size={16} className="mt-0.5 shrink-0 text-emerald-400" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div
+            className={`rounded-2xl border p-6 ${
+              data.tariff.baseIncludes ? 'border-white/10 bg-white/[0.04]' : 'border-white/40 bg-white/[0.07]'
+            }`}
+          >
             <h3 className="text-lg font-medium">Habibi Pro</h3>
             <div className="mt-3 text-4xl font-semibold">
               $290<span className="text-lg text-white/50"> / شهريًا</span>
@@ -383,8 +409,8 @@ function ArModulePageContent({ data }: { data: ModulePageData }) {
             <ul className="mt-5 space-y-2.5">
               {[
                 `جميع وحدات النظام العشر — ومنها «${data.title}»`,
-                'عدد غير محدود من المستخدمين',
-                'التكاملات الأساسية والتحليلات المتقدّمة',
+                'وكلاء الذكاء الاصطناعي',
+                'حتى 50 مستخدمًا',
                 'الدعم الفني ذو الأولوية والمرافقة الشخصية',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-white/80">
@@ -401,6 +427,7 @@ function ArModulePageContent({ data }: { data: ModulePageData }) {
             <ul className="mt-5 space-y-2.5">
               {[
                 'كل ما في باقة «Habibi Pro»',
+                'حتى 100 مستخدم',
                 'تدقيق وتحسين العمليات التشغيلية',
                 'وحدات وتكاملات مخصّصة',
                 'مدير حساب مخصّص ودعم 24/7',

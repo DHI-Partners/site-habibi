@@ -396,25 +396,25 @@ function ModulePageContent({ data }: { data: ModulePageData }) {
           {[
             {
               name: 'Habibi',
-              price: '€0',
-              period: 'навсегда',
-              features: data.tariff.freeIncludes
-                ? [`${data.title} — включён`, 'CRM, проекты, сайт, финансы', 'До 2 пользователей']
-                : ['CRM и продажи', 'Проекты и задачи, сайт, финансы', 'До 2 пользователей'],
-              highlight: data.tariff.freeIncludes,
+              price: '€19/мес',
+              period: 'от €13/мес при оплате за год',
+              features: data.tariff.baseIncludes
+                ? [`${data.title} — включён`, 'CRM, проекты, сайт, финансы', 'До 10 пользователей']
+                : ['CRM и продажи', 'Проекты и задачи, сайт, финансы', 'До 10 пользователей'],
+              highlight: data.tariff.baseIncludes,
             },
             {
               name: 'Habibi Pro',
               price: '€49/мес',
               period: 'от €34/мес при оплате за год',
-              features: ['Все 10 модулей системы', 'До 5 пользователей и 5 интеграций', 'Базовая техподдержка'],
-              highlight: !data.tariff.freeIncludes,
+              features: ['Все 10 модулей системы и ИИ-агенты', 'До 50 пользователей и 5 интеграций', 'Базовая техподдержка'],
+              highlight: !data.tariff.baseIncludes,
             },
             {
               name: 'Habibi Premium',
               price: '€199/мес',
               period: 'от €139/мес при оплате за год',
-              features: ['Все модули и расширенные лимиты', 'Приоритетная поддержка', 'Индивидуальная настройка'],
+              features: ['Все модули и расширенные лимиты', 'До 100 пользователей', 'Приоритетная поддержка'],
               highlight: false,
             },
           ].map((tier) => (

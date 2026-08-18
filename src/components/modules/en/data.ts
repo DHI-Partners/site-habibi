@@ -272,7 +272,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'Habibi’s recommendation: start with CRM, sales and finance — then add inventory, purchasing, manufacturing and HR as you grow.',
     },
-    tariff: { headline: 'CRM is available on the free plan', freeIncludes: true },
+    tariff: { headline: 'CRM is available on the Habibi plan', baseIncludes: true },
     cta: {
       title: 'Start for free today',
       text: 'Set up CRM in a single day — and within a week you will see every lead, every deal and every advertising dollar.',
@@ -525,7 +525,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'The Purchases module is strongest together with Inventory and Finance — together they cover the full cycle of goods and money.',
     },
-    tariff: { headline: 'Purchases is included in Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'Purchases is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Take purchasing under control',
       text: 'Start for free with CRM and finance — and add Purchases when you are ready to bring order to your supplier workflow.',
@@ -778,7 +778,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'The Inventory module is strongest together with Purchases and Retail (POS) — together they cover the goods’ full journey from supplier to customer.',
     },
-    tariff: { headline: 'Inventory is included in Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'Inventory is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Know your exact stock this week',
       text: 'Start for free — and add Inventory when you are ready to bring order to your stock and return frozen cash to circulation.',
@@ -1029,7 +1029,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'The Manufacturing module is strongest together with Inventory and Purchases — together they cover the full cycle: raw materials → production → finished goods.',
     },
-    tariff: { headline: 'Manufacturing is included in Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'Manufacturing is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Learn the real cost of your products',
       text: 'Start for free — and add Manufacturing when you are ready to plan workshops and calculate costs on numbers.',
@@ -1282,10 +1282,10 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'Habibi’s recommendation: start with CRM, sales and finance — then add inventory, purchasing, manufacturing and HR as you grow.',
     },
-    tariff: { headline: 'Finance is available on the free plan', freeIncludes: true },
+    tariff: { headline: 'Finance is available on the Habibi plan', baseIncludes: true },
     cta: {
       title: 'Know your profit today',
-      text: 'The Finance module is free — connect it together with CRM and start seeing your business’s money in real time.',
+      text: 'The Finance module is part of the base Habibi plan — connect it together with CRM and start seeing your business’s money in real time.',
     },
   },
 
@@ -1535,7 +1535,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'The HR & payroll module is strongest together with Finance — payroll flows into expenses automatically, and profit is calculated honestly.',
     },
-    tariff: { headline: 'HR & payroll is included in Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'HR & payroll is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Bring order to your team and payroll',
       text: 'Start for free — and add HR & payroll when you are ready to run your biggest expense line on numbers.',
@@ -1784,12 +1784,12 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'Event management',
         'Made-to-order production',
       ],
-      note: 'Projects & tasks is included in the free plan — one of the first modules teams start with in Habibi.',
+      note: 'Projects & tasks is included in the base Habibi plan — one of the first modules teams start with in Habibi.',
     },
-    tariff: { headline: 'Projects & tasks is already on the free plan', freeIncludes: true },
+    tariff: { headline: 'Projects & tasks is already on the Habibi plan', baseIncludes: true },
     cta: {
-      title: 'Bring order to your projects for free',
-      text: 'Projects & tasks is available on the free plan — start your first project today and run your next stand-up in 10 minutes instead of an hour.',
+      title: 'Bring order to your projects today',
+      text: 'Projects & tasks is included in the base Habibi plan — start your first project today and run your next stand-up in 10 minutes instead of an hour.',
     },
   },
 
@@ -2037,7 +2037,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'The Service & support module is strongest together with CRM — together they cover the customer’s full journey, from first enquiry to repeat purchase.',
     },
-    tariff: { headline: 'Service & support is included in Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'Service & support is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Turn service into a sales channel',
       text: 'Start for free with CRM — and add Service & support when you are ready to answer every customer on time.',
@@ -2288,7 +2288,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'The Retail (POS) module is strongest together with Inventory and Purchases — together they cover the full cycle: supplier → shelf → customer.',
     },
-    tariff: { headline: 'Retail (POS) is included in Habibi Pro', freeIncludes: false },
+    tariff: { headline: 'Retail (POS) is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Connect the till, stock and finance',
       text: 'Start for free — and add Retail (POS) when you are ready to see every register and every receipt from the office.',
@@ -2537,12 +2537,12 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'IT companies',
         'Construction & renovation',
       ],
-      note: 'Website & leads is included in the free plan and is strongest together with CRM — together they cover the customer journey from click to deal.',
+      note: 'Website & leads is included in the base Habibi plan and is strongest together with CRM — together they cover the customer journey from click to deal.',
     },
-    tariff: { headline: 'Website & leads is already on the free plan', freeIncludes: true },
+    tariff: { headline: 'Website & leads is already on the Habibi plan', baseIncludes: true },
     cta: {
       title: 'Stop losing requests today',
-      text: 'Website & leads is free — connect the module together with CRM, and every advertising dollar will start reaching the sale.',
+      text: 'Website & leads is part of the base Habibi plan — connect the module together with CRM, and every advertising dollar will start reaching the sale.',
     },
   },
 }

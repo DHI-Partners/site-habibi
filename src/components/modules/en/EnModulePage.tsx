@@ -388,25 +388,25 @@ function EnModulePageContent({ data }: { data: ModulePageData }) {
           {[
             {
               name: 'Habibi',
-              price: '€0',
-              period: 'forever',
-              features: data.tariff.freeIncludes
-                ? [`${data.title} — included`, 'CRM, projects, website, finance', 'Up to 2 users']
-                : ['CRM & sales', 'Projects & tasks, website, finance', 'Up to 2 users'],
-              highlight: data.tariff.freeIncludes,
+              price: '€19/mo',
+              period: 'from €13/mo billed annually',
+              features: data.tariff.baseIncludes
+                ? [`${data.title} — included`, 'CRM, projects, website, finance', 'Up to 10 users']
+                : ['CRM & sales', 'Projects & tasks, website, finance', 'Up to 10 users'],
+              highlight: data.tariff.baseIncludes,
             },
             {
               name: 'Habibi Pro',
               price: '€49/mo',
               period: 'from €34/mo billed annually',
-              features: ['All 10 modules', 'Up to 5 users and 5 integrations', 'Basic support'],
-              highlight: !data.tariff.freeIncludes,
+              features: ['All 10 modules and AI agents', 'Up to 50 users and 5 integrations', 'Basic support'],
+              highlight: !data.tariff.baseIncludes,
             },
             {
               name: 'Habibi Premium',
               price: '€199/mo',
               period: 'from €139/mo billed annually',
-              features: ['All modules and higher limits', 'Priority support', 'Custom setup'],
+              features: ['All modules and higher limits', 'Up to 100 users', 'Priority support'],
               highlight: false,
             },
           ].map((tier) => (
