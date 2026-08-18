@@ -15,6 +15,11 @@ const LABELS: ChatLabels = {
   whatsappLabel: 'Message us on WhatsApp',
   disclaimer: 'Answers come from AI and may be wrong. Confirm exact terms with a manager.',
   retryLabel: 'Try again',
+  micLabel: 'Dictate a message',
+  micStopLabel: 'Stop recording',
+  micListening: 'Listening…',
+  micDenied: 'No microphone access. Allow it in your browser settings.',
+  micFailed: "Couldn't recognise speech. Try again or type your message.",
   errors: {
     rate_limited: 'Too many messages in a row. Please wait a minute.',
     message_too_long: 'That message is too long — please shorten it.',

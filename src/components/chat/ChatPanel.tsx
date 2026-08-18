@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { MessageCircle, RotateCcw, Send, Sparkles, X } from 'lucide-react'
+import { Mic, MessageCircle, RotateCcw, Send, Sparkles, Square, X } from 'lucide-react'
 import { useChat } from '../../hooks/useChat'
+import { useSpeechInput } from '../../hooks/useSpeechInput'
 import { MESSAGE_LIMIT, type ChatErrorCode, type ChatLang } from '../../lib/chat'
 
 export interface ChatLabels {
@@ -17,6 +18,11 @@ export interface ChatLabels {
   disclaimer: string
   errors: Record<ChatErrorCode, string>
   retryLabel: string
+  micLabel: string
+  micStopLabel: string
+  micListening: string
+  micDenied: string
+  micFailed: string
 }
 
 export interface ChatPanelProps {
@@ -49,6 +55,12 @@ export default function ChatPanel({
     moduleSlug,
   })
   const [draft, setDraft] = useState('')
+
+  // Диктовка: распознанные куски дописываются в поле, отправляет человек сам.
+  const speech = useSpeechInput({
+    lang,
+    onFinal: (text) => setDraft((d) => (d ? `${d.replace(/\s+$/, '')} ${text}` : text).slice(0, MESSAGE_LIMIT)),
+  })
 
   const listRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -91,6 +103,7 @@ export default function ChatPanel({
 
   const submit = () => {
     if (!canSend || !draft.trim()) return
+    speech.stop()
     stickToBottom.current = true
     send(draft)
     setDraft('')
@@ -219,7 +232,9 @@ export default function ChatPanel({
           <textarea
             ref={inputRef}
             rows={1}
-            value={draft}
+            // Пока человек говорит, показываем ещё не финальный текст —
+            // видно, что микрофон слышит, но в draft он попадёт только готовым.
+            value={speech.listening && speech.interim ? `${draft} ${speech.interim}`.trim() : draft}
             maxLength={MESSAGE_LIMIT}
             onChange={(e) => {
               setDraft(e.target.value)
@@ -232,9 +247,35 @@ export default function ChatPanel({
                 submit()
               }
             }}
-            placeholder={labels.placeholder}
+            placeholder={speech.listening ? labels.micListening : labels.placeholder}
             className="max-h-24 flex-1 resize-none bg-transparent text-sm text-white outline-none placeholder:text-white/35"
           />
+
+          {/* Кнопки микрофона нет там, где браузер не умеет распознавать речь */}
+          {speech.supported && (
+            <button
+              type="button"
+              onClick={speech.toggle}
+              aria-label={speech.listening ? labels.micStopLabel : labels.micLabel}
+              aria-pressed={speech.listening}
+              title={speech.listening ? labels.micStopLabel : labels.micLabel}
+              className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
+                speech.listening
+                  ? 'bg-red-500 text-white'
+                  : 'text-white/50 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              {speech.listening && (
+                <span className="absolute inset-0 animate-ping rounded-full bg-red-500/40" />
+              )}
+              {speech.listening ? (
+                <Square size={13} strokeWidth={2.5} fill="currentColor" />
+              ) : (
+                <Mic size={16} strokeWidth={2} />
+              )}
+            </button>
+          )}
+
           <button
             type="button"
             onClick={submit}
@@ -245,7 +286,13 @@ export default function ChatPanel({
             <Send size={15} strokeWidth={2.2} className={dir === 'rtl' ? 'rotate-180' : ''} />
           </button>
         </div>
-        <p className="px-1 pt-2 text-[11px] leading-snug text-white/30">{labels.disclaimer}</p>
+        <p className="px-1 pt-2 text-[11px] leading-snug text-white/30">
+          {speech.error === 'denied'
+            ? labels.micDenied
+            : speech.error === 'failed'
+              ? labels.micFailed
+              : labels.disclaimer}
+        </p>
       </div>
     </div>
   )
