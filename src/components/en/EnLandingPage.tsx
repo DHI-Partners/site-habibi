@@ -10,7 +10,7 @@ import IndustrySelector from './IndustrySelector'
 import Faq from './Faq'
 import Closing from './Closing'
 import Footer from './Footer'
-import WhatsAppButton from './WhatsAppButton'
+import AiChatWidget from './AiChatWidget'
 
 export default function EnLandingPage() {
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function EnLandingPage() {
         <Faq />
         <Closing />
         <Footer />
-        <WhatsAppButton />
+        <AiChatWidget />
       </div>
     </ContactProvider>
   )

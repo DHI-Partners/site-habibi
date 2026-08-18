@@ -11,7 +11,7 @@ import IndustrySelector from './components/IndustrySelector'
 import Faq from './components/Faq'
 import Closing from './components/Closing'
 import Footer from './components/Footer'
-import MessengerWidget from './components/MessengerWidget'
+import AiChatWidget from './components/AiChatWidget'
 import InvestorDeck from './components/investors/InvestorDeck'
 import DirectionSelector from './components/investors/DirectionSelector'
 import TourismDeck from './components/investors/TourismDeck'
@@ -49,7 +49,7 @@ function LandingPage() {
         <Faq />
         <Closing />
         <Footer />
-        <MessengerWidget />
+        <AiChatWidget />
       </div>
     </ContactProvider>
   )

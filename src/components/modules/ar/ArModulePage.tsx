@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, X } from 'lucide-react'
 import { ContactProvider, useContact } from '../../ar/ContactProvider'
 import Footer from '../../ar/Footer'
-import WhatsAppButton from '../../ar/WhatsAppButton'
+import AiChatWidget from '../../ar/AiChatWidget'
 import { Reveal } from '../../Reveal'
 import { AR_MODULE_PAGES } from './data'
 import type { ModulePageData } from '../types'
@@ -472,7 +472,7 @@ function ArModulePageContent({ data }: { data: ModulePageData }) {
       </section>
 
       <Footer />
-      <WhatsAppButton message={`مرحبًا 👋 أودّ معرفة المزيد عن وحدة «${data.title}» في Habibi.`} />
+      <AiChatWidget moduleSlug={data.slug} />
     </div>
   )
 }

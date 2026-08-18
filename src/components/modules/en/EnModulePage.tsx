@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, X } from 'lucide-react'
 import { ContactProvider, useContact } from '../../en/ContactProvider'
 import Footer from '../../en/Footer'
-import WhatsAppButton from '../../en/WhatsAppButton'
+import AiChatWidget from '../../en/AiChatWidget'
 import { Reveal } from '../../Reveal'
 import { EN_MODULE_PAGES } from './data'
 import type { ModulePageData } from '../types'
@@ -462,7 +462,7 @@ function EnModulePageContent({ data }: { data: ModulePageData }) {
       </section>
 
       <Footer />
-      <WhatsAppButton message={`Hi 👋 I’d like to learn more about the ${data.title} module in Habibi.`} />
+      <AiChatWidget moduleSlug={data.slug} />
     </div>
   )
 }

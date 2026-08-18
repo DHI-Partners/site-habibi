@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Check, X } from 'lucide-react'
 import Butterflies from '../Butterflies'
 import { ContactProvider, useContact } from '../ContactProvider'
 import Footer from '../Footer'
-import MessengerWidget from '../MessengerWidget'
+import AiChatWidget from '../AiChatWidget'
 import { Reveal } from '../Reveal'
 import { MODULE_PAGES } from './data'
 import type { ModulePageData } from './types'
@@ -470,7 +470,7 @@ function ModulePageContent({ data }: { data: ModulePageData }) {
       </section>
 
       <Footer />
-      <MessengerWidget whatsappText={`Здравствуйте! Интересует модуль «${data.title}» в Habibi.`} />
+      <AiChatWidget moduleSlug={data.slug} />
     </div>
   )
 }

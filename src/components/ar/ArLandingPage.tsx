@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { ContactProvider } from './ContactProvider'
-import WhatsAppButton from './WhatsAppButton'
+import AiChatWidget from './AiChatWidget'
 import Hero from './Hero'
 import Benefits from './Benefits'
 import BusinessFlows from './BusinessFlows'
@@ -38,7 +38,7 @@ export default function ArLandingPage() {
         <Faq />
         <Closing />
         <Footer />
-        <WhatsAppButton />
+        <AiChatWidget />
       </div>
     </ContactProvider>
   )
