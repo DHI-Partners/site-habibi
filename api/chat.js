@@ -145,6 +145,55 @@ function sse(res, event, data) {
   res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
 }
 
+/** Маркер, которым модель помечает уместность перехода к менеджеру. Посетителю не показывается. */
+const CONTACT_MARKER = '[[contact]]'
+
+/**
+ * Чистит поток от маркера и Markdown-звёздочек, не ломая потоковую выдачу.
+ *
+ * Маркер и `**` могут прийти разорванными между соседними чанками, поэтому
+ * хвост длиной с маркер придерживается до следующего чанка: к моменту, когда
+ * текст уходит клиенту, любая такая последовательность уже собрана целиком.
+ */
+function createTextFilter(onText, onContact) {
+  // Придерживаем с запасом: маркер идёт отдельной строкой, и переводы строки
+  // перед ним должны остаться в буфере, иначе уйдут клиенту пустой строкой.
+  const HOLD = CONTACT_MARKER.length + 8
+  let pending = ''
+  let contactSeen = false
+
+  const clean = () => {
+    let i
+    while ((i = pending.indexOf(CONTACT_MARKER)) !== -1) {
+      pending = pending.slice(0, i) + pending.slice(i + CONTACT_MARKER.length)
+      if (!contactSeen) {
+        contactSeen = true
+        onContact()
+      }
+    }
+    // Подстраховка к правилу в промпте: модель изредка всё же выделяет
+    // названия тарифов, а панель показывает разметку буквально.
+    pending = pending.replace(/\*\*/g, '')
+  }
+
+  return {
+    push(chunk) {
+      pending += chunk
+      clean()
+      const keep = Math.min(pending.length, HOLD)
+      const out = pending.slice(0, pending.length - keep)
+      pending = pending.slice(pending.length - keep)
+      if (out) onText(out)
+    },
+    end() {
+      clean()
+      const out = pending.replace(/\s+$/, '')
+      pending = ''
+      if (out) onText(out)
+    },
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ ok: false, error: 'method_not_allowed' })
@@ -224,11 +273,17 @@ export default async function handler(req, res) {
       { signal: abort.signal },
     )
 
+    const filter = createTextFilter(
+      (text) => sse(res, 'delta', { text }),
+      () => sse(res, 'contact', { suggested: true }),
+    )
+
     for await (const event of stream) {
       if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-        sse(res, 'delta', { text: event.delta.text })
+        filter.push(event.delta.text)
       }
     }
+    filter.end()
 
     const final = await stream.finalMessage()
     if (final.stop_reason === 'refusal') sse(res, 'error', { code: 'refusal' })

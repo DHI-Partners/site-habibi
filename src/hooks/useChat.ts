@@ -21,6 +21,8 @@ export interface UseChatResult {
   messages: ChatMessage[]
   status: ChatStatus
   errorCode: ChatErrorCode | null
+  /** Модель предложила перейти к менеджеру — показываем кнопку связи. */
+  contactSuggested: boolean
   send: (text: string) => void
   retry: () => void
   reset: () => void
@@ -47,6 +49,7 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
   })
   const [status, setStatus] = useState<ChatStatus>('idle')
   const [errorCode, setErrorCode] = useState<ChatErrorCode | null>(null)
+  const [contactSuggested, setContactSuggested] = useState(false)
 
   const abortRef = useRef<AbortController | null>(null)
   // Держим историю в ref, чтобы send() не пересоздавался на каждое сообщение.
@@ -72,6 +75,9 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
 
       setStatus('streaming')
       setErrorCode(null)
+      // Сбрасываем на каждом ходу: кнопка относится к последнему ответу,
+      // иначе один раз показавшись, она висела бы до конца разговора.
+      setContactSuggested(false)
       // Пустой пузырь ассистента: в него будет литься текст, он же — индикатор набора.
       setMessages([...history, { role: 'assistant', content: '' }])
 
@@ -80,6 +86,7 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
         moduleSlug,
         messages: history,
         signal: controller.signal,
+        onContact: () => setContactSuggested(true),
         onDelta: (text) => {
           setMessages((prev) => {
             const next = [...prev]
@@ -152,6 +159,7 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
     abortRef.current?.abort()
     setMessages([])
     setErrorCode(null)
+    setContactSuggested(false)
     setStatus('idle')
     try {
       window.sessionStorage.removeItem(storageKey)
@@ -164,6 +172,7 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
     messages,
     status,
     errorCode,
+    contactSuggested,
     send,
     retry,
     reset,

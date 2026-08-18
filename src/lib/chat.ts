@@ -50,6 +50,8 @@ export interface StreamChatOptions {
   signal: AbortSignal
   /** Вызывается на каждый кусочек текста. */
   onDelta: (text: string) => void
+  /** Модель сочла уместным переход к живому менеджеру. */
+  onContact: () => void
 }
 
 /**
@@ -64,6 +66,7 @@ export async function streamChat({
   messages,
   signal,
   onDelta,
+  onContact,
 }: StreamChatOptions): Promise<ChatErrorCode | null> {
   let res: Response
   try {
@@ -116,6 +119,7 @@ export async function streamChat({
         }
 
         if (event === 'delta' && typeof data.text === 'string') onDelta(data.text)
+        else if (event === 'contact') onContact()
         else if (event === 'error') failure = toErrorCode(data.code)
       }
     }

@@ -44,7 +44,10 @@ export default function ChatPanel({
   onClose,
   onRequestContact,
 }: ChatPanelProps) {
-  const { messages, status, errorCode, send, retry, reset, canSend } = useChat({ lang, moduleSlug })
+  const { messages, status, errorCode, contactSuggested, send, retry, reset, canSend } = useChat({
+    lang,
+    moduleSlug,
+  })
   const [draft, setDraft] = useState('')
 
   const listRef = useRef<HTMLDivElement>(null)
@@ -197,8 +200,8 @@ export default function ChatPanel({
         )}
       </div>
 
-      {/* Передача менеджеру */}
-      {!isEmpty && (
+      {/* Передача менеджеру — только когда агент сам счёл переход уместным */}
+      {contactSuggested && status !== 'streaming' && (
         <div className="shrink-0 px-4 pb-1">
           <button
             type="button"
