@@ -146,6 +146,7 @@ export default function App() {
       <Route path="/partners/register" element={<Lazy><RegisterPage locale="en" /></Lazy>} />
       <Route path="/partners/login" element={<Lazy><LoginPage locale="en" /></Lazy>} />
       <Route path="/partners/dashboard" element={<Lazy><DashboardPage locale="en" /></Lazy>} />
+      <Route path="/partners/admin" element={<Lazy><AdminPage locale="en" /></Lazy>} />
       <Route path="/partner" element={<Navigate to="/ru/partners" replace />} />
       <Route path="/partners" element={<EnPartnerPage />} />
       <Route path="/en/partners" element={<Navigate to="/partners" replace />} />

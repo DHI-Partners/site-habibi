@@ -2,13 +2,18 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronDown, ChevronUp, Plus, RefreshCw } from 'lucide-react'
 import { supabaseConfigured } from '../../../lib/supabase'
-import { formatMoney } from '../data'
 import { card } from '../ui'
 import { CabinetShell, NotConfigured, usePageMeta } from './CabinetShell'
 import {
-  STATUS_META,
+  CABINET_PATHS,
+  STATUS_LABELS,
+  STRINGS,
+  cabinetDate,
+  cabinetMoney,
+  type CabinetLocale,
+} from './i18n'
+import {
   TARIFF_META,
-  formatDate,
   type Payout,
   type PartnerStats,
   type Referral,
@@ -23,8 +28,12 @@ const TARIFF_OPTIONS: Tariff[] = ['', 'base', 'pro', 'premium', 'exclusive']
 const INPUT =
   'rounded-lg border border-white/15 bg-black/60 px-2.5 py-1.5 text-xs text-white focus:border-white/40 focus:outline-none'
 
-export default function AdminPage() {
-  usePageMeta('Админка партнёрской программы — Habibi')
+type AdminStrings = (typeof STRINGS)[CabinetLocale]['admin']
+type ApiFn = (action: string, params?: Record<string, unknown>) => Promise<any>
+
+export default function AdminPage({ locale = 'ru' }: { locale?: CabinetLocale }) {
+  const t = STRINGS[locale].admin
+  usePageMeta(t.pageTitle, locale)
   const navigate = useNavigate()
   const { session, loading: authLoading } = useAuth()
 
@@ -32,8 +41,8 @@ export default function AdminPage() {
   const [state, setState] = useState<'loading' | 'ok' | 'forbidden' | 'error'>('loading')
   const [openId, setOpenId] = useState<string | null>(null)
 
-  const api = useCallback(
-    async (action: string, params: Record<string, unknown> = {}) => {
+  const api = useCallback<ApiFn>(
+    async (action, params = {}) => {
       const res = await fetch('/api/admin', {
         method: 'POST',
         headers: {
@@ -62,24 +71,24 @@ export default function AdminPage() {
   useEffect(() => {
     if (authLoading) return
     if (!session) {
-      navigate('/ru/partners/login')
+      navigate(CABINET_PATHS[locale].login)
       return
     }
     loadList()
-  }, [authLoading, session, navigate, loadList])
+  }, [authLoading, session, navigate, loadList, locale])
 
   if (!supabaseConfigured()) {
     return (
-      <CabinetShell tag="Админка" narrow>
-        <NotConfigured />
+      <CabinetShell tag={t.tag} narrow locale={locale}>
+        <NotConfigured locale={locale} />
       </CabinetShell>
     )
   }
 
   return (
-    <CabinetShell tag="Админка" showSignOut>
+    <CabinetShell tag={t.tag} showSignOut locale={locale}>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-white">Партнёры</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-white">{t.h1}</h1>
         <button
           type="button"
           onClick={() => {
@@ -89,22 +98,16 @@ export default function AdminPage() {
           className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/70 transition-colors hover:border-white/40 hover:text-white"
         >
           <RefreshCw size={14} />
-          Обновить
+          {t.refresh}
         </button>
       </div>
 
-      {state === 'loading' && <p className="mt-6 text-sm text-white/50">Загружаем…</p>}
-      {state === 'forbidden' && (
-        <p className="mt-6 text-sm text-red-400">
-          Нет доступа: этот email не входит в PARTNER_ADMIN_EMAILS.
-        </p>
-      )}
-      {state === 'error' && (
-        <p className="mt-6 text-sm text-red-400">Не удалось загрузить. Попробуйте обновить.</p>
-      )}
+      {state === 'loading' && <p className="mt-6 text-sm text-white/50">{t.loading}</p>}
+      {state === 'forbidden' && <p className="mt-6 text-sm text-red-400">{t.forbidden}</p>}
+      {state === 'error' && <p className="mt-6 text-sm text-red-400">{t.loadError}</p>}
 
       {state === 'ok' && partners.length === 0 && (
-        <p className="mt-6 text-sm text-white/50">Партнёров пока нет.</p>
+        <p className="mt-6 text-sm text-white/50">{t.empty}</p>
       )}
 
       {state === 'ok' && (
@@ -112,6 +115,8 @@ export default function AdminPage() {
           {partners.map((p) => (
             <PartnerRow
               key={p.id}
+              locale={locale}
+              t={t}
               partner={p}
               open={openId === p.id}
               onToggle={() => setOpenId(openId === p.id ? null : p.id)}
@@ -128,16 +133,20 @@ export default function AdminPage() {
 /* ─────────────────────────── Карточка партнёра ─────────────────────────── */
 
 function PartnerRow({
+  locale,
+  t,
   partner,
   open,
   onToggle,
   api,
   onChanged,
 }: {
+  locale: CabinetLocale
+  t: AdminStrings
   partner: PartnerStats
   open: boolean
   onToggle: () => void
-  api: (action: string, params?: Record<string, unknown>) => Promise<any>
+  api: ApiFn
   onChanged: () => void
 }) {
   const [referrals, setReferrals] = useState<Referral[]>([])
@@ -173,10 +182,18 @@ function PartnerRow({
           {partner.email && <span className="ml-3 text-sm text-white/40">{partner.email}</span>}
         </div>
         <div className="flex items-center gap-4 text-xs text-white/50">
-          <span>переходы {partner.clicks}</span>
-          <span>заявки {partner.regs}</span>
-          <span>демо {partner.trials}</span>
-          <span className="text-emerald-300">платят {partner.paying}</span>
+          <span>
+            {t.chipClicks} {partner.clicks}
+          </span>
+          <span>
+            {t.chipRegs} {partner.regs}
+          </span>
+          <span>
+            {t.chipTrials} {partner.trials}
+          </span>
+          <span className="text-emerald-300">
+            {t.chipPaying} {partner.paying}
+          </span>
           {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </div>
       </button>
@@ -184,31 +201,38 @@ function PartnerRow({
       {open && (
         <div className="border-t border-white/10 px-5 pb-5">
           {!loaded ? (
-            <p className="pt-4 text-sm text-white/50">Загружаем…</p>
+            <p className="pt-4 text-sm text-white/50">{t.loading}</p>
           ) : (
             <>
-              <h3 className="pt-4 text-sm font-medium text-white/70">Клиенты</h3>
+              <h3 className="pt-4 text-sm font-medium text-white/70">{t.clients}</h3>
               {referrals.length === 0 && (
-                <p className="mt-2 text-sm text-white/40">Клиентов пока нет.</p>
+                <p className="mt-2 text-sm text-white/40">{t.clientsEmpty}</p>
               )}
               <div className="mt-2 flex flex-col gap-2">
                 {referrals.map((r) => (
-                  <ReferralRow key={r.id} referral={r} api={api} onChanged={refresh} />
+                  <ReferralRow
+                    key={r.id}
+                    locale={locale}
+                    t={t}
+                    referral={r}
+                    api={api}
+                    onChanged={refresh}
+                  />
                 ))}
               </div>
-              <AddReferral partnerId={partner.id} api={api} onChanged={refresh} />
+              <AddReferral t={t} partnerId={partner.id} api={api} onChanged={refresh} />
 
-              <h3 className="mt-6 text-sm font-medium text-white/70">Выплаты</h3>
+              <h3 className="mt-6 text-sm font-medium text-white/70">{t.payouts}</h3>
               <div className="mt-2 flex flex-col gap-2">
                 {payouts.map((p) => (
                   <div
                     key={p.id}
                     className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm"
                   >
-                    <span className="text-white">{formatMoney(Number(p.amount))}</span>
+                    <span className="text-white">{cabinetMoney(locale, Number(p.amount))}</span>
                     <span className="flex items-center gap-3">
                       <span className={p.status === 'paid' ? 'text-emerald-300' : 'text-amber-200'}>
-                        {p.status === 'paid' ? `выплачено ${formatDate(p.paid_at)}` : 'в обработке'}
+                        {p.status === 'paid' ? t.paidOn(cabinetDate(locale, p.paid_at)) : t.pending}
                       </span>
                       {p.status === 'pending' && (
                         <button
@@ -219,14 +243,14 @@ function PartnerRow({
                           }}
                           className="rounded-full border border-emerald-400/40 px-3 py-1 text-xs text-emerald-300 hover:bg-emerald-400/10"
                         >
-                          Отметить выплаченной
+                          {t.markPaid}
                         </button>
                       )}
                     </span>
                   </div>
                 ))}
               </div>
-              <AddPayout partnerId={partner.id} api={api} onChanged={refresh} />
+              <AddPayout t={t} partnerId={partner.id} api={api} onChanged={refresh} />
             </>
           )}
         </div>
@@ -238,12 +262,16 @@ function PartnerRow({
 /* ─────────────────────────── Строка клиента ─────────────────────────── */
 
 function ReferralRow({
+  locale,
+  t,
   referral,
   api,
   onChanged,
 }: {
+  locale: CabinetLocale
+  t: AdminStrings
   referral: Referral
-  api: (action: string, params?: Record<string, unknown>) => Promise<any>
+  api: ApiFn
   onChanged: () => void
 }) {
   const [status, setStatus] = useState<ReferralStatus>(referral.status)
@@ -272,7 +300,7 @@ function ReferralRow({
 
   return (
     <div className="flex flex-wrap items-center gap-2.5 rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm">
-      <span className="min-w-28 font-medium text-white">{referral.name || 'Без имени'}</span>
+      <span className="min-w-28 font-medium text-white">{referral.name || t.unnamed}</span>
       <span className="flex-1 truncate text-xs text-white/40">{referral.contact}</span>
       <select
         value={status}
@@ -281,29 +309,29 @@ function ReferralRow({
       >
         {STATUS_OPTIONS.map((s) => (
           <option key={s} value={s}>
-            {STATUS_META[s].label}
+            {STATUS_LABELS[locale][s]}
           </option>
         ))}
       </select>
       <select
         value={tariff}
         onChange={(e) => {
-          const t = e.target.value as Tariff
-          setTariff(t)
-          setPrice(TARIFF_META[t].price ? String(TARIFF_META[t].price) : '')
+          const tf = e.target.value as Tariff
+          setTariff(tf)
+          setPrice(TARIFF_META[tf].price ? String(TARIFF_META[tf].price) : '')
         }}
         className={INPUT}
       >
-        {TARIFF_OPTIONS.map((t) => (
-          <option key={t} value={t}>
-            {TARIFF_META[t].label}
+        {TARIFF_OPTIONS.map((tf) => (
+          <option key={tf} value={tf}>
+            {TARIFF_META[tf].label}
           </option>
         ))}
       </select>
       <input
         value={price}
         onChange={(e) => setPrice(e.target.value.replace(/[^\d.]/g, ''))}
-        placeholder="€/мес"
+        placeholder={t.pricePlaceholder}
         className={`${INPUT} w-20`}
         inputMode="decimal"
       />
@@ -317,19 +345,19 @@ function ReferralRow({
             : 'cursor-not-allowed bg-white/10 text-white/35'
         }`}
       >
-        {busy ? '…' : 'Сохранить'}
+        {busy ? '…' : t.save}
       </button>
       <button
         type="button"
         onClick={async () => {
-          if (window.confirm(`Удалить клиента «${referral.name || 'Без имени'}»?`)) {
+          if (window.confirm(t.delConfirm(referral.name || t.unnamed))) {
             await api('delete_referral', { id: referral.id })
             onChanged()
           }
         }}
         className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/40 hover:border-red-400/40 hover:text-red-300"
       >
-        Удалить
+        {t.del}
       </button>
     </div>
   )
@@ -338,12 +366,14 @@ function ReferralRow({
 /* ─────────────────────────── Добавление ─────────────────────────── */
 
 function AddReferral({
+  t,
   partnerId,
   api,
   onChanged,
 }: {
+  t: AdminStrings
   partnerId: string
-  api: (action: string, params?: Record<string, unknown>) => Promise<any>
+  api: ApiFn
   onChanged: () => void
 }) {
   const [name, setName] = useState('')
@@ -355,13 +385,13 @@ function AddReferral({
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Имя клиента"
+        placeholder={t.addClientName}
         className={`${INPUT} flex-1 min-w-32 !py-2`}
       />
       <input
         value={contact}
         onChange={(e) => setContact(e.target.value)}
-        placeholder="Контакт"
+        placeholder={t.addClientContact}
         className={`${INPUT} flex-1 min-w-32 !py-2`}
       />
       <button
@@ -378,19 +408,21 @@ function AddReferral({
         className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-2 text-xs text-white/70 transition-colors hover:border-white/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
       >
         <Plus size={13} />
-        Добавить клиента
+        {t.addClient}
       </button>
     </div>
   )
 }
 
 function AddPayout({
+  t,
   partnerId,
   api,
   onChanged,
 }: {
+  t: AdminStrings
   partnerId: string
-  api: (action: string, params?: Record<string, unknown>) => Promise<any>
+  api: ApiFn
   onChanged: () => void
 }) {
   const [amount, setAmount] = useState('')
@@ -401,7 +433,7 @@ function AddPayout({
       <input
         value={amount}
         onChange={(e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))}
-        placeholder="Сумма, €"
+        placeholder={t.amountPlaceholder}
         className={`${INPUT} w-28 !py-2`}
         inputMode="decimal"
       />
@@ -418,7 +450,7 @@ function AddPayout({
         className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-2 text-xs text-white/70 transition-colors hover:border-white/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
       >
         <Plus size={13} />
-        Добавить выплату
+        {t.addPayout}
       </button>
     </div>
   )
