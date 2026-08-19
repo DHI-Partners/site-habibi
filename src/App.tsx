@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ContactProvider } from './components/ContactProvider'
 import Hero from './components/Hero'
@@ -24,6 +24,18 @@ import EnModulePage from './components/modules/en/EnModulePage'
 import ArModulePage from './components/modules/ar/ArModulePage'
 import PartnerPage from './components/partner/PartnerPage'
 import EnPartnerPage from './components/partner/en/EnPartnerPage'
+import RefRedirect from './components/partner/RefRedirect'
+
+// Кабинет партнёра грузим отдельным чанком: лендингу Supabase не нужен.
+const RegisterPage = lazy(() => import('./components/partner/cabinet/RegisterPage'))
+const LoginPage = lazy(() => import('./components/partner/cabinet/LoginPage'))
+const DashboardPage = lazy(() => import('./components/partner/cabinet/DashboardPage'))
+const AdminPage = lazy(() => import('./components/partner/cabinet/AdminPage'))
+
+/** Чёрный экран на время догрузки чанка кабинета — без белой вспышки. */
+function Lazy({ children }: { children: React.ReactNode }) {
+  return <Suspense fallback={<div className="min-h-screen w-full bg-black" />}>{children}</Suspense>
+}
 
 function LandingPage() {
   // Базовый язык документа — английский (index.html); русская версия переопределяет его на время показа.
@@ -124,6 +136,12 @@ export default function App() {
       <Route path="/ar/modules/:slug" element={<ArModulePage />} />
       {/* Партнёрская программа (RU). /partner — короткая ссылка на неё же. */}
       <Route path="/ru/partners" element={<PartnerPage />} />
+      {/* Личный кабинет партнёра + вход по реферальной ссылке */}
+      <Route path="/ref/:slug" element={<RefRedirect />} />
+      <Route path="/ru/partners/register" element={<Lazy><RegisterPage /></Lazy>} />
+      <Route path="/ru/partners/login" element={<Lazy><LoginPage /></Lazy>} />
+      <Route path="/ru/partners/dashboard" element={<Lazy><DashboardPage /></Lazy>} />
+      <Route path="/ru/partners/admin" element={<Lazy><AdminPage /></Lazy>} />
       <Route path="/partner" element={<Navigate to="/ru/partners" replace />} />
       <Route path="/partners" element={<EnPartnerPage />} />
       <Route path="/en/partners" element={<Navigate to="/partners" replace />} />

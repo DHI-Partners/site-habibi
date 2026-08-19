@@ -1,6 +1,5 @@
+import { useNavigate } from 'react-router-dom'
 import { LiquidButton } from '../ui/liquid-glass-button'
-import { useContact } from '../ContactProvider'
-import { PARTNER_FORM } from './data'
 
 // Ссылки абсолютные: со страницы /ru/partners хэш-якоря главной работают
 // только вместе с путём — доскроллом занимается HashScroll в App.tsx.
@@ -14,7 +13,7 @@ const FOOTER_LINKS = [
 ]
 
 export default function PartnerFooter() {
-  const { open } = useContact()
+  const navigate = useNavigate()
 
   return (
     <footer className="bg-black px-6 py-14 md:px-12 lg:px-16">
@@ -45,11 +44,17 @@ export default function PartnerFooter() {
           <div className="flex flex-col gap-3">
             <LiquidButton
               size="sm"
-              onClick={() => open(PARTNER_FORM.label, PARTNER_FORM.options)}
+              onClick={() => navigate('/ru/partners/register')}
               className="w-fit rounded-full text-white"
             >
               Стать партнёром
             </LiquidButton>
+            <a
+              href="/ru/partners/login"
+              className="text-sm text-white/60 transition-colors hover:text-white"
+            >
+              Войти в кабинет
+            </a>
           </div>
         </div>
 

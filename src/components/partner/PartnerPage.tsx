@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, Check, Sparkles, TrendingUp } from 'lucide-react'
-import { ContactProvider, useContact } from '../ContactProvider'
+import { Link, useNavigate } from 'react-router-dom'
+import { ContactProvider } from '../ContactProvider'
 import { Reveal } from '../Reveal'
 import { LiquidButton } from '../ui/liquid-glass-button'
 import DigitalHeart from '../DigitalHeart'
@@ -10,6 +11,7 @@ import Banknotes from './Banknotes'
 import GoldRain from './GoldRain'
 import PartnerFooter from './PartnerFooter'
 import AiChatWidget from '../AiChatWidget'
+import { CARD, Pill, SectionTag, card, renderRich } from './ui'
 import {
   AUDIENCES,
   COMMISSION_LEVELS,
@@ -20,7 +22,6 @@ import {
   FINAL_CHAIN,
   GROWTH_STEPS,
   OPPORTUNITIES,
-  PARTNER_FORM,
   PRICE_PRO,
   RATE_HIGH,
   RATE_LOW,
@@ -39,55 +40,6 @@ const CLOSING_VIDEO =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260424_064411_9e9d7f84-9277-41f4-ab10-59172d89e6be.mp4'
 
 /* ─────────────────────────── Примитивы ─────────────────────────── */
-
-/** Простой рендер **жирного** внутри абзаца (как в Faq.tsx). */
-function renderRich(text: string) {
-  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-    part.startsWith('**') && part.endsWith('**') ? (
-      <strong key={i} className="font-semibold text-white/90">
-        {part.slice(2, -2)}
-      </strong>
-    ) : (
-      part
-    ),
-  )
-}
-
-/**
- * Маркер раздела: линия во всю ширину + подпись на ней.
- * Читается как «здесь начинается новый раздел» ещё до чтения заголовка.
- * Номер раздела намеренно не ставим — он бы спорил с нумерацией шагов 01–05.
- */
-function SectionTag({
-  children,
-  divider = true,
-}: {
-  children: string
-  /** Линия-разделитель над подписью (в герое не нужна). */
-  divider?: boolean
-}) {
-  return (
-    <div className="mb-5">
-      {divider && (
-        <div className="mb-6 flex items-center gap-3">
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.95)]" />
-          <span className="h-px flex-1 bg-gradient-to-r from-emerald-400/55 via-white/15 to-transparent" />
-        </div>
-      )}
-      <span className="inline-flex items-center gap-2.5 rounded-full border border-emerald-400/35 bg-emerald-400/[0.1] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-sm">
-        {children}
-      </span>
-    </div>
-  )
-}
-
-function Pill({ children }: { children: ReactNode }) {
-  return (
-    <span className="whitespace-nowrap rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/85">
-      {children}
-    </span>
-  )
-}
 
 function Section({
   id,
@@ -137,34 +89,12 @@ function SectionHead({
   )
 }
 
-/**
- * Подсветка карточек: мягкий свет сверху внутри блока + тонкая световая кромка,
- * на наведении — свечение по контуру. Три тона: нейтральный, изумрудный (акцент),
- * янтарный (премиум).
- */
-const CARD_BASE =
-  'relative rounded-2xl border p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5'
-
-const CARD_TONES = {
-  plain:
-    'border-white/12 bg-gradient-to-b from-white/[0.07] via-white/[0.025] to-transparent shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:border-white/25 hover:shadow-[0_18px_44px_-22px_rgba(0,0,0,0.95),0_0_32px_-14px_rgba(255,255,255,0.3),inset_0_1px_0_rgba(255,255,255,0.16)]',
-  emerald:
-    'border-emerald-400/30 bg-gradient-to-b from-emerald-400/[0.13] via-emerald-400/[0.04] to-transparent shadow-[inset_0_1px_0_rgba(52,211,153,0.2)] hover:border-emerald-400/50 hover:shadow-[0_18px_44px_-22px_rgba(0,0,0,0.95),0_0_36px_-12px_rgba(52,211,153,0.45),inset_0_1px_0_rgba(52,211,153,0.3)]',
-  amber:
-    'border-amber-300/30 bg-gradient-to-b from-amber-300/[0.12] via-amber-300/[0.04] to-transparent shadow-[inset_0_1px_0_rgba(252,211,77,0.2)] hover:border-amber-300/50 hover:shadow-[0_18px_44px_-22px_rgba(0,0,0,0.95),0_0_36px_-12px_rgba(252,211,77,0.42),inset_0_1px_0_rgba(252,211,77,0.3)]',
-} as const
-
-function card(tone: keyof typeof CARD_TONES = 'plain', extra = '') {
-  return `${CARD_BASE} ${CARD_TONES[tone]} ${extra}`.trim()
-}
-
-const CARD = card()
 
 /* ─────────────────────────── Страница ─────────────────────────── */
 
 function PartnerPageContent() {
-  const { open } = useContact()
-  const apply = () => open(PARTNER_FORM.label, PARTNER_FORM.options)
+  const navigate = useNavigate()
+  const apply = () => navigate('/ru/partners/register')
 
   useEffect(() => {
     const html = document.documentElement
@@ -200,10 +130,18 @@ function PartnerPageContent() {
             <ArrowLeft size={16} />
             На главную
           </a>
-          <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-white/70">
-            Habibi
-            <DigitalHeart className="heart-beat h-[12px] w-auto text-emerald-400" />
-          </span>
+          <div className="flex items-center gap-5">
+            <Link
+              to="/ru/partners/login"
+              className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/75 transition-colors hover:border-white/40 hover:text-white"
+            >
+              Войти в кабинет
+            </Link>
+            <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-white/70">
+              Habibi
+              <DigitalHeart className="heart-beat h-[12px] w-auto text-emerald-400" />
+            </span>
+          </div>
         </header>
 
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-16 md:px-12 md:pb-32 md:pt-24 lg:px-16">
@@ -600,6 +538,21 @@ function PartnerPageContent() {
                 ставка 30% распространяется на всю активную базу.
               </p>
             </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <div className="mt-8 flex flex-wrap items-center gap-3.5">
+            <LiquidButton size="xl" onClick={apply} className="rounded-full text-white">
+              Создать кабинет
+              <ArrowRight size={18} />
+            </LiquidButton>
+            <Link
+              to="/ru/partners/login"
+              className="rounded-full border border-white/25 px-8 py-3.5 text-base font-medium text-white transition-colors hover:border-white/50"
+            >
+              Уже партнёр? Войти
+            </Link>
           </div>
         </Reveal>
       </Section>

@@ -69,6 +69,13 @@ export default function ContactModal({
     setSending(true)
     setError(false)
     const channelLabel = channel === 'telegram' ? 'Telegram' : 'WhatsApp'
+    // Заявка пришла по партнёрской ссылке? Тогда атрибутируем её партнёру.
+    let refSlug = ''
+    try {
+      refSlug = localStorage.getItem('habibi_ref') ?? ''
+    } catch {
+      /* localStorage недоступен */
+    }
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -82,11 +89,27 @@ export default function ContactModal({
           'Способ связи': channelLabel,
           [channelLabel]: contact,
           email, // email клиента → Reply-To
+          ...(refSlug ? { 'Партнёр': refSlug } : {}),
         }),
       })
       const data = await res.json()
       if (data.success) {
         setSubmitted(true)
+        if (refSlug) {
+          fetch('/api/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              type: 'lead',
+              slug: refSlug,
+              name,
+              channel,
+              contact,
+              email,
+            }),
+          }).catch(() => {})
+        }
       } else {
         setError(true)
       }

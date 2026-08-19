@@ -4,6 +4,15 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    // Порт из окружения (preview-запуск может назначить свой), иначе 5173.
+    port: Number(process.env.PORT) || 5173,
+    // Serverless-функции локально обслуживает `npm run dev:api` (vercel dev):
+    // запусти его рядом — и /api/* с vite-сервера попадёт туда.
+    proxy: {
+      '/api': `http://localhost:${process.env.API_PORT || 5181}`,
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
