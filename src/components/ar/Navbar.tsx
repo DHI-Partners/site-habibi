@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { LiquidButton } from '../ui/liquid-glass-button'
 import { useContact } from './ContactProvider'
+import DigitalHeart from '../DigitalHeart'
 import LangSwitcher from '../LangSwitcher'
 
 const NAV_LINKS = [
@@ -22,8 +23,9 @@ export default function Navbar() {
         {/* الشعار + روابط سطح المكتب */}
         <div className="flex items-center gap-12">
           <a href="#top" className="flex flex-col leading-none">
-            <span className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <span className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               Habibi
+              <DigitalHeart className="heart-beat h-[17px] w-auto text-emerald-400 sm:h-[19px]" />
             </span>
             <span className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-white/45 sm:text-[11px]">
               منظومة رقمية متكاملة لأعمالك
@@ -83,6 +85,9 @@ export default function Navbar() {
             mobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
+          <div className="mb-8 w-fit">
+            <LangSwitcher current="ar" />
+          </div>
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
@@ -103,9 +108,6 @@ export default function Navbar() {
           >
             ابدأ مجانًا
           </LiquidButton>
-          <div className="mt-8 w-fit">
-            <LangSwitcher current="ar" />
-          </div>
         </div>
       </div>
     </>
