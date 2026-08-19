@@ -22,6 +22,7 @@ export default defineConfig({
         ar: fileURLToPath(new URL('./ar.html', import.meta.url)),
         en: fileURLToPath(new URL('./en.html', import.meta.url)),
         partner: fileURLToPath(new URL('./partner.html', import.meta.url)),
+        partnerEn: fileURLToPath(new URL('./partner-en.html', import.meta.url)),
       },
     },
   },

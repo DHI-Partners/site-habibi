@@ -9,6 +9,10 @@ interface ContactModalProps {
   onClose: () => void
   /** Name of the selected plan — shown in the form header. */
   tierName?: string | null
+  /** Custom email subject (defaults to "New request from the Habibi site — plan …"). */
+  subject?: string
+  /** Custom form subtitle (defaults to "Plan X. Leave your contacts…"). */
+  heading?: string
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -16,7 +20,13 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 // Public Web3Forms key (submissions go to the linked mailbox).
 const WEB3FORMS_ACCESS_KEY = '686dfc9a-134b-42f6-b0ee-8cc7f9451edb'
 
-export default function ContactModal({ open, onClose, tierName }: ContactModalProps) {
+export default function ContactModal({
+  open,
+  onClose,
+  tierName,
+  subject,
+  heading,
+}: ContactModalProps) {
   const [name, setName] = useState('')
   const [channel, setChannel] = useState<Channel | null>(null)
   const [contact, setContact] = useState('')
@@ -65,7 +75,7 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `New request from the Habibi site — plan ${tierName || '—'}`,
+          subject: subject ?? `New request from the Habibi site — plan ${tierName || '—'}`,
           from_name: 'Habibi — website',
           Name: name,
           Plan: tierName || '—',
@@ -112,7 +122,9 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
           <form onSubmit={handleSubmit}>
             <h3 className="text-2xl font-semibold tracking-tight text-white">Request a demo</h3>
             <p className="mt-2 text-sm leading-relaxed text-white/55">
-              {tierName ? (
+              {heading ? (
+                heading
+              ) : tierName ? (
                 <>
                   Plan{' '}
                   <span className="font-medium text-white">{tierName}</span>. Leave your contacts —

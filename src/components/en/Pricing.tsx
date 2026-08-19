@@ -5,7 +5,8 @@ import { useContact } from './ContactProvider'
 const VIDEO_URL =
   'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
 
-const TIERS: TierType[] = [
+/** Source of truth for EN plans — also used by the partner page (components/partner/en). */
+export const TIERS: TierType[] = [
   {
     name: 'Habibi',
     priceMonthly: '19',
