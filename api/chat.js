@@ -107,6 +107,9 @@ function validate(body) {
   const slug = body.module
   const moduleSlug = slug && MODULE_TITLES[lang][slug] ? slug : null
 
+  // Тип страницы — тоже строгий список, а не свободный текст с клиента.
+  const page = body.page === 'partner' ? 'partner' : null
+
   const messages = body.messages
   if (!Array.isArray(messages) || messages.length === 0) return { error: 'bad_messages' }
   if (messages.length > MAX_HISTORY_MESSAGES) return { error: 'history_too_long' }
@@ -124,6 +127,7 @@ function validate(body) {
   return {
     lang,
     moduleSlug,
+    page,
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
   }
 }
@@ -133,12 +137,16 @@ function validate(body) {
  * Идёт ОТДЕЛЬНЫМ блоком после брейкпоинта кеша — иначе кеш промахивается
  * на каждом запросе и стоимость вырастает в разы.
  */
-function pageContext(lang, moduleSlug) {
+function pageContext(lang, moduleSlug, page) {
   const currency = lang === 'ar' ? 'долларах США' : 'евро'
-  const page = moduleSlug
-    ? ` Посетитель открыл страницу модуля «${MODULE_TITLES[lang][moduleSlug]}» — учитывай это, если вопрос без явного контекста.`
-    : ''
-  return `Язык страницы: ${LANGS[lang]}. Цены этому посетителю называй в ${currency}.${page}`
+  let where = ''
+  if (page === 'partner') {
+    where =
+      ' Посетитель открыл страницу партнёрской программы — скорее всего это будущий партнёр, а не покупатель. Веди разговор по правилам для будущего партнёра.'
+  } else if (moduleSlug) {
+    where = ` Посетитель открыл страницу модуля «${MODULE_TITLES[lang][moduleSlug]}» — учитывай это, если вопрос без явного контекста.`
+  }
+  return `Язык страницы: ${LANGS[lang]}. Цены этому посетителю называй в ${currency}.${where}`
 }
 
 function sse(res, event, data) {
@@ -233,7 +241,7 @@ export default async function handler(req, res) {
     res.status(400).json({ ok: false, error: parsed.error })
     return
   }
-  const { lang, moduleSlug, messages } = parsed
+  const { lang, moduleSlug, page, messages } = parsed
 
   // Дальше отвечаем потоком: статус уже отправлен, поэтому все последующие
   // ошибки уходят внутрь потока событием `error`, а не HTTP-статусом.
@@ -266,7 +274,7 @@ export default async function handler(req, res) {
             text: `${SYSTEM_RULES}\n\n${KB}`,
             cache_control: { type: 'ephemeral' },
           },
-          { type: 'text', text: pageContext(lang, moduleSlug) },
+          { type: 'text', text: pageContext(lang, moduleSlug, page) },
         ],
         messages,
       },
@@ -295,6 +303,7 @@ export default async function handler(req, res) {
       JSON.stringify({
         lang,
         module: moduleSlug,
+        page,
         turns: messages.length,
         cache_write: final.usage.cache_creation_input_tokens,
         cache_read: final.usage.cache_read_input_tokens,

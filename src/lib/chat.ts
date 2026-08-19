@@ -43,9 +43,13 @@ function toErrorCode(value: unknown): ChatErrorCode {
   return KNOWN_ERRORS.includes(value as ChatErrorCode) ? (value as ChatErrorCode) : 'unknown'
 }
 
+export type ChatPage = 'partner'
+
 export interface StreamChatOptions {
   lang: ChatLang
   moduleSlug?: string
+  /** Тип страницы: на партнёрской у разговора другая цель. */
+  page?: ChatPage
   messages: ChatMessage[]
   signal: AbortSignal
   /** Вызывается на каждый кусочек текста. */
@@ -63,6 +67,7 @@ export interface StreamChatOptions {
 export async function streamChat({
   lang,
   moduleSlug,
+  page,
   messages,
   signal,
   onDelta,
@@ -76,6 +81,7 @@ export async function streamChat({
       body: JSON.stringify({
         lang,
         module: moduleSlug ?? null,
+        page: page ?? null,
         messages: messages.slice(-HISTORY_LIMIT),
       }),
       signal,

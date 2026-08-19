@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Mic, MessageCircle, RotateCcw, Send, Sparkles, Square, X } from 'lucide-react'
 import { useChat } from '../../hooks/useChat'
 import { useSpeechInput } from '../../hooks/useSpeechInput'
-import { MESSAGE_LIMIT, type ChatErrorCode, type ChatLang } from '../../lib/chat'
+import { MESSAGE_LIMIT, type ChatErrorCode, type ChatLang, type ChatPage } from '../../lib/chat'
 
 export interface ChatLabels {
   title: string
@@ -37,6 +37,7 @@ export interface ChatPanelProps {
   fontClass: string
   whatsappUrl: string
   moduleSlug?: string
+  page?: ChatPage
   onClose: () => void
   /** Открывает существующую форму заявки сайта. */
   onRequestContact: () => void
@@ -50,12 +51,14 @@ export default function ChatPanel({
   fontClass,
   whatsappUrl,
   moduleSlug,
+  page,
   onClose,
   onRequestContact,
 }: ChatPanelProps) {
   const { messages, status, errorCode, contactSuggested, send, retry, reset, canSend } = useChat({
     lang,
     moduleSlug,
+    page,
   })
   const [draft, setDraft] = useState('')
 

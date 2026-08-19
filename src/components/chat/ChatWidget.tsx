@@ -1,7 +1,7 @@
 import { Suspense, lazy, useState } from 'react'
 import ChatLauncher from './ChatLauncher'
 import type { ChatLabels } from './ChatPanel'
-import type { ChatLang } from '../../lib/chat'
+import type { ChatLang, ChatPage } from '../../lib/chat'
 
 // Панель подтягивается только при первом открытии — на лендинге эагерно
 // грузится лишь кнопка, иначе просядет скорость первой отрисовки.
@@ -18,6 +18,8 @@ export interface ChatWidgetProps {
   whatsappUrl: string
   openLabel: string
   moduleSlug?: string
+  /** Тип страницы: на партнёрской у разговора другая цель. */
+  page?: ChatPage
   /** Открывает форму заявки соответствующего языка. */
   onRequestContact: () => void
 }
@@ -32,6 +34,7 @@ export default function ChatWidget({
   whatsappUrl,
   openLabel,
   moduleSlug,
+  page,
   onRequestContact,
 }: ChatWidgetProps) {
   const [open, setOpen] = useState(false)
@@ -55,6 +58,7 @@ export default function ChatWidget({
             fontClass={fontClass}
             whatsappUrl={whatsappUrl}
             moduleSlug={moduleSlug}
+            page={page}
             onClose={() => setOpen(false)}
             onRequestContact={onRequestContact}
           />

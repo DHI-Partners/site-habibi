@@ -31,7 +31,19 @@ for (const value of prices('src/components/ar/Pricing.tsx', 'price')) {
   checks.push({ value, what: `цена ${value} $`, src: 'ar/Pricing.tsx' })
 }
 
-const missing = checks.filter(({ value }) => !new RegExp(`\\b${value}\\b`).test(kb))
+// Партнёрская программа: ставки и порог тоже продублированы в базе знаний.
+{
+  const partner = read('src/components/partner/data.ts')
+  const num = (name) => new RegExp(`${name} = ([\\d.]+)`).exec(partner)?.[1]
+  const low = num('RATE_LOW')
+  const high = num('RATE_HIGH')
+  const threshold = num('RATE_THRESHOLD')
+  if (low) checks.push({ value: `${Math.round(+low * 100)} %`, what: `ставка ${Math.round(+low * 100)} %`, src: 'partner/data.ts' })
+  if (high) checks.push({ value: `${Math.round(+high * 100)} %`, what: `ставка ${Math.round(+high * 100)} %`, src: 'partner/data.ts' })
+  if (threshold) checks.push({ value: threshold, what: `порог ${threshold} клиентов`, src: 'partner/data.ts' })
+}
+
+const missing = checks.filter(({ value }) => !kb.includes(String(value)))
 
 if (missing.length) {
   console.error('\napi/_kb.js разошёлся с тарифами на сайте — бот будет называть неверные цены.')

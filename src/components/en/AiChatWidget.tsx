@@ -1,5 +1,7 @@
 import ChatWidget, { type ChatLabels } from '../chat/ChatWidget'
 import { buildWhatsAppLink, useContact } from './ContactProvider'
+import { PARTNER_FORM } from '../partner/en/data'
+import type { ChatPage } from '../../lib/chat'
 
 const LABELS: ChatLabels = {
   title: 'Habibi assistant',
@@ -35,21 +37,41 @@ const LABELS: ChatLabels = {
   },
 }
 
+/** The partner page has a different goal, so it gets a different way in. */
+const PARTNER_LABELS: ChatLabels = {
+  ...LABELS,
+  subtitle: 'Answers questions about the partner programme',
+  greeting:
+    'Hi! I can walk you through the partner programme — rates, payouts, terms. What would you like to know?',
+  suggestions: ['How much can I earn?', 'What are the rates?', 'How do payouts work?'],
+  contactCta: 'Apply to the programme',
+}
+
 /** AI chat for the English version of the site. */
-export default function AiChatWidget({ moduleSlug }: { moduleSlug?: string }) {
+export default function AiChatWidget({
+  moduleSlug,
+  page,
+}: {
+  moduleSlug?: string
+  page?: ChatPage
+}) {
   const { open } = useContact()
+  const isPartner = page === 'partner'
 
   return (
     <ChatWidget
       lang="en"
-      labels={LABELS}
+      labels={isPartner ? PARTNER_LABELS : LABELS}
+      page={page}
       side="right"
       dir="ltr"
       fontClass="font-geist"
       whatsappUrl={buildWhatsAppLink('Hi 👋 I have a question about Habibi.')}
       openLabel="Open chat with the assistant"
       moduleSlug={moduleSlug}
-      onRequestContact={() => open()}
+      onRequestContact={() =>
+        isPartner ? open(PARTNER_FORM.label, PARTNER_FORM.options) : open()
+      }
     />
   )
 }

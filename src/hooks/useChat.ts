@@ -6,6 +6,7 @@ import {
   type ChatErrorCode,
   type ChatLang,
   type ChatMessage,
+  type ChatPage,
 } from '../lib/chat'
 
 export type ChatStatus = 'idle' | 'streaming' | 'error'
@@ -14,6 +15,8 @@ export interface UseChatOptions {
   lang: ChatLang
   /** Slug модуля, если чат открыт на странице модуля. */
   moduleSlug?: string
+  /** Тип страницы: на партнёрской у разговора другая цель. */
+  page?: ChatPage
 }
 
 export interface UseChatResult {
@@ -34,7 +37,7 @@ export interface UseChatResult {
  * Состояние диалога и работа с потоком ответа.
  * Диалог переживает переход между страницами через sessionStorage.
  */
-export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
+export function useChat({ lang, moduleSlug, page }: UseChatOptions): UseChatResult {
   const storageKey = `habibi-chat-${lang}`
 
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
@@ -84,6 +87,7 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
       const failure = await streamChat({
         lang,
         moduleSlug,
+        page,
         messages: history,
         signal: controller.signal,
         onContact: () => setContactSuggested(true),
@@ -122,7 +126,7 @@ export function useChat({ lang, moduleSlug }: UseChatOptions): UseChatResult {
         return prev
       })
     },
-    [lang, moduleSlug],
+    [lang, moduleSlug, page],
   )
 
   const send = useCallback(

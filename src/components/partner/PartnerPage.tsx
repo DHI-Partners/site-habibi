@@ -9,6 +9,7 @@ import EarningsCalculator from './EarningsCalculator'
 import Banknotes from './Banknotes'
 import GoldRain from './GoldRain'
 import PartnerFooter from './PartnerFooter'
+import AiChatWidget from '../AiChatWidget'
 import {
   AUDIENCES,
   COMMISSION_LEVELS,
@@ -816,6 +817,7 @@ function PartnerPageContent() {
       </section>
 
       <PartnerFooter />
+      <AiChatWidget page="partner" />
     </div>
   )
 }

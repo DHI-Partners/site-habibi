@@ -1,5 +1,7 @@
 import ChatWidget, { type ChatLabels } from './chat/ChatWidget'
 import { useContact } from './ContactProvider'
+import { PARTNER_FORM } from './partner/data'
+import type { ChatPage } from '../lib/chat'
 
 const WHATSAPP_URL = 'https://wa.me/359885282094'
 
@@ -37,21 +39,41 @@ const LABELS: ChatLabels = {
   },
 }
 
+/** На партнёрской странице у разговора другая цель — меняем и вход в него. */
+const PARTNER_LABELS: ChatLabels = {
+  ...LABELS,
+  subtitle: 'Отвечает на вопросы о партнёрской программе',
+  greeting:
+    'Здравствуйте! Расскажу про партнёрскую программу — ставки, выплаты, условия. Что интересует?',
+  suggestions: ['Сколько можно заработать?', 'Какие ставки?', 'Как получить выплату?'],
+  contactCta: 'Оставить заявку в программу',
+}
+
 /** ИИ-чат русской версии сайта. */
-export default function AiChatWidget({ moduleSlug }: { moduleSlug?: string }) {
+export default function AiChatWidget({
+  moduleSlug,
+  page,
+}: {
+  moduleSlug?: string
+  page?: ChatPage
+}) {
   const { open } = useContact()
+  const isPartner = page === 'partner'
 
   return (
     <ChatWidget
       lang="ru"
-      labels={LABELS}
+      labels={isPartner ? PARTNER_LABELS : LABELS}
+      page={page}
       side="right"
       dir="ltr"
       fontClass="font-geist"
       whatsappUrl={WHATSAPP_URL}
       openLabel="Открыть чат с консультантом"
       moduleSlug={moduleSlug}
-      onRequestContact={() => open()}
+      onRequestContact={() =>
+        isPartner ? open(PARTNER_FORM.label, PARTNER_FORM.options) : open()
+      }
     />
   )
 }
