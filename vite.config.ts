@@ -17,10 +17,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        // Две точки входа: русская (/) и арабская (/ar) — у каждой свои meta/OG-теги.
+        // Отдельные точки входа — у каждой свои meta/OG-теги.
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         ar: fileURLToPath(new URL('./ar.html', import.meta.url)),
         en: fileURLToPath(new URL('./en.html', import.meta.url)),
+        partner: fileURLToPath(new URL('./partner.html', import.meta.url)),
       },
     },
   },

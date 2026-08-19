@@ -22,6 +22,7 @@ import EnLandingPage from './components/en/EnLandingPage'
 import ModulePage from './components/modules/ModulePage'
 import EnModulePage from './components/modules/en/EnModulePage'
 import ArModulePage from './components/modules/ar/ArModulePage'
+import PartnerPage from './components/partner/PartnerPage'
 
 function LandingPage() {
   // Базовый язык документа — английский (index.html); русская версия переопределяет его на время показа.
@@ -120,7 +121,10 @@ export default function App() {
       <Route path="/moduli/:slug" element={<ModulePage />} />
       <Route path="/en/modules/:slug" element={<EnModulePage />} />
       <Route path="/ar/modules/:slug" element={<ArModulePage />} />
-      {/* Неизвестный адрес (в т.ч. старые ссылки на /partner) — на главную, а не пустая страница. */}
+      {/* Партнёрская программа (RU). /partner — короткая ссылка на неё же. */}
+      <Route path="/ru/partners" element={<PartnerPage />} />
+      <Route path="/partner" element={<Navigate to="/ru/partners" replace />} />
+      {/* Неизвестный адрес — на главную, а не пустая страница. */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
     </>

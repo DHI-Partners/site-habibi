@@ -2,6 +2,8 @@
   "rewrites": [
     { "source": "/ar", "destination": "/ar.html" },
     { "source": "/en", "destination": "/en.html" },
+    { "source": "/ru/partners", "destination": "/partner.html" },
+    { "source": "/partner", "destination": "/partner.html" },
     { "source": "/((?!api/).*)", "destination": "/" }
   ]
 }
