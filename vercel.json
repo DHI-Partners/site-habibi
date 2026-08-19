@@ -6,6 +6,7 @@
     { "source": "/ru/partners/:path*", "destination": "/partner.html" },
     { "source": "/partner", "destination": "/partner.html" },
     { "source": "/partners", "destination": "/partner-en.html" },
+    { "source": "/partners/:path*", "destination": "/partner-en.html" },
     { "source": "/((?!api/).*)", "destination": "/" }
   ]
 }

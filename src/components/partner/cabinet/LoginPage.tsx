@@ -4,13 +4,16 @@ import { Lock, Mail } from 'lucide-react'
 import { getSupabase, supabaseConfigured } from '../../../lib/supabase'
 import { card } from '../ui'
 import { CabinetShell, Field, FormError, NotConfigured, SubmitButton, TextInput, usePageMeta } from './CabinetShell'
+import { CABINET_PATHS, STRINGS, type CabinetLocale } from './i18n'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 type Mode = 'login' | 'forgot' | 'recovery'
 
-export default function LoginPage() {
-  usePageMeta('Вход в партнёрский кабинет — Habibi')
+export default function LoginPage({ locale = 'ru' }: { locale?: CabinetLocale }) {
+  const t = STRINGS[locale].login
+  const paths = CABINET_PATHS[locale]
+  usePageMeta(t.pageTitle, locale)
   const navigate = useNavigate()
 
   const [mode, setMode] = useState<Mode>('login')
@@ -31,8 +34,8 @@ export default function LoginPage() {
 
   if (!supabaseConfigured()) {
     return (
-      <CabinetShell tag="Вход" narrow>
-        <NotConfigured />
+      <CabinetShell tag={t.tag} narrow locale={locale}>
+        <NotConfigured locale={locale} />
       </CabinetShell>
     )
   }
@@ -49,57 +52,51 @@ export default function LoginPage() {
         if (!EMAIL_RE.test(email) || !password) return
         const { error: err } = await supabase.auth.signInWithPassword({ email, password })
         if (err) {
-          setError(
-            /confirm/i.test(err.message)
-              ? 'Email ещё не подтверждён — проверьте почту.'
-              : 'Неверный email или пароль.',
-          )
+          setError(/confirm/i.test(err.message) ? t.errNotConfirmed : t.errBadCreds)
           return
         }
-        navigate('/ru/partners/dashboard')
+        navigate(paths.dashboard)
       } else if (mode === 'forgot') {
         if (!EMAIL_RE.test(email)) return
         const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/ru/partners/login`,
+          redirectTo: `${window.location.origin}${paths.login}`,
         })
         if (err) {
-          setError('Не удалось отправить письмо. Попробуйте ещё раз.')
+          setError(t.errResetFail)
           return
         }
-        setNotice('Письмо со ссылкой для сброса пароля отправлено — проверьте почту.')
+        setNotice(t.resetSent)
       } else {
         if (password.length < 8) {
-          setError('Пароль должен быть не короче 8 символов.')
+          setError(t.errShortPassword)
           return
         }
         const { error: err } = await supabase.auth.updateUser({ password })
         if (err) {
-          setError('Не удалось сменить пароль. Запросите сброс ещё раз.')
+          setError(t.errUpdateFail)
           return
         }
-        navigate('/ru/partners/dashboard')
+        navigate(paths.dashboard)
       }
     } catch {
-      setError('Что-то пошло не так. Попробуйте ещё раз.')
+      setError(t.errGeneric)
     } finally {
       setSending(false)
     }
   }
 
   return (
-    <CabinetShell tag="Личный кабинет" narrow>
+    <CabinetShell tag={t.tag} narrow locale={locale}>
       <h1 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-        {mode === 'recovery' ? 'Новый пароль' : 'Вход в кабинет'}
+        {mode === 'recovery' ? t.h1Recovery : t.h1Login}
       </h1>
       <p className="mt-3 text-sm leading-relaxed text-white/60">
-        {mode === 'recovery'
-          ? 'Придумайте новый пароль для входа в партнёрский кабинет.'
-          : 'Статистика переходов, клиенты и доход — в твоём партнёрском кабинете.'}
+        {mode === 'recovery' ? t.leadRecovery : t.leadLogin}
       </p>
 
       <form onSubmit={handleSubmit} className={card('plain', 'mt-8')}>
         {mode !== 'recovery' && (
-          <Field label="Email" required>
+          <Field label={t.email} required>
             <TextInput
               icon={<Mail size={16} />}
               type="email"
@@ -112,7 +109,7 @@ export default function LoginPage() {
         )}
 
         {mode !== 'forgot' && (
-          <Field label={mode === 'recovery' ? 'Новый пароль' : 'Пароль'} required>
+          <Field label={mode === 'recovery' ? t.newPassword : t.password} required>
             <TextInput
               icon={<Lock size={16} />}
               type="password"
@@ -133,12 +130,12 @@ export default function LoginPage() {
           }
         >
           {sending
-            ? 'Секунду…'
+            ? t.submitting
             : mode === 'login'
-              ? 'Войти'
+              ? t.submitLogin
               : mode === 'forgot'
-                ? 'Сбросить пароль'
-                : 'Сохранить пароль'}
+                ? t.submitForgot
+                : t.submitRecovery}
         </SubmitButton>
         <FormError>{error}</FormError>
         {notice && <p className="mt-3 text-center text-xs text-emerald-300">{notice}</p>}
@@ -150,7 +147,7 @@ export default function LoginPage() {
           onClick={() => setMode('forgot')}
           className="mx-auto mt-5 block text-center text-sm text-white/50 transition-colors hover:text-white"
         >
-          Забыли пароль?
+          {t.forgot}
         </button>
       )}
       {mode === 'forgot' && (
@@ -159,14 +156,14 @@ export default function LoginPage() {
           onClick={() => setMode('login')}
           className="mx-auto mt-5 block text-center text-sm text-white/50 transition-colors hover:text-white"
         >
-          ← Назад ко входу
+          {t.backToLogin}
         </button>
       )}
 
       <p className="mt-6 text-center text-sm text-white/50">
-        Ещё нет аккаунта?{' '}
-        <Link to="/ru/partners/register" className="text-white underline-offset-4 hover:underline">
-          Стать партнёром
+        {t.noAccount}{' '}
+        <Link to={paths.register} className="text-white underline-offset-4 hover:underline">
+          {t.becomePartner}
         </Link>
       </p>
     </CabinetShell>

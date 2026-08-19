@@ -1,6 +1,5 @@
+import { useNavigate } from 'react-router-dom'
 import { LiquidButton } from '../../ui/liquid-glass-button'
-import { useContact } from '../../en/ContactProvider'
-import { PARTNER_FORM } from './data'
 
 // Absolute links: from /partners the landing anchors only work together with the
 // path — HashScroll in App.tsx takes care of the scrolling.
@@ -13,7 +12,7 @@ const FOOTER_LINKS = [
 ]
 
 export default function PartnerFooter() {
-  const { open } = useContact()
+  const navigate = useNavigate()
 
   return (
     <footer className="bg-black px-6 py-14 md:px-12 lg:px-16">
@@ -44,11 +43,17 @@ export default function PartnerFooter() {
           <div className="flex flex-col gap-3">
             <LiquidButton
               size="sm"
-              onClick={() => open(PARTNER_FORM.label, PARTNER_FORM.options)}
+              onClick={() => navigate('/partners/register')}
               className="w-fit rounded-full text-white"
             >
               Become a partner
             </LiquidButton>
+            <a
+              href="/partners/login"
+              className="text-sm text-white/60 transition-colors hover:text-white"
+            >
+              Sign in to your dashboard
+            </a>
           </div>
         </div>
 

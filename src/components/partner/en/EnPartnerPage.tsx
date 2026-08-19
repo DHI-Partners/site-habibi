@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, Check, Sparkles, TrendingUp } from 'lucide-react'
-import { ContactProvider, useContact } from '../../en/ContactProvider'
+import { Link, useNavigate } from 'react-router-dom'
+import { ContactProvider } from '../../en/ContactProvider'
 import { Reveal } from '../../Reveal'
 import { LiquidButton } from '../../ui/liquid-glass-button'
 import DigitalHeart from '../../DigitalHeart'
@@ -20,7 +21,6 @@ import {
   FINAL_CHAIN,
   GROWTH_STEPS,
   OPPORTUNITIES,
-  PARTNER_FORM,
   PRICE_PRO,
   RATE_HIGH,
   RATE_LOW,
@@ -162,8 +162,8 @@ const CARD = card()
 /* ─────────────────────────── Page ─────────────────────────── */
 
 function EnPartnerPageContent() {
-  const { open } = useContact()
-  const apply = () => open(PARTNER_FORM.label, PARTNER_FORM.options)
+  const navigate = useNavigate()
+  const apply = () => navigate('/partners/register')
 
   useEffect(() => {
     const html = document.documentElement
@@ -199,10 +199,18 @@ function EnPartnerPageContent() {
             <ArrowLeft size={16} />
             Back to home
           </a>
-          <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-white/70">
-            Habibi
-            <DigitalHeart className="heart-beat h-[12px] w-auto text-emerald-400" />
-          </span>
+          <div className="flex items-center gap-5">
+            <Link
+              to="/partners/login"
+              className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/75 transition-colors hover:border-white/40 hover:text-white"
+            >
+              Sign in
+            </Link>
+            <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-white/70">
+              Habibi
+              <DigitalHeart className="heart-beat h-[12px] w-auto text-emerald-400" />
+            </span>
+          </div>
         </header>
 
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-16 md:px-12 md:pb-32 md:pt-24 lg:px-16">
@@ -596,6 +604,21 @@ function EnPartnerPageContent() {
                 clients the 30% rate covers your entire active base.
               </p>
             </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <div className="mt-8 flex flex-wrap items-center gap-3.5">
+            <LiquidButton size="xl" onClick={apply} className="rounded-full text-white">
+              Create my dashboard
+              <ArrowRight size={18} />
+            </LiquidButton>
+            <Link
+              to="/partners/login"
+              className="rounded-full border border-white/25 px-8 py-3.5 text-base font-medium text-white transition-colors hover:border-white/50"
+            >
+              Already a partner? Sign in
+            </Link>
           </div>
         </Reveal>
       </Section>

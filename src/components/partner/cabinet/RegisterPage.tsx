@@ -4,6 +4,7 @@ import { ArrowRight, AtSign, Link2, Lock, Mail, MessageCircle, Send, User } from
 import { getSupabase, supabaseConfigured } from '../../../lib/supabase'
 import { card } from '../ui'
 import { CabinetShell, Field, FormError, NotConfigured, SubmitButton, TextInput, usePageMeta } from './CabinetShell'
+import { CABINET_PATHS, STRINGS, type CabinetLocale } from './i18n'
 import { SLUG_RE, refLink, suggestSlug } from './lib'
 import { useAuth } from './useAuth'
 
@@ -11,8 +12,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 type Channel = '' | 'whatsapp' | 'telegram'
 
-export default function RegisterPage() {
-  usePageMeta('Регистрация партнёра — Habibi')
+export default function RegisterPage({ locale = 'ru' }: { locale?: CabinetLocale }) {
+  const t = STRINGS[locale].register
+  const paths = CABINET_PATHS[locale]
+  usePageMeta(t.pageTitle, locale)
   const navigate = useNavigate()
   const { session, loading } = useAuth()
 
@@ -29,13 +32,13 @@ export default function RegisterPage() {
 
   // Уже вошёл — в кабинет (после успешной регистрации редиректит этот же эффект).
   useEffect(() => {
-    if (!loading && session && !sending && !needsConfirm) navigate('/ru/partners/dashboard')
-  }, [loading, session, sending, needsConfirm, navigate])
+    if (!loading && session && !sending && !needsConfirm) navigate(paths.dashboard)
+  }, [loading, session, sending, needsConfirm, navigate, paths.dashboard])
 
   if (!supabaseConfigured()) {
     return (
-      <CabinetShell tag="Регистрация" narrow>
-        <NotConfigured />
+      <CabinetShell tag={t.tag} narrow locale={locale}>
+        <NotConfigured locale={locale} />
       </CabinetShell>
     )
   }
@@ -61,18 +64,14 @@ export default function RegisterPage() {
       })
       if (rpcError) throw rpcError
       if (taken) {
-        setError('Эта ссылка уже занята — выберите другое имя для ссылки.')
+        setError(t.errSlugTaken)
         return
       }
 
       // 2. Аккаунт.
       const { data, error: signUpError } = await supabase.auth.signUp({ email, password })
       if (signUpError) {
-        setError(
-          /already registered/i.test(signUpError.message)
-            ? 'Такой email уже зарегистрирован — попробуйте войти.'
-            : 'Не удалось создать аккаунт. Проверьте данные и попробуйте ещё раз.',
-        )
+        setError(/already registered/i.test(signUpError.message) ? t.errEmailExists : t.errSignUp)
         return
       }
 
@@ -92,56 +91,48 @@ export default function RegisterPage() {
       })
       if (insertError) {
         // Гонка за slug: аккаунт уже есть, дадим дозаполнить профиль в кабинете.
-        navigate('/ru/partners/dashboard')
+        navigate(paths.dashboard)
         return
       }
 
-      navigate('/ru/partners/dashboard')
+      navigate(paths.dashboard)
     } catch {
-      setError('Что-то пошло не так. Попробуйте ещё раз.')
+      setError(t.errGeneric)
     } finally {
       setSending(false)
     }
   }
 
   return (
-    <CabinetShell tag="Регистрация партнёра" narrow>
-      <h1 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-        Создай партнёрский аккаунт
-      </h1>
-      <p className="mt-3 text-sm leading-relaxed text-white/60">
-        Бесплатно. Сразу после регистрации ты получишь персональную реферальную ссылку и доступ к
-        кабинету со статистикой.
-      </p>
+    <CabinetShell tag={t.tag} narrow locale={locale}>
+      <h1 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">{t.h1}</h1>
+      <p className="mt-3 text-sm leading-relaxed text-white/60">{t.lead}</p>
 
       {needsConfirm ? (
         <div className={card('emerald', 'mt-8')}>
-          <h2 className="text-lg font-medium text-white">Подтвердите email</h2>
-          <p className="mt-2 text-sm leading-relaxed text-white/60">
-            Мы отправили письмо на <span className="text-white">{email}</span>. Перейдите по ссылке
-            из письма, затем войдите в кабинет.
-          </p>
+          <h2 className="text-lg font-medium text-white">{t.confirmTitle}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-white/60">{t.confirmText(email)}</p>
           <Link
-            to="/ru/partners/login"
+            to={paths.login}
             className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/50"
           >
-            Войти
+            {t.confirmLogin}
             <ArrowRight size={15} />
           </Link>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className={card('plain', 'mt-8')}>
-          <Field label="Имя" required>
+          <Field label={t.name} required>
             <TextInput
               icon={<User size={16} />}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Как к вам обращаться"
+              placeholder={t.namePlaceholder}
               autoComplete="name"
             />
           </Field>
 
-          <Field label="Email" required>
+          <Field label={t.email} required>
             <TextInput
               icon={<Mail size={16} />}
               type="email"
@@ -152,7 +143,7 @@ export default function RegisterPage() {
             />
           </Field>
 
-          <Field label="Пароль" required hint="Минимум 8 символов.">
+          <Field label={t.password} required hint={t.passwordHint}>
             <TextInput
               icon={<Lock size={16} />}
               type="password"
@@ -164,13 +155,9 @@ export default function RegisterPage() {
           </Field>
 
           <Field
-            label="Имя для ссылки"
+            label={t.slug}
             required
-            hint={
-              SLUG_RE.test(autoSlug)
-                ? `Твоя ссылка: ${refLink(autoSlug)}`
-                : 'Латиница, цифры и дефис, от 3 до 30 символов.'
-            }
+            hint={SLUG_RE.test(autoSlug) ? `${t.slugYourLink} ${refLink(autoSlug)}` : t.slugRules}
           >
             <TextInput
               icon={<Link2 size={16} />}
@@ -184,7 +171,7 @@ export default function RegisterPage() {
             />
           </Field>
 
-          <Field label="Как с тобой связаться" hint="Необязательно — для вопросов по выплатам.">
+          <Field label={t.contact} hint={t.contactHint}>
             <div className="grid grid-cols-2 gap-2">
               <ChannelToggle
                 active={channel === 'whatsapp'}
@@ -207,26 +194,24 @@ export default function RegisterPage() {
                   icon={<AtSign size={16} />}
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
-                  placeholder={channel === 'telegram' ? '@username' : '+966 5X XXX XXXX'}
+                  placeholder={channel === 'telegram' ? t.telegramPlaceholder : t.whatsappPlaceholder}
                 />
               </div>
             )}
           </Field>
 
           <SubmitButton disabled={!valid || sending}>
-            {sending ? 'Создаём…' : 'Создать кабинет'}
+            {sending ? t.submitting : t.submit}
           </SubmitButton>
           <FormError>{error}</FormError>
-          <p className="mt-3 text-center text-xs text-white/35">
-            Нажимая кнопку, вы соглашаетесь с условиями партнёрской программы.
-          </p>
+          <p className="mt-3 text-center text-xs text-white/35">{t.consent}</p>
         </form>
       )}
 
       <p className="mt-6 text-center text-sm text-white/50">
-        Уже есть аккаунт?{' '}
-        <Link to="/ru/partners/login" className="text-white underline-offset-4 hover:underline">
-          Войти
+        {t.haveAccount}{' '}
+        <Link to={paths.login} className="text-white underline-offset-4 hover:underline">
+          {t.signIn}
         </Link>
       </p>
     </CabinetShell>

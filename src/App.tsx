@@ -142,6 +142,10 @@ export default function App() {
       <Route path="/ru/partners/login" element={<Lazy><LoginPage /></Lazy>} />
       <Route path="/ru/partners/dashboard" element={<Lazy><DashboardPage /></Lazy>} />
       <Route path="/ru/partners/admin" element={<Lazy><AdminPage /></Lazy>} />
+      {/* Английская версия кабинета — при английской партнёрской странице /partners */}
+      <Route path="/partners/register" element={<Lazy><RegisterPage locale="en" /></Lazy>} />
+      <Route path="/partners/login" element={<Lazy><LoginPage locale="en" /></Lazy>} />
+      <Route path="/partners/dashboard" element={<Lazy><DashboardPage locale="en" /></Lazy>} />
       <Route path="/partner" element={<Navigate to="/ru/partners" replace />} />
       <Route path="/partners" element={<EnPartnerPage />} />
       <Route path="/en/partners" element={<Navigate to="/partners" replace />} />

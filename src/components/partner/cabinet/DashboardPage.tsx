@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, Copy, Link2, User } from 'lucide-react'
 import { getSupabase, supabaseConfigured } from '../../../lib/supabase'
-import { DASHBOARD_METRICS, RATE_THRESHOLD, formatMoney } from '../data'
-import { card, plural } from '../ui'
+import { DASHBOARD_METRICS as METRICS_RU, RATE_THRESHOLD } from '../data'
+import { DASHBOARD_METRICS as METRICS_EN } from '../en/data'
+import { card } from '../ui'
 import {
   CabinetShell,
   Field,
@@ -14,11 +15,19 @@ import {
   usePageMeta,
 } from './CabinetShell'
 import {
+  CABINET_PATHS,
+  STATUS_LABELS,
+  STRINGS,
+  cabinetDate,
+  cabinetMoney,
+  clientsLeftLine,
+  type CabinetLocale,
+} from './i18n'
+import {
   SLUG_RE,
   STATUS_META,
   TARIFF_META,
   computeEarnings,
-  formatDate,
   refLink,
   suggestSlug,
   type Payout,
@@ -28,8 +37,10 @@ import {
 } from './lib'
 import { useAuth } from './useAuth'
 
-export default function DashboardPage() {
-  usePageMeta('Партнёрский кабинет — Habibi')
+export default function DashboardPage({ locale = 'ru' }: { locale?: CabinetLocale }) {
+  const t = STRINGS[locale].dashboard
+  const paths = CABINET_PATHS[locale]
+  usePageMeta(t.pageTitle, locale)
   const navigate = useNavigate()
   const { session, loading: authLoading } = useAuth()
 
@@ -73,24 +84,24 @@ export default function DashboardPage() {
   useEffect(() => {
     if (authLoading) return
     if (!session) {
-      navigate('/ru/partners/login')
+      navigate(paths.login)
       return
     }
     load(session.user.id)
-  }, [authLoading, session, navigate, load])
+  }, [authLoading, session, navigate, load, paths.login])
 
   if (!supabaseConfigured()) {
     return (
-      <CabinetShell tag="Личный кабинет" narrow>
-        <NotConfigured />
+      <CabinetShell tag={t.tag} narrow locale={locale}>
+        <NotConfigured locale={locale} />
       </CabinetShell>
     )
   }
 
   if (authLoading || (loading && !noProfile)) {
     return (
-      <CabinetShell tag="Личный кабинет" showSignOut>
-        <p className="text-sm text-white/50">Загружаем кабинет…</p>
+      <CabinetShell tag={t.tag} showSignOut locale={locale}>
+        <p className="text-sm text-white/50">{t.loading}</p>
       </CabinetShell>
     )
   }
@@ -98,6 +109,7 @@ export default function DashboardPage() {
   if (noProfile && session) {
     return (
       <CompleteProfile
+        locale={locale}
         userId={session.user.id}
         defaultName={String(session.user.user_metadata?.name ?? '')}
         onDone={() => {
@@ -114,6 +126,7 @@ export default function DashboardPage() {
   const left = Math.max(0, RATE_THRESHOLD - e.payingCount)
   const progress = Math.min(100, (e.payingCount / RATE_THRESHOLD) * 100)
   const top = e.payingCount >= RATE_THRESHOLD
+  const money = (v: number) => cabinetMoney(locale, v)
 
   // Разбивка «Тарифы» по активной базе: 2 × Pro · 1 × Premium
   const tariffBreakdown = Object.entries(
@@ -124,54 +137,49 @@ export default function DashboardPage() {
         return acc
       }, {}),
   )
-    .map(([t, n]) => `${n} × ${TARIFF_META[t as Tariff].label.replace('Habibi ', '')}`)
+    .map(([tf, n]) => `${n} × ${TARIFF_META[tf as Tariff].label.replace('Habibi ', '')}`)
     .join(' · ')
 
-  const values: Record<string, { value: string; sub?: string }> = {
-    'Переходы': { value: String(partner.clicks) },
-    'Регистрации': { value: String(partner.regs) },
-    'Демо-период': { value: String(partner.trials) },
-    'Платящие клиенты': { value: String(e.payingCount) },
-    'Тарифы': { value: tariffBreakdown || '—' },
-    'Твой процент': { value: `${Math.round(e.rate * 100)}%` },
-    'Доход': { value: formatMoney(e.accrued), sub: `${formatMoney(e.monthly)} в месяц сейчас` },
-    'Доступно к выплате': { value: formatMoney(e.available) },
-  }
+  const metrics = locale === 'en' ? METRICS_EN : METRICS_RU
+  // Значения в том же порядке, что и DASHBOARD_METRICS (ru и en совпадают).
+  const values: { value: string; sub?: string }[] = [
+    { value: String(partner.clicks) },
+    { value: String(partner.regs) },
+    { value: String(partner.trials) },
+    { value: String(e.payingCount) },
+    { value: tariffBreakdown || '—' },
+    { value: `${Math.round(e.rate * 100)}%` },
+    { value: money(e.accrued), sub: t.perMonthNow(money(e.monthly)) },
+    { value: money(e.available) },
+  ]
 
   return (
-    <CabinetShell tag="Личный кабинет" showSignOut>
+    <CabinetShell tag={t.tag} showSignOut locale={locale}>
       <h1 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-        Привет{partner.name ? `, ${partner.name.split(' ')[0]}` : ''}!
+        {t.hi(partner.name ? partner.name.split(' ')[0] : '')}
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">
-        Вся статистика в одном месте — от переходов по ссылке до суммы, доступной к выплате.
-      </p>
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">{t.lead}</p>
 
       {/* Реферальная ссылка */}
       <div className={card('emerald', 'mt-8 md:!p-7')}>
         <div className="flex items-center gap-2 text-sm font-medium text-emerald-300">
           <Link2 size={16} />
-          Твоя персональная ссылка
+          {t.linkTitle}
         </div>
-        <CopyLink slug={partner.slug} />
-        <p className="mt-3 text-xs leading-relaxed text-white/45">
-          Отправляй её потенциальным клиентам: система фиксирует переход и закрепляет клиента за
-          тобой автоматически.
-        </p>
+        <CopyLink slug={partner.slug} copyLabel={t.copy} copiedLabel={t.copied} />
+        <p className="mt-3 text-xs leading-relaxed text-white/45">{t.linkHint}</p>
       </div>
 
       {/* Метрики */}
       <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {DASHBOARD_METRICS.map((m) => (
+        {metrics.map((m, i) => (
           <div key={m.title} className={card('plain', 'h-full !p-5')}>
             <m.icon size={20} className="text-emerald-400" />
             <h3 className="mt-3.5 text-sm font-medium text-white/70">{m.title}</h3>
             <p className="mt-1.5 break-words text-xl font-semibold text-white md:text-2xl">
-              {values[m.title]?.value ?? '—'}
+              {values[i]?.value ?? '—'}
             </p>
-            {values[m.title]?.sub && (
-              <p className="mt-1 text-xs text-white/45">{values[m.title].sub}</p>
-            )}
+            {values[i]?.sub && <p className="mt-1 text-xs text-white/45">{values[i].sub}</p>}
           </div>
         ))}
       </div>
@@ -179,13 +187,9 @@ export default function DashboardPage() {
       {/* Прогресс до 30% */}
       <div className={card('plain', 'mt-4 md:!p-7')}>
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm">
-          <span className="font-medium text-white">
-            {e.payingCount} / {RATE_THRESHOLD} клиентов
-          </span>
+          <span className="font-medium text-white">{t.clientsOf(e.payingCount, RATE_THRESHOLD)}</span>
           <span className={top ? 'font-medium text-emerald-300' : 'text-white/50'}>
-            {top
-              ? '30% на всю активную базу'
-              : `Ещё ${left} ${plural(left, 'клиент', 'клиента', 'клиентов')} до ставки 30%`}
+            {top ? t.topRate : clientsLeftLine(locale, left)}
           </span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
@@ -196,43 +200,39 @@ export default function DashboardPage() {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-white/40">
-          Расчёт ориентировочный: комиссия начисляется с фактически оплаченных подписок.
-        </p>
+        <p className="mt-3 text-xs leading-relaxed text-white/40">{t.disclaimer}</p>
       </div>
 
       {/* Клиенты */}
-      <h2 className="mt-12 text-xl font-medium tracking-tight text-white">Твои клиенты</h2>
+      <h2 className="mt-12 text-xl font-medium tracking-tight text-white">{t.clientsTitle}</h2>
       {referrals.length === 0 ? (
-        <p className="mt-3 text-sm text-white/50">
-          Пока никого — поделись своей ссылкой, и первые заявки появятся здесь.
-        </p>
+        <p className="mt-3 text-sm text-white/50">{t.clientsEmpty}</p>
       ) : (
         <div className={card('plain', 'mt-4 overflow-x-auto !p-0')}>
           <table className="w-full min-w-[560px] text-left text-sm">
             <thead>
               <tr className="border-b border-white/10 text-xs uppercase tracking-wider text-white/40">
-                <th className="px-5 py-3.5 font-medium">Клиент</th>
-                <th className="px-5 py-3.5 font-medium">Статус</th>
-                <th className="px-5 py-3.5 font-medium">Тариф</th>
-                <th className="px-5 py-3.5 font-medium">Появился</th>
+                <th className="px-5 py-3.5 font-medium">{t.thClient}</th>
+                <th className="px-5 py-3.5 font-medium">{t.thStatus}</th>
+                <th className="px-5 py-3.5 font-medium">{t.thTariff}</th>
+                <th className="px-5 py-3.5 font-medium">{t.thDate}</th>
               </tr>
             </thead>
             <tbody>
               {referrals.map((r) => (
                 <tr key={r.id} className="border-b border-white/5 last:border-0">
-                  <td className="px-5 py-3.5 text-white">{r.name || 'Без имени'}</td>
+                  <td className="px-5 py-3.5 text-white">{r.name || t.unnamed}</td>
                   <td className="px-5 py-3.5">
                     <span
                       className={`inline-block whitespace-nowrap rounded-full border px-3 py-1 text-xs ${STATUS_META[r.status].className}`}
                     >
-                      {STATUS_META[r.status].label}
+                      {STATUS_LABELS[locale][r.status]}
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-white/70">
                     {r.tariff ? TARIFF_META[r.tariff].label : '—'}
                   </td>
-                  <td className="px-5 py-3.5 text-white/50">{formatDate(r.created_at)}</td>
+                  <td className="px-5 py-3.5 text-white/50">{cabinetDate(locale, r.created_at)}</td>
                 </tr>
               ))}
             </tbody>
@@ -241,12 +241,9 @@ export default function DashboardPage() {
       )}
 
       {/* Выплаты */}
-      <h2 className="mt-12 text-xl font-medium tracking-tight text-white">Выплаты</h2>
+      <h2 className="mt-12 text-xl font-medium tracking-tight text-white">{t.payoutsTitle}</h2>
       {payouts.length === 0 ? (
-        <p className="mt-3 text-sm text-white/50">
-          Выплат ещё не было. Рекомендуемый минимальный порог выплаты — €50; по вопросам выплат мы
-          свяжемся с тобой сами или напиши нам.
-        </p>
+        <p className="mt-3 text-sm text-white/50">{t.payoutsEmpty}</p>
       ) : (
         <div className="mt-4 flex flex-col gap-2.5">
           {payouts.map((p) => (
@@ -254,9 +251,9 @@ export default function DashboardPage() {
               key={p.id}
               className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3.5 text-sm"
             >
-              <span className="font-medium text-white">{formatMoney(Number(p.amount))}</span>
+              <span className="font-medium text-white">{money(Number(p.amount))}</span>
               <span className={p.status === 'paid' ? 'text-emerald-300' : 'text-amber-200'}>
-                {p.status === 'paid' ? `Выплачено ${formatDate(p.paid_at)}` : 'В обработке'}
+                {p.status === 'paid' ? t.paidOn(cabinetDate(locale, p.paid_at)) : t.pending}
               </span>
             </div>
           ))}
@@ -268,7 +265,15 @@ export default function DashboardPage() {
 
 /* ─────────────────────────── Копирование ссылки ─────────────────────────── */
 
-function CopyLink({ slug }: { slug: string }) {
+function CopyLink({
+  slug,
+  copyLabel,
+  copiedLabel,
+}: {
+  slug: string
+  copyLabel: string
+  copiedLabel: string
+}) {
   const [copied, setCopied] = useState(false)
   const link = refLink(slug)
 
@@ -293,7 +298,7 @@ function CopyLink({ slug }: { slug: string }) {
         className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/50"
       >
         {copied ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
-        {copied ? 'Скопировано' : 'Скопировать'}
+        {copied ? copiedLabel : copyLabel}
       </button>
     </div>
   )
@@ -302,14 +307,18 @@ function CopyLink({ slug }: { slug: string }) {
 /* ─────────────── Дозаполнение профиля (аккаунт есть, строки partners нет) ─────────────── */
 
 function CompleteProfile({
+  locale,
   userId,
   defaultName,
   onDone,
 }: {
+  locale: CabinetLocale
   userId: string
   defaultName: string
   onDone: () => void
 }) {
+  const t = STRINGS[locale].dashboard
+  const tr = STRINGS[locale].register
   const [name, setName] = useState(defaultName)
   const [slug, setSlug] = useState('')
   const [slugTouched, setSlugTouched] = useState(false)
@@ -332,39 +341,29 @@ function CompleteProfile({
     })
     setSending(false)
     if (err) {
-      setError(
-        err.code === '23505'
-          ? 'Эта ссылка уже занята — выберите другое имя.'
-          : 'Не удалось сохранить. Попробуйте ещё раз.',
-      )
+      setError(err.code === '23505' ? t.errSlugTaken : t.errSave)
       return
     }
     onDone()
   }
 
   return (
-    <CabinetShell tag="Ещё один шаг" narrow showSignOut>
-      <h1 className="text-3xl font-semibold tracking-tight text-white">Придумай свою ссылку</h1>
-      <p className="mt-3 text-sm leading-relaxed text-white/60">
-        Аккаунт создан. Осталось выбрать имя для персональной реферальной ссылки.
-      </p>
+    <CabinetShell tag={t.profileTag} narrow showSignOut locale={locale}>
+      <h1 className="text-3xl font-semibold tracking-tight text-white">{t.profileH1}</h1>
+      <p className="mt-3 text-sm leading-relaxed text-white/60">{t.profileLead}</p>
       <form onSubmit={handleSubmit} className={card('plain', 'mt-8')}>
-        <Field label="Имя" required>
+        <Field label={tr.name} required>
           <TextInput
             icon={<User size={16} />}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Как к вам обращаться"
+            placeholder={tr.namePlaceholder}
           />
         </Field>
         <Field
-          label="Имя для ссылки"
+          label={tr.slug}
           required
-          hint={
-            SLUG_RE.test(autoSlug)
-              ? `Твоя ссылка: ${refLink(autoSlug)}`
-              : 'Латиница, цифры и дефис, от 3 до 30 символов.'
-          }
+          hint={SLUG_RE.test(autoSlug) ? `${tr.slugYourLink} ${refLink(autoSlug)}` : tr.slugRules}
         >
           <TextInput
             icon={<Link2 size={16} />}
@@ -377,7 +376,7 @@ function CompleteProfile({
           />
         </Field>
         <SubmitButton disabled={!valid || sending}>
-          {sending ? 'Сохраняем…' : 'Получить ссылку'}
+          {sending ? t.profileSubmitting : t.profileSubmit}
         </SubmitButton>
         <FormError>{error}</FormError>
       </form>

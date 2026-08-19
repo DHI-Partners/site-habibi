@@ -5,20 +5,21 @@ import DigitalHeart from '../../DigitalHeart'
 import GoldRain from '../GoldRain'
 import { getSupabase, supabaseConfigured } from '../../../lib/supabase'
 import { SectionTag } from '../ui'
+import { CABINET_PATHS, STRINGS, type CabinetLocale } from './i18n'
 
 /** Устанавливает язык и заголовок вкладки на время показа страницы кабинета. */
-export function usePageMeta(title: string) {
+export function usePageMeta(title: string, lang: CabinetLocale = 'ru') {
   useEffect(() => {
     const html = document.documentElement
     const prevLang = html.getAttribute('lang') ?? 'en'
-    html.setAttribute('lang', 'ru')
+    html.setAttribute('lang', lang)
     document.title = title
     window.scrollTo(0, 0)
     return () => {
       html.setAttribute('lang', prevLang)
       document.title = 'Habibi — the digital ecosystem for your business'
     }
-  }, [title])
+  }, [title, lang])
 }
 
 /**
@@ -30,16 +31,18 @@ export function CabinetShell({
   children,
   narrow = false,
   showSignOut = false,
+  locale = 'ru',
 }: {
   tag: string
   children: ReactNode
   /** Узкая колонка — для форм регистрации и входа. */
   narrow?: boolean
   showSignOut?: boolean
+  locale?: CabinetLocale
 }) {
   const signOut = async () => {
     if (supabaseConfigured()) await getSupabase().auth.signOut()
-    window.location.href = '/ru/partners'
+    window.location.href = CABINET_PATHS[locale].home
   }
 
   return (
@@ -49,7 +52,7 @@ export function CabinetShell({
 
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 pt-8 md:px-12">
         <Link
-          to="/ru/partners"
+          to={CABINET_PATHS[locale].home}
           className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-white/70 transition-colors hover:text-white"
         >
           Habibi
@@ -62,7 +65,7 @@ export function CabinetShell({
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:border-white/40 hover:text-white"
           >
             <LogOut size={14} />
-            Выйти
+            {STRINGS[locale].shell.signOut}
           </button>
         )}
       </header>
@@ -146,12 +149,10 @@ export function FormError({ children }: { children: ReactNode }) {
 }
 
 /** Заглушка, когда Supabase не настроен (нет env-переменных). */
-export function NotConfigured() {
+export function NotConfigured({ locale = 'ru' }: { locale?: CabinetLocale }) {
   return (
     <div className="rounded-2xl border border-amber-300/30 bg-amber-300/[0.06] p-6 text-sm leading-relaxed text-amber-100/90">
-      Кабинет ещё не подключён: добавьте переменные окружения{' '}
-      <code className="text-amber-200">VITE_SUPABASE_URL</code> и{' '}
-      <code className="text-amber-200">VITE_SUPABASE_ANON_KEY</code>, затем пересоберите сайт.
+      {STRINGS[locale].shell.notConfigured}
     </div>
   )
 }
