@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: 'Find your plan', href: '#podbor' },
   { label: 'Pricing', href: '#tarify' },
   { label: 'Contacts', href: '#kontakty' },
+  { label: 'Consulting', href: '/consulting' },
   { label: 'Partners', href: '/partners' },
 ]
 

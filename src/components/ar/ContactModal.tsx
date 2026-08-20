@@ -129,8 +129,16 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
             <MessageCircle size={18} />
             المتابعة عبر واتساب
           </button>
-          <p className="mt-3 text-center text-xs text-white/35">
-            بالضغط على الزر ستُفتح محادثة واتساب مع فريق Habibi.
+          <p className="mt-3 text-center text-xs leading-relaxed text-white/35">
+            بالضغط على الزر ستُفتح محادثة واتساب مع فريق Habibi، وأنت توافق على معالجة بيانات
+            التواصل وفق 
+            <a href="/ar/privacy" target="_blank" rel="noopener noreferrer" className="text-white/55 underline underline-offset-2 transition-colors hover:text-white">
+              سياسة الخصوصية
+            </a> 
+            وتقبل 
+            <a href="/ar/terms" target="_blank" rel="noopener noreferrer" className="text-white/55 underline underline-offset-2 transition-colors hover:text-white">
+              شروط الاستخدام
+            </a>.
           </p>
         </form>
       </div>

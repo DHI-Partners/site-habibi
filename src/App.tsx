@@ -23,6 +23,17 @@ import ModulePage from './components/modules/ModulePage'
 import EnModulePage from './components/modules/en/EnModulePage'
 import ArModulePage from './components/modules/ar/ArModulePage'
 import PartnerPage from './components/partner/PartnerPage'
+import ConsultingPage from './components/consulting/ConsultingPage'
+import { RU_CONSULTING } from './components/consulting/ru'
+import { EN_CONSULTING } from './components/consulting/en'
+import { AR_CONSULTING } from './components/consulting/ar'
+import LegalPage from './components/legal/LegalPage'
+import { RU_PRIVACY } from './components/legal/privacy.ru'
+import { EN_PRIVACY } from './components/legal/privacy.en'
+import { AR_PRIVACY } from './components/legal/privacy.ar'
+import { RU_TERMS } from './components/legal/terms.ru'
+import { EN_TERMS } from './components/legal/terms.en'
+import { AR_TERMS } from './components/legal/terms.ar'
 import EnPartnerPage from './components/partner/en/EnPartnerPage'
 import RefRedirect from './components/partner/RefRedirect'
 
@@ -136,6 +147,21 @@ export default function App() {
       <Route path="/ar/modules/:slug" element={<ArModulePage />} />
       {/* Партнёрская программа (RU). /partner — короткая ссылка на неё же. */}
       <Route path="/ru/partners" element={<PartnerPage />} />
+      {/* Консалтинг — индивидуальное внедрение */}
+      <Route path="/ru/consulting" element={<ConsultingPage content={RU_CONSULTING} />} />
+      <Route path="/consulting" element={<ConsultingPage content={EN_CONSULTING} />} />
+      <Route path="/ar/consulting" element={<ConsultingPage content={AR_CONSULTING} />} />
+      <Route path="/en/consulting" element={<Navigate to="/consulting" replace />} />
+      {/* Политика конфиденциальности */}
+      <Route path="/ru/privacy" element={<LegalPage content={RU_PRIVACY} />} />
+      <Route path="/privacy" element={<LegalPage content={EN_PRIVACY} />} />
+      <Route path="/ar/privacy" element={<LegalPage content={AR_PRIVACY} />} />
+      <Route path="/en/privacy" element={<Navigate to="/privacy" replace />} />
+      {/* Пользовательское соглашение */}
+      <Route path="/ru/terms" element={<LegalPage content={RU_TERMS} />} />
+      <Route path="/terms" element={<LegalPage content={EN_TERMS} />} />
+      <Route path="/ar/terms" element={<LegalPage content={AR_TERMS} />} />
+      <Route path="/en/terms" element={<Navigate to="/terms" replace />} />
       {/* Личный кабинет партнёра + вход по реферальной ссылке */}
       <Route path="/ref/:slug" element={<RefRedirect />} />
       <Route path="/ru/partners/register" element={<Lazy><RegisterPage /></Lazy>} />

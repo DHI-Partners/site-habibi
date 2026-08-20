@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: 'Подбор', href: '#podbor' },
   { label: 'Тарифы', href: '#tarify' },
   { label: 'Контакты', href: '#kontakty' },
+  { label: 'Консалтинг', href: '/ru/consulting' },
   { label: 'Партнёрам', href: '/ru/partners' },
   { label: 'Инвесторам', href: '/investors' },
 ]

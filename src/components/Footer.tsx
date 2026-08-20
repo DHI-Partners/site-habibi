@@ -50,7 +50,15 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 Habibi. Все права защищены.</span>
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            © 2026 Habibi. Все права защищены.
+            <a href="/ru/privacy" className="text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline">
+              Политика конфиденциальности
+            </a>
+            <a href="/ru/terms" className="text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline">
+              Пользовательское соглашение
+            </a>
+          </span>
           <span>Одна система вместо десяти разрозненных инструментов.</span>
         </div>
       </div>

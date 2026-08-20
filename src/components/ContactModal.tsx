@@ -245,8 +245,15 @@ export default function ContactModal({
                 Не удалось отправить. Проверьте соединение и попробуйте ещё раз.
               </p>
             )}
-            <p className="mt-3 text-center text-xs text-white/35">
-              Нажимая кнопку, вы соглашаетесь на обработку контактных данных.
+            <p className="mt-3 text-center text-xs leading-relaxed text-white/35">
+              Нажимая кнопку, вы соглашаетесь на обработку контактных данных в соответствии с 
+              <a href="/ru/privacy" target="_blank" rel="noopener noreferrer" className="text-white/55 underline underline-offset-2 transition-colors hover:text-white">
+                Политикой конфиденциальности
+              </a> 
+              и принимаете 
+              <a href="/ru/terms" target="_blank" rel="noopener noreferrer" className="text-white/55 underline underline-offset-2 transition-colors hover:text-white">
+                Пользовательское соглашение
+              </a>.
             </p>
           </form>
         ) : (

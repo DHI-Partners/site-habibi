@@ -47,7 +47,15 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 Habibi. جميع الحقوق محفوظة.</span>
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            © 2026 Habibi. جميع الحقوق محفوظة.
+            <a href="/ar/privacy" className="text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline">
+              سياسة الخصوصية
+            </a>
+            <a href="/ar/terms" className="text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline">
+              شروط الاستخدام
+            </a>
+          </span>
           <span>نظام واحد بدل عشر أدوات متفرّقة.</span>
         </div>
       </div>

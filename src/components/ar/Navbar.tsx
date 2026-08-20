@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: 'الاختيار', href: '#podbor' },
   { label: 'الأسعار', href: '#tarify' },
   { label: 'التواصل', href: '#kontakty' },
+  { label: 'الاستشارات', href: '/ar/consulting' },
 ]
 
 export default function Navbar() {
