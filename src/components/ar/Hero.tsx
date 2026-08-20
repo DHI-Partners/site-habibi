@@ -1,14 +1,20 @@
-import { ArrowLeft } from 'lucide-react'
 import Navbar from './Navbar'
-import { LiquidButton } from '../ui/liquid-glass-button'
-import { scrollToId } from '@/lib/utils'
 import HeroAskBar from '../chat/HeroAskBar'
-import { track } from '@/lib/track'
 
 const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4'
 
-const ASK_LABELS = { placeholder: 'كيف أُتمتم إدارة المخزن؟', sendLabel: 'اسأل', hint: 'يجيب مستشار Habibi الذكي — فورًا وبلا انتظار' }
+const ASK_LABELS = {
+  placeholder: 'اسأل عن Habibi…',
+  sendLabel: 'اسأل',
+  hint: 'يجيب مستشار Habibi الذكي — فورًا وبلا انتظار',
+  prompts: [
+    'كيف أُتمتم إدارة المخزن؟',
+    'كيف أتوقف عن فقدان طلبات واتساب؟',
+    'كم تكلفة Habibi؟',
+    'كيف أرى الأرباح لحظة بلحظة؟',
+  ],
+}
 
 export default function Hero() {
   return (
@@ -55,17 +61,6 @@ export default function Hero() {
             <HeroAskBar labels={ASK_LABELS} lang="ar" dir="rtl" />
           </div>
 
-          {/* Второй, необязательный путь: почитать самому. Отделён от поля и меньше по весу. */}
-          <div className="mt-5 flex flex-wrap items-center gap-3 [animation:fadeSlideUp_0.8s_ease_1s_both]">
-            <LiquidButton
-              size="sm"
-              onClick={() => { track('hero_how_it_works', { lang: 'ar' }); scrollToId('kak-rabotaet') }}
-              className="rounded-full text-sm text-white"
-            >
-              كيف يعمل النظام
-              <ArrowLeft size={16} />
-            </LiquidButton>
-          </div>
         </div>
       </div>
     </section>
