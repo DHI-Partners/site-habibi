@@ -57,14 +57,14 @@ export const EN_CONSULTING: ConsultingContent = {
       initials: 'TA',
       photo: '/team/timur.jpg',
       bio: [
-        'IT architect with 19+ years of experience in Oracle, databases and Big Data, cloud technologies and enterprise infrastructure. He designs and evolves complex IT systems, leads cloud transformation and migrates business-critical workloads.',
-        'He enjoys digging into hard technical problems, finding practical solutions and connecting deep technical expertise with what the business actually needs.',
+        'IT architect with 19+ years of experience in Oracle technologies, Databases and Big Data, as well as cloud technologies and enterprise infrastructure. Designs complex IT systems, migrates business-critical workloads and leads cloud transformation.',
+        'Enjoys digging into complex technical problems, finding practical solutions and connecting deep technical expertise with what the business actually needs.',
       ],
       facts: [
         '19+ years in IT',
-        'Oracle · cloud',
+        'Oracle · Cloud',
         'Database · Big Data',
-        'Enterprise infrastructure',
+        'Enterprise Infrastructure',
       ],
     },
   ],
