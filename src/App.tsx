@@ -63,7 +63,7 @@ function LandingPage() {
         <Faq />
         <Closing />
         <Footer />
-        <AiChatWidget />
+        <AiChatWidget hideLauncherWhile="top" />
       </div>
     </ContactProvider>
   )

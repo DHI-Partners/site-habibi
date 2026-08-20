@@ -90,7 +90,7 @@ export default function Navbar() {
           }`}
         >
           <div className="mb-8 w-fit">
-            <LangSwitcher current="ru" align="left" />
+            <LangSwitcher current="ru" variant="inline" />
           </div>
           {NAV_LINKS.map((link) => (
             <a

@@ -136,3 +136,26 @@ export async function streamChat({
 
   return failure
 }
+
+/* ─────────────── Запуск чата из других частей страницы ─────────────── */
+
+type AskListener = (question: string) => void
+const askListeners = new Set<AskListener>()
+
+/**
+ * Открыть чат с готовым вопросом — например из поля на первом экране.
+ *
+ * Модульная шина, а не React-контекст: поле ввода в герое и виджет чата
+ * живут в разных ветках дерева, и общий провайдер пришлось бы тянуть
+ * вокруг всей страницы ради одного вызова.
+ */
+export function askAssistant(question: string) {
+  const text = question.trim().slice(0, MESSAGE_LIMIT)
+  if (text) askListeners.forEach((fn) => fn(text))
+}
+
+/** Подписка виджета чата. Возвращает функцию отписки. */
+export function subscribeAsk(fn: AskListener): () => void {
+  askListeners.add(fn)
+  return () => askListeners.delete(fn)
+}

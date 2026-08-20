@@ -16,9 +16,15 @@ interface LangSwitcherProps {
   current: LangCode
   /** Край экрана, к которому прижат список (по умолчанию правый — для навбаров LTR). */
   align?: 'left' | 'right'
+  /** 'inline' — все языки сразу, простыми ссылками (для мобильного меню); 'dropdown' — выпадающий список. */
+  variant?: 'dropdown' | 'inline'
 }
 
-export default function LangSwitcher({ current, align = 'right' }: LangSwitcherProps) {
+export default function LangSwitcher({
+  current,
+  align = 'right',
+  variant = 'dropdown',
+}: LangSwitcherProps) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -42,6 +48,33 @@ export default function LangSwitcher({ current, align = 'right' }: LangSwitcherP
   }, [open])
 
   const active = LANGS.find((lang) => lang.code === current) ?? LANGS[0]
+
+  // Мобильное меню: три языка одним рядом, прямыми ссылками — без выпадающего списка.
+  if (variant === 'inline') {
+    return (
+      <div
+        dir="ltr"
+        className="flex items-center gap-1 rounded-full border border-white/10 bg-black/30 p-1 backdrop-blur-md"
+      >
+        {LANGS.map((lang) => {
+          const isActive = lang.code === current
+          return (
+            <a
+              key={lang.code}
+              href={isActive ? undefined : lang.href}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold ${
+                isActive ? 'bg-white text-black' : 'text-white/70 active:bg-white/10'
+              }`}
+            >
+              <span className="text-base leading-none">{lang.flag}</span>
+              {lang.label}
+            </a>
+          )
+        })}
+      </div>
+    )
+  }
 
   return (
     <div ref={ref} dir="ltr" className="relative">

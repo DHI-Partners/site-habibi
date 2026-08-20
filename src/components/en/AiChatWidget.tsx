@@ -51,9 +51,12 @@ const PARTNER_LABELS: ChatLabels = {
 export default function AiChatWidget({
   moduleSlug,
   page,
+  hideLauncherWhile,
 }: {
   moduleSlug?: string
   page?: ChatPage
+  /** id первого экрана: пока он виден, кнопка в углу не нужна. */
+  hideLauncherWhile?: string
 }) {
   const { open } = useContact()
   const isPartner = page === 'partner'
@@ -69,6 +72,7 @@ export default function AiChatWidget({
       whatsappUrl={buildWhatsAppLink('Hi 👋 I have a question about Habibi.')}
       openLabel="Open chat with the assistant"
       moduleSlug={moduleSlug}
+      hideLauncherWhile={hideLauncherWhile}
       onRequestContact={() =>
         isPartner ? open(PARTNER_FORM.label, PARTNER_FORM.options) : open()
       }

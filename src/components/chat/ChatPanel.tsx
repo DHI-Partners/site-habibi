@@ -38,6 +38,9 @@ export interface ChatPanelProps {
   whatsappUrl: string
   moduleSlug?: string
   page?: ChatPage
+  /** Вопрос из поля на первом экране — отправляется сразу при открытии. */
+  initialQuestion?: string | null
+  onQuestionSent?: () => void
   onClose: () => void
   /** Открывает существующую форму заявки сайта. */
   onRequestContact: () => void
@@ -52,6 +55,8 @@ export default function ChatPanel({
   whatsappUrl,
   moduleSlug,
   page,
+  initialQuestion,
+  onQuestionSent,
   onClose,
   onRequestContact,
 }: ChatPanelProps) {
@@ -107,6 +112,16 @@ export default function ChatPanel({
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
+
+  // Вопрос, заданный на первом экране, уходит сразу — человек уже нажал «отправить».
+  const sentInitial = useRef(false)
+  useEffect(() => {
+    if (!initialQuestion || sentInitial.current) return
+    sentInitial.current = true
+    stickToBottom.current = true
+    send(initialQuestion)
+    onQuestionSent?.()
+  }, [initialQuestion, send, onQuestionSent])
 
   // «Залипающий» автоскролл: тянем вниз только если пользователь и так был внизу,
   // иначе человека, отлиставшего вверх почитать, дёргало бы на каждом токене.

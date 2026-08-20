@@ -2,9 +2,13 @@ import { ArrowRight } from 'lucide-react'
 import Navbar from './Navbar'
 import { LiquidButton } from './ui/liquid-glass-button'
 import { scrollToId } from '@/lib/utils'
+import HeroAskBar from './chat/HeroAskBar'
+import { track } from '@/lib/track'
 
 const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4'
+
+const ASK_LABELS = { placeholder: 'Как автоматизировать учёт склада?', sendLabel: 'Спросить', hint: 'Ответит ИИ-консультант Habibi — сразу, без ожидания' }
 
 export default function Hero() {
   return (
@@ -47,11 +51,16 @@ export default function Hero() {
           <p className="mb-5 max-w-sm text-sm font-medium leading-relaxed text-white/85 [animation:fadeSlideUp_0.8s_ease_0.8s_both] sm:mb-6 sm:max-w-xl sm:text-base md:text-lg">
             Меньше Excel, WhatsApp и разрозненных сервисов. Больше контроля над бизнесом.
           </p>
-          <div className="flex flex-wrap items-center gap-3 [animation:fadeSlideUp_0.8s_ease_0.9s_both]">
+          <div className="[animation:fadeSlideUp_0.8s_ease_0.9s_both]">
+            <HeroAskBar labels={ASK_LABELS} lang="ru" dir="ltr" />
+          </div>
+
+          {/* Второй, необязательный путь: почитать самому. Отделён от поля и меньше по весу. */}
+          <div className="mt-5 flex flex-wrap items-center gap-3 [animation:fadeSlideUp_0.8s_ease_1s_both]">
             <LiquidButton
-              size="lg"
-              onClick={() => scrollToId('kak-rabotaet')}
-              className="rounded-full text-white"
+              size="sm"
+              onClick={() => { track('hero_how_it_works', { lang: 'ru' }); scrollToId('kak-rabotaet') }}
+              className="rounded-full text-sm text-white"
             >
               Как это работает
               <ArrowRight size={16} />

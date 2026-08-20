@@ -38,7 +38,7 @@ export default function ArLandingPage() {
         <Faq />
         <Closing />
         <Footer />
-        <AiChatWidget />
+        <AiChatWidget hideLauncherWhile="top" />
       </div>
     </ContactProvider>
   )

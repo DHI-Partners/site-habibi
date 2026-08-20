@@ -36,7 +36,14 @@ const LABELS: ChatLabels = {
 }
 
 /** المحادثة الذكية للنسخة العربية من الموقع. */
-export default function AiChatWidget({ moduleSlug }: { moduleSlug?: string }) {
+export default function AiChatWidget({
+  moduleSlug,
+  hideLauncherWhile,
+}: {
+  moduleSlug?: string
+  /** id первого экрана: пока он виден, кнопка в углу не нужна. */
+  hideLauncherWhile?: string
+}) {
   const { open } = useContact()
 
   return (
@@ -50,6 +57,7 @@ export default function AiChatWidget({ moduleSlug }: { moduleSlug?: string }) {
       whatsappUrl={buildWhatsAppLink('مرحبًا 👋 لديّ سؤال عن Habibi.')}
       openLabel="افتح المحادثة مع المستشار"
       moduleSlug={moduleSlug}
+      hideLauncherWhile={hideLauncherWhile}
       onRequestContact={() => open()}
     />
   )

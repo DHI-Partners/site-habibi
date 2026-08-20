@@ -38,7 +38,7 @@ export default function EnLandingPage() {
         <Faq />
         <Closing />
         <Footer />
-        <AiChatWidget />
+        <AiChatWidget hideLauncherWhile="top" />
       </div>
     </ContactProvider>
   )
