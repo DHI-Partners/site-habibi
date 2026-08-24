@@ -43,7 +43,7 @@ interface Module {
 const MODULES: Module[] = [
   {
     icon: Target,
-    title: 'CRM والمبيعات',
+    title: 'العملاء والمبيعات',
     text: 'كل الطلبات والعملاء والصفقات في نظام واحد. لا شيء يضيع، وكل خطوة للعميل ظاهرة في الوقت الفعلي.',
     Preview: CrmPreview,
     page: '/ar/modules/crm',
@@ -57,7 +57,7 @@ const MODULES: Module[] = [
   },
   {
     icon: Warehouse,
-    title: 'المخزن',
+    title: 'المنتجات والمخزون',
     text: 'أرصدة دقيقة في الوقت الفعلي وسجلّ واضح لحركة البضاعة.',
     Preview: WarehousePreview,
     page: '/ar/modules/inventory',
@@ -71,28 +71,28 @@ const MODULES: Module[] = [
   },
   {
     icon: Wallet,
-    title: 'المالية',
+    title: 'المال تحت السيطرة',
     text: 'صورة محدّثة عن الأموال: تقارير، وذمم مدينة، وتوقّع للتدفّق النقدي — دون انتظار نهاية الشهر.',
     Preview: FinancePreview,
     page: '/ar/modules/finance',
   },
   {
     icon: Users,
-    title: 'الموارد البشرية والرواتب',
+    title: 'فريقي',
     text: 'إدارة الموظفين وحساب الرواتب ومؤشرات أداء واضحة للفريق.',
     Preview: HrPreview,
     page: '/ar/modules/hr',
   },
   {
     icon: BarChart3,
-    title: 'المشاريع والمهام',
+    title: 'العمل والمهام',
     text: 'المواعيد والمسؤولون والحالات — كلها في شاشة واحدة.',
     Preview: ProjectsPreview,
     page: '/ar/modules/projects',
   },
   {
     icon: Wrench,
-    title: 'الخدمة والدعم',
+    title: 'العملاء بعد البيع',
     text: 'طلبات الضمان والمبيعات المتكرّرة وتقييمات العملاء تحت السيطرة.',
     Preview: ServicePreview,
     page: '/ar/modules/service',
@@ -106,7 +106,7 @@ const MODULES: Module[] = [
   },
   {
     icon: Globe,
-    title: 'الموقع والطلبات',
+    title: 'العملاء من الإنترنت',
     text: 'كل طلب من الموقع يتحوّل فورًا إلى مهمة قيد التنفيذ.',
     Preview: SiteLeadsPreview,
     page: '/ar/modules/website-leads',

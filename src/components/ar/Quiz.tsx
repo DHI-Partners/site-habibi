@@ -143,16 +143,16 @@ const BIZ_LABEL: Record<string, string> = {
 }
 
 const MOD: Record<string, string> = {
-  crm: 'CRM والمبيعات',
+  crm: 'العملاء والمبيعات',
   purchase: 'المشتريات',
   stock: 'المخزون',
   production: 'الإنتاج',
-  finance: 'المالية',
-  hr: 'الموارد البشرية والرواتب',
-  projects: 'المشاريع والمهام',
-  service: 'الخدمة والدعم',
+  finance: 'المال تحت السيطرة',
+  hr: 'فريقي',
+  projects: 'العمل والمهام',
+  service: 'العملاء بعد البيع',
   pos: 'نقاط البيع (POS)',
-  site: 'الموقع والطلبات',
+  site: 'العملاء من الإنترنت',
 }
 
 const PROBLEM_MOD: Record<string, string[]> = {

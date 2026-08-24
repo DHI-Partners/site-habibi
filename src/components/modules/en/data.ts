@@ -29,7 +29,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
   crm: {
     slug: 'crm',
     icon: Target,
-    title: 'CRM & sales',
+    title: 'Customers & sales',
     lead: 'All leads, customers and deals in one system. Nothing gets lost, and every step of the customer journey is visible in real time.',
     pills: ['Single customer base', 'Sales pipeline', 'Ad spend control', 'Team performance'],
     pains: [
@@ -177,7 +177,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: CrmPreview,
-    previewTitle: 'This is what CRM looks like in Habibi',
+    previewTitle: 'This is what Customers & sales looks like in Habibi',
     solve: [
       {
         was: 'Leads get lost in WhatsApp, DMs and sticky notes',
@@ -239,19 +239,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'CRM + Website & leads',
+        title: 'Customers & sales + Customers from the web',
         text: 'Every website enquiry instantly becomes a lead in CRM — no manual copying.',
       },
       {
-        title: 'CRM + Inventory',
+        title: 'Customers & sales + Products & stock',
         text: 'Managers see real stock levels and never sell what isn’t there.',
       },
       {
-        title: 'CRM + Finance',
+        title: 'Customers & sales + Money under control',
         text: 'Invoices, payments and customer debt — right in the customer card. Receivables under control.',
       },
       {
-        title: 'CRM + Service & support',
+        title: 'Customers & sales + Customers after the sale',
         text: 'The customer’s support history is visible to sales — a happy customer buys again.',
       },
     ],
@@ -492,11 +492,11 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'Purchases + Inventory',
+        title: 'Purchases + Products & stock',
         text: 'Minimum stock levels automatically turn into purchase requests.',
       },
       {
-        title: 'Purchases + Finance',
+        title: 'Purchases + Money under control',
         text: 'Supplier payments and payables are visible in finance without double entry.',
       },
       {
@@ -535,7 +535,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
   inventory: {
     slug: 'inventory',
     icon: Warehouse,
-    title: 'Inventory',
+    title: 'Products & stock',
     lead: 'Accurate stock in real time and a clear history of every item’s movement.',
     pills: ['Real-time stock', 'Movement history', 'Multiple warehouses', 'Stock in money'],
     pains: [
@@ -683,7 +683,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: WarehousePreview,
-    previewTitle: 'This is what Inventory looks like in Habibi',
+    previewTitle: 'This is what Products & stock looks like in Habibi',
     solve: [
       {
         was: 'Stock “roughly” in Excel, updated once a week',
@@ -745,19 +745,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'Inventory + Purchases',
+        title: 'Products & stock + Purchases',
         text: 'Minimum stock levels automatically become supplier requests — replenishment without manual control.',
       },
       {
-        title: 'Inventory + CRM & sales',
+        title: 'Products & stock + Customers & sales',
         text: 'Managers see real stock at the moment of sale and never promise what isn’t there.',
       },
       {
-        title: 'Inventory + Retail (POS)',
+        title: 'Products & stock + Retail (POS)',
         text: 'Every receipt at the till writes goods off instantly — shop stock is always current.',
       },
       {
-        title: 'Inventory + Finance',
+        title: 'Products & stock + Money under control',
         text: 'Inventory value and cost of goods sold flow into financial reports automatically.',
       },
     ],
@@ -776,9 +776,9 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'Service centres',
         'Agriculture',
       ],
-      note: 'The Inventory module is strongest together with Purchases and Retail (POS) — together they cover the goods’ full journey from supplier to customer.',
+      note: 'The Products & stock module is strongest together with Purchases and Retail (POS) — together they cover the goods’ full journey from supplier to customer.',
     },
-    tariff: { headline: 'Inventory is included in Habibi Pro', baseIncludes: false },
+    tariff: { headline: 'Products & stock is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Know your exact stock this week',
       text: 'Start for free — and add Inventory when you are ready to bring order to your stock and return frozen cash to circulation.',
@@ -1002,15 +1002,15 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         text: 'Material needs become supplier orders — raw materials arrive against the plan, not “when someone remembered”.',
       },
       {
-        title: 'Manufacturing + Inventory',
+        title: 'Manufacturing + Products & stock',
         text: 'Raw materials are written off, finished goods are received — stock is accurate at every stage.',
       },
       {
-        title: 'Manufacturing + CRM & sales',
+        title: 'Manufacturing + Customers & sales',
         text: 'Managers see the real production load and quote honest deadlines to customers.',
       },
       {
-        title: 'Manufacturing + Finance',
+        title: 'Manufacturing + Money under control',
         text: 'Production costs flow into financial reports — profit is calculated correctly.',
       },
     ],
@@ -1039,7 +1039,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
   finance: {
     slug: 'finance',
     icon: Wallet,
-    title: 'Finance',
+    title: 'Money under control',
     lead: 'A live picture of your money: reports, receivables, cash-flow forecast — without waiting for month-end.',
     pills: ['Money in real time', 'Profit and expenses', 'Receivables', 'Reports and taxes'],
     pains: [
@@ -1187,7 +1187,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: FinancePreview,
-    previewTitle: 'This is what Finance looks like in Habibi',
+    previewTitle: 'This is what Money under control looks like in Habibi',
     solve: [
       {
         was: 'Money in notebooks, Excel and “in the head”',
@@ -1249,19 +1249,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'Finance + CRM & sales',
+        title: 'Money under control + Customers & sales',
         text: 'Invoices, payments and customer debt in the customer card. Managers see who shouldn’t get goods on credit.',
       },
       {
-        title: 'Finance + Purchases',
+        title: 'Money under control + Purchases',
         text: 'Supplier payments and payables under control, without double entry.',
       },
       {
-        title: 'Finance + Inventory & Manufacturing',
+        title: 'Money under control + Products, stock & manufacturing',
         text: 'Cost of goods and production flows into reports automatically — profit is honest.',
       },
       {
-        title: 'Finance + HR & payroll',
+        title: 'Money under control + My team',
         text: 'Accrued salaries appear in expenses immediately — the biggest cost line is always current.',
       },
     ],
@@ -1282,17 +1282,17 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       ],
       note: 'Habibi’s recommendation: start with CRM, sales and finance — then add inventory, purchasing, manufacturing and HR as you grow.',
     },
-    tariff: { headline: 'Finance is available on the Habibi plan', baseIncludes: true },
+    tariff: { headline: 'Money under control is available on the Habibi plan', baseIncludes: true },
     cta: {
       title: 'Know your profit today',
-      text: 'The Finance module is part of the base Habibi plan — connect it together with CRM and start seeing your business’s money in real time.',
+      text: 'The Money under control module is part of the base Habibi plan — connect it together with CRM and start seeing your business’s money in real time.',
     },
   },
 
   hr: {
     slug: 'hr',
     icon: Users,
-    title: 'HR & payroll',
+    title: 'My team',
     lead: 'Employee records, payroll calculation and clear team KPIs.',
     pills: ['Employee base', 'Attendance and leave', 'Payroll', 'Team KPIs'],
     pains: [
@@ -1440,7 +1440,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: HrPreview,
-    previewTitle: 'This is what HR looks like in Habibi',
+    previewTitle: 'This is what My team looks like in Habibi',
     solve: [
       {
         was: 'Payroll calculated by hand, with mistakes and recalculations',
@@ -1502,19 +1502,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'HR + Finance',
+        title: 'My team + Money under control',
         text: 'Accrued salaries land in expenses immediately — the financial picture is always current.',
       },
       {
-        title: 'HR + CRM & sales',
+        title: 'My team + Customers & sales',
         text: 'Managers’ KPIs are calculated from real deals — bonuses are tied to results.',
       },
       {
-        title: 'HR + Manufacturing',
+        title: 'My team + Manufacturing',
         text: 'Workshop shifts and output feed into workers’ pay automatically.',
       },
       {
-        title: 'HR + Projects & tasks',
+        title: 'My team + Work & tasks',
         text: 'Workload and completed tasks show everyone’s real contribution to a project.',
       },
     ],
@@ -1533,9 +1533,9 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'Cleaning',
         'Security & services',
       ],
-      note: 'The HR & payroll module is strongest together with Finance — payroll flows into expenses automatically, and profit is calculated honestly.',
+      note: 'The My team module is strongest together with Finance — payroll flows into expenses automatically, and profit is calculated honestly.',
     },
-    tariff: { headline: 'HR & payroll is included in Habibi Pro', baseIncludes: false },
+    tariff: { headline: 'My team is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Bring order to your team and payroll',
       text: 'Start for free — and add HR & payroll when you are ready to run your biggest expense line on numbers.',
@@ -1545,7 +1545,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
   projects: {
     slug: 'projects',
     icon: BarChart3,
-    title: 'Projects & tasks',
+    title: 'Work & tasks',
     lead: 'Deadlines, owners and statuses — all on one screen.',
     pills: ['Projects', 'Tasks and priorities', 'Gantt chart', 'Time and budget'],
     pains: [
@@ -1693,7 +1693,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: ProjectsPreview,
-    previewTitle: 'This is what Projects looks like in Habibi',
+    previewTitle: 'This is what Work & tasks looks like in Habibi',
     solve: [
       {
         was: 'Tasks in chats, sticky notes and “in the head”',
@@ -1755,19 +1755,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'Projects + CRM & sales',
+        title: 'Work & tasks + Customers & sales',
         text: 'A won deal turns into a project — the client, budget and deadlines carry over automatically.',
       },
       {
-        title: 'Projects + Finance',
+        title: 'Work & tasks + Money under control',
         text: 'Project costs and payments flow into financial reports. Profitability is calculated honestly.',
       },
       {
-        title: 'Projects + HR & payroll',
+        title: 'Work & tasks + My team',
         text: 'Everyone’s workload and contribution to projects — the basis for fair bonuses.',
       },
       {
-        title: 'Projects + Service & support',
+        title: 'Work & tasks + Customers after the sale',
         text: 'Customer requests become tasks for the team — nothing is lost between departments.',
       },
     ],
@@ -1784,19 +1784,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'Event management',
         'Made-to-order production',
       ],
-      note: 'Projects & tasks is included in the base Habibi plan — one of the first modules teams start with in Habibi.',
+      note: 'Work & tasks is included in the base Habibi plan — one of the first modules teams start with in Habibi.',
     },
-    tariff: { headline: 'Projects & tasks is already on the Habibi plan', baseIncludes: true },
+    tariff: { headline: 'Work & tasks is already on the Habibi plan', baseIncludes: true },
     cta: {
       title: 'Bring order to your projects today',
-      text: 'Projects & tasks is included in the base Habibi plan — start your first project today and run your next stand-up in 10 minutes instead of an hour.',
+      text: 'Work & tasks is included in the base Habibi plan — start your first project today and run your next stand-up in 10 minutes instead of an hour.',
     },
   },
 
   service: {
     slug: 'service',
     icon: Wrench,
-    title: 'Service & support',
+    title: 'Customers after the sale',
     lead: 'Warranty requests, repeat sales and customer reviews under control.',
     pills: ['Tickets from every channel', 'SLA and deadlines', 'Knowledge base', 'Service analytics'],
     pains: [
@@ -1944,7 +1944,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: ServicePreview,
-    previewTitle: 'This is what Service looks like in Habibi',
+    previewTitle: 'This is what Customers after the sale looks like in Habibi',
     solve: [
       {
         was: 'Requests lost between WhatsApp, email and calls',
@@ -2006,19 +2006,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'Service + CRM & sales',
+        title: 'Customers after the sale + Customers & sales',
         text: 'Request history in the customer card. Sales sees who is happy and ready to buy again.',
       },
       {
-        title: 'Service + Inventory',
+        title: 'Customers after the sale + Products & stock',
         text: 'Spare parts and materials for repairs with real stock levels. Warranty work never waits for “delivery someday”.',
       },
       {
-        title: 'Service + Projects & tasks',
+        title: 'Customers after the sale + Work & tasks',
         text: 'Complex requests become tasks for the team — with an owner and a deadline.',
       },
       {
-        title: 'Service + Website & leads',
+        title: 'Customers after the sale + Customers from the web',
         text: 'The website form and chat are one more channel that lands straight in the ticket queue.',
       },
     ],
@@ -2035,9 +2035,9 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'Furniture & interiors',
         'Equipment',
       ],
-      note: 'The Service & support module is strongest together with CRM — together they cover the customer’s full journey, from first enquiry to repeat purchase.',
+      note: 'The Customers after the sale module is strongest together with CRM — together they cover the customer’s full journey, from first enquiry to repeat purchase.',
     },
-    tariff: { headline: 'Service & support is included in Habibi Pro', baseIncludes: false },
+    tariff: { headline: 'Customers after the sale is included in Habibi Pro', baseIncludes: false },
     cta: {
       title: 'Turn service into a sales channel',
       text: 'Start for free with CRM — and add Service & support when you are ready to answer every customer on time.',
@@ -2257,7 +2257,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'POS + Inventory',
+        title: 'POS + Products & stock',
         text: 'Every receipt writes goods off in real time — store stock is always accurate.',
       },
       {
@@ -2265,11 +2265,11 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         text: 'Sales and stock levels turn into supplier requests — shelves are refilled on time.',
       },
       {
-        title: 'POS + Finance',
+        title: 'POS + Money under control',
         text: 'Every register’s revenue lands in financial reports instantly — no evening tally.',
       },
       {
-        title: 'POS + CRM & sales',
+        title: 'POS + Customers & sales',
         text: 'Shoppers and their history power loyalty programmes and repeat sales.',
       },
     ],
@@ -2298,7 +2298,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
   'website-leads': {
     slug: 'website-leads',
     icon: Globe,
-    title: 'Website & leads',
+    title: 'Customers from the web',
     lead: 'Every request from your website instantly becomes a task in progress.',
     pills: ['Requests from every channel', 'Statuses and owners', 'Convert to CRM', 'Source analytics'],
     pains: [
@@ -2446,7 +2446,7 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
       },
     ],
     Preview: SiteLeadsPreview,
-    previewTitle: 'This is what Requests looks like in Habibi',
+    previewTitle: 'This is what Customers from the web looks like in Habibi',
     solve: [
       {
         was: 'Website requests drown in a shared inbox',
@@ -2508,19 +2508,19 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
     },
     together: [
       {
-        title: 'Website + CRM & sales',
+        title: 'Customers from the web + Customers & sales',
         text: 'The request becomes a lead in the pipeline — and is taken to the deal with its full history.',
       },
       {
-        title: 'Website + Service & support',
+        title: 'Customers from the web + Customers after the sale',
         text: 'Existing customers’ enquiries go into support tickets — every channel has its own queue.',
       },
       {
-        title: 'Website + Finance',
+        title: 'Customers from the web + Money under control',
         text: 'End-to-end analytics: from a website visit to money in the account — every channel’s contribution visible.',
       },
       {
-        title: 'Website + Projects & tasks',
+        title: 'Customers from the web + Work & tasks',
         text: 'A quote or survey request becomes a task for the team — with an owner and a deadline.',
       },
     ],
@@ -2537,9 +2537,9 @@ export const EN_MODULE_PAGES: Record<string, ModulePageData> = {
         'IT companies',
         'Construction & renovation',
       ],
-      note: 'Website & leads is included in the base Habibi plan and is strongest together with CRM — together they cover the customer journey from click to deal.',
+      note: 'Customers from the web is included in the base Habibi plan and is strongest together with CRM — together they cover the customer journey from click to deal.',
     },
-    tariff: { headline: 'Website & leads is already on the Habibi plan', baseIncludes: true },
+    tariff: { headline: 'Customers from the web is already on the Habibi plan', baseIncludes: true },
     cta: {
       title: 'Stop losing requests today',
       text: 'Website & leads is part of the base Habibi plan — connect the module together with CRM, and every advertising dollar will start reaching the sale.',

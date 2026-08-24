@@ -43,7 +43,7 @@ interface Module {
 const MODULES: Module[] = [
   {
     icon: Target,
-    title: 'CRM & sales',
+    title: 'Customers & sales',
     text: 'All leads, customers and deals in one system. Nothing gets lost, and every step of the customer journey is visible in real time.',
     Preview: CrmPreview,
     page: '/en/modules/crm',
@@ -57,7 +57,7 @@ const MODULES: Module[] = [
   },
   {
     icon: Warehouse,
-    title: 'Inventory',
+    title: 'Products & stock',
     text: 'Accurate stock in real time and a clear history of goods movement.',
     Preview: WarehousePreview,
     page: '/en/modules/inventory',
@@ -71,28 +71,28 @@ const MODULES: Module[] = [
   },
   {
     icon: Wallet,
-    title: 'Finance',
+    title: 'Money under control',
     text: 'A live picture of your money: reports, receivables, cash-flow forecast — without waiting for month-end.',
     Preview: FinancePreview,
     page: '/en/modules/finance',
   },
   {
     icon: Users,
-    title: 'HR & payroll',
+    title: 'My team',
     text: 'Employee records, payroll calculation and clear team KPIs.',
     Preview: HrPreview,
     page: '/en/modules/hr',
   },
   {
     icon: BarChart3,
-    title: 'Projects & tasks',
+    title: 'Work & tasks',
     text: 'Deadlines, owners and statuses — all on one screen.',
     Preview: ProjectsPreview,
     page: '/en/modules/projects',
   },
   {
     icon: Wrench,
-    title: 'Service & support',
+    title: 'Customers after the sale',
     text: 'Warranty requests, repeat sales and customer reviews under control.',
     Preview: ServicePreview,
     page: '/en/modules/service',
@@ -106,7 +106,7 @@ const MODULES: Module[] = [
   },
   {
     icon: Globe,
-    title: 'Website & leads',
+    title: 'Customers from the web',
     text: 'Every request from your website instantly becomes a task in progress.',
     Preview: SiteLeadsPreview,
     page: '/en/modules/website-leads',
