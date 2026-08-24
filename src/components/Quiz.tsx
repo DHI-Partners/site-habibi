@@ -105,10 +105,10 @@ const TIERS_INFO: Record<
     price: '€0',
     period: '',
     features: [
-      'CRM и продажи',
-      'Проекты и задачи',
-      'Сайт и заявки',
-      'Финансы',
+      'Клиенты и продажи',
+      'Работа и задачи',
+      'Клиенты из интернета',
+      'Деньги под контролем',
       'До 2 пользователей',
       'До 2 интеграций',
     ],
@@ -152,16 +152,16 @@ const BIZ_LABEL: Record<string, string> = {
 }
 
 const MOD: Record<string, string> = {
-  crm: 'CRM и продажи',
+  crm: 'Клиенты и продажи',
   purchase: 'Закупки',
-  stock: 'Склад',
+  stock: 'Товары и остатки',
   production: 'Производство',
-  finance: 'Финансы',
-  hr: 'HR и зарплата',
-  projects: 'Проекты и задачи',
-  service: 'Сервис и поддержка',
+  finance: 'Деньги под контролем',
+  hr: 'Моя команда',
+  projects: 'Работа и задачи',
+  service: 'Клиенты после продажи',
   pos: 'Розница (POS)',
-  site: 'Сайт и заявки',
+  site: 'Клиенты из интернета',
 }
 
 const PROBLEM_MOD: Record<string, string[]> = {

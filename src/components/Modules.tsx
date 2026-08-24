@@ -30,7 +30,7 @@ interface Module {
 const MODULES: Module[] = [
   {
     icon: Target,
-    title: 'CRM и продажи',
+    title: 'Клиенты и продажи',
     text: 'Все заявки, клиенты и сделки — в одной системе. Ничего не теряется, каждый шаг клиента виден в реальном времени.',
     preview: '/crm-preview.png',
     page: '/moduli/crm',
@@ -44,7 +44,7 @@ const MODULES: Module[] = [
   },
   {
     icon: Warehouse,
-    title: 'Склад',
+    title: 'Товары и остатки',
     text: 'Точные остатки в реальном времени и понятная история движения товара.',
     preview: '/warehouse-preview.png',
     page: '/moduli/sklad',
@@ -58,28 +58,28 @@ const MODULES: Module[] = [
   },
   {
     icon: Wallet,
-    title: 'Финансы',
+    title: 'Деньги под контролем',
     text: 'Актуальная картина по деньгам: отчёты, дебиторка, прогноз денежного потока — без ожидания конца месяца.',
     preview: '/finance-preview.png',
     page: '/moduli/finansy',
   },
   {
     icon: Users,
-    title: 'HR и зарплата',
+    title: 'Моя команда',
     text: 'Учёт сотрудников, расчёт зарплат и понятные KPI команды.',
     preview: '/hr-preview.png',
     page: '/moduli/hr',
   },
   {
     icon: BarChart3,
-    title: 'Проекты и задачи',
+    title: 'Работа и задачи',
     text: 'Сроки, ответственные и статусы — всё в одном экране.',
     preview: '/projects-preview.png',
     page: '/moduli/proekty',
   },
   {
     icon: Wrench,
-    title: 'Сервис и поддержка',
+    title: 'Клиенты после продажи',
     text: 'Гарантийные обращения, повторные продажи и отзывы клиентов под контролем.',
     preview: '/service-preview.png',
     page: '/moduli/servis',
@@ -93,7 +93,7 @@ const MODULES: Module[] = [
   },
   {
     icon: Globe,
-    title: 'Сайт и заявки',
+    title: 'Клиенты из интернета',
     text: 'Каждое обращение с сайта сразу становится задачей в работе.',
     preview: '/site-leads-preview.jpg',
     page: '/moduli/sait-i-zayavki',
