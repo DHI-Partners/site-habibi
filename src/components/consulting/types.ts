@@ -3,7 +3,7 @@ import type { ComponentType } from 'react'
 /** Контент страницы Habibi Consulting для одного языка. */
 export interface ConsultingContent {
   /** Язык документа и направление текста. */
-  lang: 'ru' | 'en' | 'ar'
+  lang: 'ru' | 'en' | 'ar' | 'uz'
   dir: 'ltr' | 'rtl'
   /** Адрес главной страницы этого языка — для ссылок «на главную» и подвала. */
   home: string

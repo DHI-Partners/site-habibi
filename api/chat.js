@@ -26,7 +26,7 @@ const MAX_BODY_BYTES = 20 * 1024
 const RATE_PER_MINUTE = 12
 const RATE_PER_HOUR = 60
 
-const LANGS = { ru: 'русский', en: 'английский', ar: 'арабский' }
+const LANGS = { ru: 'русский', en: 'английский', ar: 'арабский', uz: 'узбекский (латиница)' }
 
 const ALLOWED_HOSTS = [
   'habibi-erp.com',
@@ -138,7 +138,12 @@ function validate(body) {
  * на каждом запросе и стоимость вырастает в разы.
  */
 function pageContext(lang, moduleSlug, page) {
-  const currency = lang === 'ar' ? 'долларах США' : 'евро'
+  const currency =
+    lang === 'ar'
+      ? 'долларах США'
+      : lang === 'uz'
+        ? 'евро (если спросят про сумы — назови ориентировочный пересчёт из справочника)'
+        : 'евро'
   let where = ''
   if (page === 'partner') {
     where =

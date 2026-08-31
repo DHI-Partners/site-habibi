@@ -7,6 +7,7 @@ import { ChevronDown } from 'lucide-react'
 const LANGS = [
   { code: 'en', flag: '🇬🇧', label: 'EN', name: 'English', href: '/' },
   { code: 'ru', flag: '🇷🇺', label: 'RU', name: 'Русский', href: '/ru' },
+  { code: 'uz', flag: '🇺🇿', label: 'UZ', name: 'Oʻzbekcha', href: '/uz' },
   { code: 'ar', flag: '🇸🇦', label: 'AR', name: 'العربية', href: '/ar' },
 ] as const
 

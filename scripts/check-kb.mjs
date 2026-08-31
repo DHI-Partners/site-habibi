@@ -19,10 +19,12 @@ function prices(file, field) {
 
 const checks = []
 
-// Евро: помесячная, полугодовая и годовая цена из русской секции тарифов.
-for (const field of ['priceMonthly', 'priceSemiAnnual', 'priceAnnual']) {
-  for (const value of prices('src/components/Pricing.tsx', field)) {
-    if (value !== '0') checks.push({ value, what: `${field} ${value} €`, src: 'Pricing.tsx' })
+// Евро: помесячная, полугодовая и годовая цена из русской и узбекской секций тарифов.
+for (const file of ['src/components/Pricing.tsx', 'src/components/uz/Pricing.tsx']) {
+  for (const field of ['priceMonthly', 'priceSemiAnnual', 'priceAnnual']) {
+    for (const value of prices(file, field)) {
+      if (value !== '0') checks.push({ value, what: `${field} ${value} €`, src: file.split('/components/')[1] })
+    }
   }
 }
 

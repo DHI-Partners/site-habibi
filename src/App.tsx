@@ -19,22 +19,28 @@ import MedicalDeck from './components/investors/medical/MedicalDeck'
 import LogisticsDeck from './components/investors/logistics/LogisticsDeck'
 import ArLandingPage from './components/ar/ArLandingPage'
 import EnLandingPage from './components/en/EnLandingPage'
+import UzLandingPage from './components/uz/UzLandingPage'
 import ModulePage from './components/modules/ModulePage'
 import EnModulePage from './components/modules/en/EnModulePage'
 import ArModulePage from './components/modules/ar/ArModulePage'
+import UzModulePage from './components/modules/uz/UzModulePage'
 import PartnerPage from './components/partner/PartnerPage'
 import ConsultingPage from './components/consulting/ConsultingPage'
 import { RU_CONSULTING } from './components/consulting/ru'
 import { EN_CONSULTING } from './components/consulting/en'
 import { AR_CONSULTING } from './components/consulting/ar'
+import { UZ_CONSULTING } from './components/consulting/uz'
 import LegalPage from './components/legal/LegalPage'
 import { RU_PRIVACY } from './components/legal/privacy.ru'
 import { EN_PRIVACY } from './components/legal/privacy.en'
 import { AR_PRIVACY } from './components/legal/privacy.ar'
+import { UZ_PRIVACY } from './components/legal/privacy.uz'
 import { RU_TERMS } from './components/legal/terms.ru'
 import { EN_TERMS } from './components/legal/terms.en'
 import { AR_TERMS } from './components/legal/terms.ar'
+import { UZ_TERMS } from './components/legal/terms.uz'
 import EnPartnerPage from './components/partner/en/EnPartnerPage'
+import UzPartnerPage from './components/partner/uz/UzPartnerPage'
 import RefRedirect from './components/partner/RefRedirect'
 
 // Кабинет партнёра грузим отдельным чанком: лендингу Supabase не нужен.
@@ -136,6 +142,7 @@ export default function App() {
       <Route path="/" element={<EnLandingPage />} />
       <Route path="/ru" element={<LandingPage />} />
       <Route path="/ar" element={<ArLandingPage />} />
+      <Route path="/uz" element={<UzLandingPage />} />
       <Route path="/en" element={<Navigate to="/" replace />} />
       <Route path="/investors" element={<DirectionSelector />} />
       <Route path="/investors/real-estate" element={<InvestorDeck />} />
@@ -145,22 +152,26 @@ export default function App() {
       <Route path="/moduli/:slug" element={<ModulePage />} />
       <Route path="/en/modules/:slug" element={<EnModulePage />} />
       <Route path="/ar/modules/:slug" element={<ArModulePage />} />
+      <Route path="/uz/modules/:slug" element={<UzModulePage />} />
       {/* Партнёрская программа (RU). /partner — короткая ссылка на неё же. */}
       <Route path="/ru/partners" element={<PartnerPage />} />
       {/* Консалтинг — индивидуальное внедрение */}
       <Route path="/ru/consulting" element={<ConsultingPage content={RU_CONSULTING} />} />
       <Route path="/consulting" element={<ConsultingPage content={EN_CONSULTING} />} />
       <Route path="/ar/consulting" element={<ConsultingPage content={AR_CONSULTING} />} />
+      <Route path="/uz/consulting" element={<ConsultingPage content={UZ_CONSULTING} />} />
       <Route path="/en/consulting" element={<Navigate to="/consulting" replace />} />
       {/* Политика конфиденциальности */}
       <Route path="/ru/privacy" element={<LegalPage content={RU_PRIVACY} />} />
       <Route path="/privacy" element={<LegalPage content={EN_PRIVACY} />} />
       <Route path="/ar/privacy" element={<LegalPage content={AR_PRIVACY} />} />
+      <Route path="/uz/privacy" element={<LegalPage content={UZ_PRIVACY} />} />
       <Route path="/en/privacy" element={<Navigate to="/privacy" replace />} />
       {/* Пользовательское соглашение */}
       <Route path="/ru/terms" element={<LegalPage content={RU_TERMS} />} />
       <Route path="/terms" element={<LegalPage content={EN_TERMS} />} />
       <Route path="/ar/terms" element={<LegalPage content={AR_TERMS} />} />
+      <Route path="/uz/terms" element={<LegalPage content={UZ_TERMS} />} />
       <Route path="/en/terms" element={<Navigate to="/terms" replace />} />
       {/* Личный кабинет партнёра + вход по реферальной ссылке */}
       <Route path="/ref/:slug" element={<RefRedirect />} />
@@ -176,6 +187,12 @@ export default function App() {
       <Route path="/partner" element={<Navigate to="/ru/partners" replace />} />
       <Route path="/partners" element={<EnPartnerPage />} />
       <Route path="/en/partners" element={<Navigate to="/partners" replace />} />
+      {/* Партнёрская программа (UZ) */}
+      <Route path="/uz/partners" element={<UzPartnerPage />} />
+      <Route path="/uz/partners/register" element={<Lazy><RegisterPage locale="uz" /></Lazy>} />
+      <Route path="/uz/partners/login" element={<Lazy><LoginPage locale="uz" /></Lazy>} />
+      <Route path="/uz/partners/dashboard" element={<Lazy><DashboardPage locale="uz" /></Lazy>} />
+      <Route path="/uz/partners/admin" element={<Lazy><AdminPage locale="uz" /></Lazy>} />
       {/* Неизвестный адрес — на главную, а не пустая страница. */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

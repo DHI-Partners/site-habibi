@@ -10,7 +10,7 @@ export interface ChatMessage {
   content: string
 }
 
-export type ChatLang = 'ru' | 'en' | 'ar'
+export type ChatLang = 'ru' | 'en' | 'ar' | 'uz'
 
 /** Коды ошибок, приходящие с сервера либо возникающие на клиенте. */
 export type ChatErrorCode =

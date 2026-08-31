@@ -43,6 +43,7 @@ const RECOGNITION_LANG: Record<ChatLang, string> = {
   ru: 'ru-RU',
   en: 'en-US',
   ar: 'ar-SA',
+  uz: 'uz-UZ',
 }
 
 /** Страховка от бесконечной записи, если посетитель забыл выключить микрофон. */

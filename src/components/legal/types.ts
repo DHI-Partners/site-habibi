@@ -2,7 +2,7 @@ import type { ComponentType } from 'react'
 
 /** Контент правовой страницы (политика конфиденциальности) для одного языка. */
 export interface LegalContent {
-  lang: 'ru' | 'en' | 'ar'
+  lang: 'ru' | 'en' | 'ar' | 'uz'
   dir: 'ltr' | 'rtl'
   /** Адрес главной страницы этого языка. */
   home: string

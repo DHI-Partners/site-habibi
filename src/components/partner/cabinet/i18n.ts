@@ -1,14 +1,15 @@
 import { formatMoney as formatMoneyRu } from '../data'
 import { formatMoney as formatMoneyEn } from '../en/data'
+import { formatMoney as formatMoneyUz } from '../uz/data'
 import { plural } from '../ui'
 import type { ReferralStatus } from './lib'
 
 /**
- * Локализация кабинета: одна логика страниц, два словаря строк.
+ * Локализация кабинета: одна логика страниц, три словаря строк.
  * (Маркетинговые страницы дублируются подеревьям — но кабинет
  * это приложение, и вторую копию логики поддерживать дороже.)
  */
-export type CabinetLocale = 'ru' | 'en'
+export type CabinetLocale = 'ru' | 'en' | 'uz'
 
 export interface CabinetPaths {
   home: string
@@ -33,22 +34,33 @@ export const CABINET_PATHS: Record<CabinetLocale, CabinetPaths> = {
     dashboard: '/partners/dashboard',
     admin: '/partners/admin',
   },
+  uz: {
+    home: '/uz/partners',
+    register: '/uz/partners/register',
+    login: '/uz/partners/login',
+    dashboard: '/uz/partners/dashboard',
+    admin: '/uz/partners/admin',
+  },
 }
 
 export const STATUS_LABELS: Record<CabinetLocale, Record<ReferralStatus, string>> = {
   ru: { lead: 'Заявка', trial: 'Демо-период', paying: 'Платит', churned: 'Ушёл' },
   en: { lead: 'Lead', trial: 'Free trial', paying: 'Paying', churned: 'Churned' },
+  uz: { lead: 'Soʻrov', trial: 'Demo-davr', paying: 'Toʻlayapti', churned: 'Ketgan' },
 }
 
 export function cabinetMoney(locale: CabinetLocale, value: number): string {
-  return locale === 'en' ? formatMoneyEn(value) : formatMoneyRu(value)
+  if (locale === 'en') return formatMoneyEn(value)
+  if (locale === 'uz') return formatMoneyUz(value)
+  return formatMoneyRu(value)
 }
 
 export function cabinetDate(locale: CabinetLocale, iso: string | null): string {
   if (!iso) return '—'
   const d = new Date(iso)
   if (!Number.isFinite(d.getTime())) return '—'
-  return d.toLocaleDateString(locale === 'en' ? 'en-US' : 'ru-RU', {
+  const tag = locale === 'en' ? 'en-US' : locale === 'uz' ? 'uz-UZ' : 'ru-RU'
+  return d.toLocaleDateString(tag, {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -58,6 +70,8 @@ export function cabinetDate(locale: CabinetLocale, iso: string | null): string {
 /** «Ещё N клиентов до ставки 30%» / "N more clients to the 30% rate". */
 export function clientsLeftLine(locale: CabinetLocale, left: number): string {
   if (locale === 'en') return `${left} more ${left === 1 ? 'client' : 'clients'} to the 30% rate`
+  // В узбекском нет русской плюрализации — форма одна.
+  if (locale === 'uz') return `${left} ta mijoz 30% stavkagacha qoldi`
   return `Ещё ${left} ${plural(left, 'клиент', 'клиента', 'клиентов')} до ставки 30%`
 }
 
@@ -320,6 +334,137 @@ export const STRINGS = {
       markPaid: 'Mark as paid',
       amountPlaceholder: 'Amount, €',
       addPayout: 'Add payout',
+    },
+  },
+  uz: {
+    htmlLang: 'uz',
+    shell: {
+      signOut: 'Chiqish',
+      notConfigured:
+        'Kabinet hali ulanmagan: VITE_SUPABASE_URL va VITE_SUPABASE_ANON_KEY muhit oʻzgaruvchilarini qoʻshing, soʻng saytni qayta yigʻing.',
+    },
+    register: {
+      pageTitle: 'Hamkor roʻyxatdan oʻtishi — Habibi',
+      tag: 'Hamkor roʻyxatdan oʻtishi',
+      h1: 'Hamkor akkauntini yarating',
+      lead: 'Bepul. Roʻyxatdan oʻtganingizdan soʻng darhol shaxsiy referal havola va statistikali kabinetni olasiz.',
+      name: 'Ism',
+      namePlaceholder: 'Sizga qanday murojaat qilaylik',
+      email: 'Email',
+      password: 'Parol',
+      passwordHint: 'Kamida 8 ta belgi.',
+      slug: 'Havola nomi',
+      slugYourLink: 'Havolangiz:',
+      slugRules: 'Kichik lotin harflari, raqamlar va defis, 3–30 ta belgi.',
+      contact: 'Siz bilan qanday bogʻlanaylik',
+      contactHint: 'Ixtiyoriy — toʻlovlar boʻyicha savollar uchun.',
+      whatsappPlaceholder: '+966 5X XXX XXXX',
+      telegramPlaceholder: '@username',
+      submit: 'Kabinet yaratish',
+      submitting: 'Yaratilmoqda…',
+      consent: 'Tugmani bosish orqali siz hamkorlik dasturi shartlariga rozilik bildirasiz.',
+      confirmTitle: 'Emailni tasdiqlang',
+      confirmText: (email: string) =>
+        `${email} manziliga xat yubordik. Xatdagi havolaga oʻting, soʻng kabinetga kiring.`,
+      confirmLogin: 'Kirish',
+      haveAccount: 'Akkauntingiz bormi?',
+      signIn: 'Kirish',
+      errSlugTaken: 'Bu havola band — boshqa nom tanlang.',
+      errEmailExists: 'Bu email allaqachon roʻyxatdan oʻtgan — kirishga urinib koʻring.',
+      errSignUp: 'Akkaunt yaratilmadi. Maʼlumotlarni tekshirib, qayta urinib koʻring.',
+      errGeneric: 'Xatolik yuz berdi. Qayta urinib koʻring.',
+    },
+    login: {
+      pageTitle: 'Hamkor kabinetiga kirish — Habibi',
+      tag: 'Shaxsiy kabinet',
+      h1Login: 'Kabinetga kirish',
+      h1Recovery: 'Yangi parol',
+      leadLogin: 'Havola boʻyicha oʻtishlar, mijozlar va daromad — hamkor kabinetingizda.',
+      leadRecovery: 'Hamkor kabinetiga kirish uchun yangi parol oʻylab toping.',
+      email: 'Email',
+      password: 'Parol',
+      newPassword: 'Yangi parol',
+      submitLogin: 'Kirish',
+      submitForgot: 'Parolni tiklash',
+      submitRecovery: 'Parolni saqlash',
+      submitting: 'Bir soniya…',
+      errNotConfirmed: 'Email hali tasdiqlanmagan — pochtangizni tekshiring.',
+      errBadCreds: 'Email yoki parol notoʻgʻri.',
+      errResetFail: 'Xat yuborilmadi. Qayta urinib koʻring.',
+      errShortPassword: 'Parol kamida 8 ta belgidan iborat boʻlishi kerak.',
+      errUpdateFail: 'Parolni oʻzgartirib boʻlmadi. Tiklashni qaytadan soʻrang.',
+      errGeneric: 'Xatolik yuz berdi. Qayta urinib koʻring.',
+      resetSent: 'Parolni tiklash havolasi bilan xat yuborildi — pochtangizni tekshiring.',
+      forgot: 'Parolni unutdingizmi?',
+      backToLogin: '← Kirishga qaytish',
+      noAccount: 'Akkauntingiz yoʻqmi?',
+      becomePartner: 'Hamkor boʻlish',
+    },
+    dashboard: {
+      pageTitle: 'Hamkor kabineti — Habibi',
+      tag: 'Shaxsiy kabinet',
+      hi: (name: string) => `Salom${name ? `, ${name}` : ''}!`,
+      lead: 'Barcha statistika bir joyda — havola boʻyicha oʻtishlardan toʻlovga tayyor summagacha.',
+      loading: 'Kabinet yuklanmoqda…',
+      linkTitle: 'Shaxsiy havolangiz',
+      linkHint:
+        'Uni potensial mijozlarga yuboring: tizim oʻtishni qayd etadi va mijozni sizga avtomatik biriktiradi.',
+      copy: 'Nusxalash',
+      copied: 'Nusxalandi',
+      perMonthNow: (money: string) => `hozir oyiga ${money}`,
+      clientsOf: (n: number, threshold: number) => `${n} / ${threshold} mijoz`,
+      topRate: 'Butun faol bazaga 30%',
+      disclaimer:
+        'Taxminiy hisob: komissiya mijozlar haqiqatda toʻlagan obunalardan hisoblanadi.',
+      clientsTitle: 'Mijozlaringiz',
+      clientsEmpty: 'Hozircha hech kim yoʻq — havolangizni ulashing, birinchi soʻrovlar shu yerda paydo boʻladi.',
+      thClient: 'Mijoz',
+      thStatus: 'Holat',
+      thTariff: 'Tarif',
+      thDate: 'Qoʻshilgan',
+      unnamed: 'Nomsiz',
+      payoutsTitle: 'Toʻlovlar',
+      payoutsEmpty:
+        'Hali toʻlovlar boʻlmagan. Tavsiya etilgan eng kam toʻlov chegarasi — €50; toʻlovlar boʻyicha oʻzimiz bogʻlanamiz yoki bizga yozing.',
+      paidOn: (date: string) => `Toʻlangan: ${date}`,
+      pending: 'Jarayonda',
+      profileTag: 'Yana bir qadam',
+      profileH1: 'Havola nomini tanlang',
+      profileLead: 'Akkaunt yaratildi. Endi shaxsiy referal havolangiz uchun nom tanlang.',
+      profileSubmit: 'Havolani olish',
+      profileSubmitting: 'Saqlanmoqda…',
+      errSlugTaken: 'Bu havola band — boshqa nom tanlang.',
+      errSave: 'Saqlab boʻlmadi. Qayta urinib koʻring.',
+    },
+    admin: {
+      pageTitle: 'Hamkorlik dasturi admin paneli — Habibi',
+      tag: 'Admin panel',
+      h1: 'Hamkorlar',
+      refresh: 'Yangilash',
+      loading: 'Yuklanmoqda…',
+      forbidden: 'Ruxsat yoʻq: bu email PARTNER_ADMIN_EMAILS roʻyxatida emas.',
+      loadError: 'Yuklab boʻlmadi. Sahifani yangilab koʻring.',
+      empty: 'Hozircha hamkorlar yoʻq.',
+      chipClicks: 'oʻtishlar',
+      chipRegs: 'soʻrovlar',
+      chipTrials: 'demo',
+      chipPaying: 'toʻlayapti',
+      clients: 'Mijozlar',
+      clientsEmpty: 'Hozircha mijozlar yoʻq.',
+      unnamed: 'Nomsiz',
+      pricePlaceholder: '€/oy',
+      save: 'Saqlash',
+      del: 'Oʻchirish',
+      delConfirm: (name: string) => `«${name}» mijozi oʻchirilsinmi?`,
+      addClientName: 'Mijoz ismi',
+      addClientContact: 'Kontakt',
+      addClient: 'Mijoz qoʻshish',
+      payouts: 'Toʻlovlar',
+      paidOn: (date: string) => `toʻlangan: ${date}`,
+      pending: 'jarayonda',
+      markPaid: 'Toʻlangan deb belgilash',
+      amountPlaceholder: 'Summa, €',
+      addPayout: 'Toʻlov qoʻshish',
     },
   },
 } as const
