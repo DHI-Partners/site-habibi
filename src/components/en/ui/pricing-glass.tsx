@@ -29,6 +29,30 @@ export type TierType = {
 
 type BillingPeriod = "monthly" | "semi" | "annual";
 
+export type BillingLabels = {
+  monthly: string;
+  semiAnnual: string;
+  annual: string;
+  save: string;
+  saveForSixMonths: string;
+  saveForYear: string;
+  perMonth: string;
+  popular: string;
+  exclusive: string;
+};
+
+const DEFAULT_BILLING_LABELS: BillingLabels = {
+  monthly: "Monthly",
+  semiAnnual: "Every 6 months",
+  annual: "Annually",
+  save: "Save",
+  saveForSixMonths: "for 6 months",
+  saveForYear: "for the year",
+  perMonth: "/mo",
+  popular: "Popular",
+  exclusive: "Exclusive",
+};
+
 export interface PricingGlassProps {
   title?: string;
   description?: string;
@@ -42,6 +66,8 @@ export interface PricingGlassProps {
   trialBadge?: string;
   /** Trial note shown under a tier's CTA button. */
   trialNote?: string;
+  /** Labels for the billing period selector and savings note. */
+  billingLabels?: BillingLabels;
   /** Called when a plan's CTA is clicked. */
   onGetStarted?: (tier: TierType) => void;
 }
@@ -52,6 +78,7 @@ function PricingCard({
   ctaLabel,
   currency,
   trialNote,
+  billingLabels,
   onGetStarted,
 }: {
   tier: TierType;
@@ -59,6 +86,7 @@ function PricingCard({
   ctaLabel: string;
   currency: string;
   trialNote?: string;
+  billingLabels: BillingLabels;
   onGetStarted?: (tier: TierType) => void;
 }) {
   const price =
@@ -73,7 +101,7 @@ function PricingCard({
   const currentNum = parseFloat(price) || 0;
   const months = period === "semi" ? 6 : period === "annual" ? 12 : 1;
   const savings = Math.round((monthlyNum - currentNum) * months);
-  const savingsLabel = period === "semi" ? "for 6 months" : "for the year";
+  const savingsLabel = period === "semi" ? billingLabels.saveForSixMonths : billingLabels.saveForYear;
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -153,13 +181,13 @@ function PricingCard({
 
       {tier.isPopular && (
         <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-1 bg-white/10 backdrop-blur-md border-b border-x border-white/10 rounded-b-xl text-xs font-medium text-white/90 shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
-          Popular
+          {billingLabels.popular}
         </div>
       )}
 
       {tier.isExclusive && (
         <div className="absolute top-0 left-1/2 z-10 -translate-x-1/2 px-4 py-1 bg-amber-400/15 backdrop-blur-md border-b border-x border-amber-400/30 rounded-b-xl text-xs font-semibold tracking-wide text-amber-200 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
-          Exclusive
+          {billingLabels.exclusive}
         </div>
       )}
 
@@ -193,7 +221,7 @@ function PricingCard({
                   {price}
                 </span>
               </div>
-              <span className="text-white/40 text-lg font-medium ml-1">/mo</span>
+              <span className="text-white/40 text-lg font-medium ml-1">{billingLabels.perMonth}</span>
             </>
           )}
         </motion.div>
@@ -205,7 +233,7 @@ function PricingCard({
               key={`${period}-${savings}`}
               className="inline-flex items-center rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-semibold text-emerald-300 ring-1 ring-emerald-400/20 [animation:priceIn_0.35s_ease]"
             >
-              Save {currency}
+              {billingLabels.save} {currency}
               {savings} {savingsLabel}
             </span>
           )}
@@ -268,6 +296,7 @@ export function PricingGlass({
   currency = "$",
   trialBadge,
   trialNote,
+  billingLabels = DEFAULT_BILLING_LABELS,
   onGetStarted,
 }: PricingGlassProps) {
   const [period, setPeriod] = useState<BillingPeriod>("monthly");
@@ -323,20 +352,20 @@ export function PricingGlass({
             onClick={() => setPeriod("monthly")}
             className={`relative z-10 flex-1 whitespace-nowrap rounded-full px-2 py-3 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${period === "monthly" ? "text-white" : "text-white/50 hover:text-white/80"}`}
           >
-            Monthly
+            {billingLabels.monthly}
           </button>
           <button
             onClick={() => setPeriod("semi")}
             className={`relative z-10 inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 py-3 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${period === "semi" ? "text-white" : "text-white/50 hover:text-white/80"}`}
           >
-            Every 6 months
+            {billingLabels.semiAnnual}
             <span className="rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-black">−10%</span>
           </button>
           <button
             onClick={() => setPeriod("annual")}
             className={`relative z-10 inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 py-3 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${period === "annual" ? "text-white" : "text-white/50 hover:text-white/80"}`}
           >
-            Annually
+            {billingLabels.annual}
             <span className="rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-black">−30%</span>
           </button>
         </motion.div>
@@ -344,7 +373,7 @@ export function PricingGlass({
 
       <div className="relative w-full grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6 lg:gap-8 items-stretch z-20">
         {tiers.map((tier) => (
-          <PricingCard key={tier.name} tier={tier} period={period} ctaLabel={ctaLabel} currency={currency} trialNote={trialNote} onGetStarted={onGetStarted} />
+          <PricingCard key={tier.name} tier={tier} period={period} ctaLabel={ctaLabel} currency={currency} trialNote={trialNote} billingLabels={billingLabels} onGetStarted={onGetStarted} />
         ))}
       </div>
 
