@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { X, Check, Mail, User, MessageCircle, Send } from 'lucide-react'
+import { X, Check, MessageSquare, User, MessageCircle, Send } from 'lucide-react'
 import { LiquidButton } from '../ui/liquid-glass-button'
 
 type Channel = 'whatsapp' | 'telegram'
@@ -15,8 +15,6 @@ interface ContactModalProps {
   heading?: string
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 // Public Web3Forms key (submissions go to the linked mailbox).
 const WEB3FORMS_ACCESS_KEY = '686dfc9a-134b-42f6-b0ee-8cc7f9451edb'
 
@@ -30,7 +28,7 @@ export default function ContactModal({
   const [name, setName] = useState('')
   const [channel, setChannel] = useState<Channel | null>(null)
   const [contact, setContact] = useState('')
-  const [email, setEmail] = useState('')
+  const [comment, setComment] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState(false)
@@ -41,7 +39,7 @@ export default function ContactModal({
     setName('')
     setChannel(null)
     setContact('')
-    setEmail('')
+    setComment('')
     setSubmitted(false)
     setSending(false)
     setError(false)
@@ -60,8 +58,7 @@ export default function ContactModal({
 
   if (!open) return null
 
-  const valid =
-    name.trim().length > 1 && channel !== null && contact.trim().length > 2 && EMAIL_RE.test(email)
+  const valid = name.trim().length > 1 && channel !== null && contact.trim().length > 2
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -88,7 +85,7 @@ export default function ContactModal({
           Plan: tierName || '—',
           Channel: channelLabel,
           [channelLabel]: contact,
-          email, // client email → Reply-To
+          Comment: comment || '—',
           ...(refSlug ? { 'Partner': refSlug } : {}),
         }),
       })
@@ -106,7 +103,7 @@ export default function ContactModal({
               name,
               channel,
               contact,
-              email,
+              comment,
             }),
           }).catch(() => {})
         }
@@ -212,19 +209,17 @@ export default function ContactModal({
               />
             </label>
 
-            {/* Email */}
+            {/* Comment (optional) */}
             <label className="mt-4 block">
-              <span className="mb-1.5 block text-sm font-medium text-white/70">
-                Email <span className="text-red-400">*</span>
-              </span>
-              <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 focus-within:border-white/30">
-                <Mail size={16} className="shrink-0 text-white/40" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@company.com"
-                  className="w-full bg-transparent py-3 text-sm text-white placeholder:text-white/30 focus:outline-none"
+              <span className="mb-1.5 block text-sm font-medium text-white/70">Comment</span>
+              <div className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 focus-within:border-white/30">
+                <MessageSquare size={16} className="mt-3 shrink-0 text-white/40" />
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Briefly tell us what you need"
+                  rows={3}
+                  className="w-full resize-none bg-transparent py-3 text-sm text-white placeholder:text-white/30 focus:outline-none"
                 />
               </div>
             </label>

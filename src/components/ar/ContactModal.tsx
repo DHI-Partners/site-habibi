@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { X, User, MessageCircle } from 'lucide-react'
+import { X, User, MessageCircle, MessageSquare } from 'lucide-react'
 import { buildWhatsAppLink } from './ContactProvider'
 
 interface ContactModalProps {
@@ -12,12 +12,14 @@ interface ContactModalProps {
 export default function ContactModal({ open, onClose, tierName }: ContactModalProps) {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
+  const [comment, setComment] = useState('')
 
   // إعادة ضبط الحقول عند كل فتح + إغلاق بمفتاح Esc + منع تمرير الخلفية.
   useEffect(() => {
     if (!open) return
     setName('')
     setPhone('')
+    setComment('')
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
@@ -42,6 +44,7 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
       `الاسم: ${name.trim()}`,
       `رقم واتساب: ${phone.trim()}`,
       tierName ? `الباقة: ${tierName}` : '',
+      comment.trim() ? `تعليق: ${comment.trim()}` : '',
       'أرغب بمعرفة المزيد عن Habibi.',
     ].filter(Boolean)
     // فتح محادثة واتساب مع الرقم مع نصّ مُعبّأ مسبقًا.
@@ -113,6 +116,21 @@ export default function ContactModal({ open, onClose, tierName }: ContactModalPr
                 inputMode="tel"
                 dir="ltr"
                 className="w-full bg-transparent py-3 text-right text-sm text-white placeholder:text-white/30 focus:outline-none"
+              />
+            </div>
+          </label>
+
+          {/* تعليق (اختياري) */}
+          <label className="mt-4 block">
+            <span className="mb-1.5 block text-sm font-medium text-white/70">تعليق</span>
+            <div className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 focus-within:border-white/30">
+              <MessageSquare size={16} className="mt-3 shrink-0 text-white/40" />
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="أخبرنا باختصار عمّا تحتاجه"
+                rows={3}
+                className="w-full resize-none bg-transparent py-3 text-sm text-white placeholder:text-white/30 focus:outline-none"
               />
             </div>
           </label>

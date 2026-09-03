@@ -5,7 +5,7 @@ import DigitalHeart from '../DigitalHeart'
 import { CARD, SectionTag } from '../partner/ui'
 import TeamAvatar from '../consulting/TeamAvatar'
 import { LiquidButton } from '../ui/liquid-glass-button'
-import { useContact } from '../ar/ContactProvider'
+import { ContactProvider, useContact } from '../ar/ContactProvider'
 import { AR_TEAM } from './data'
 import AiChatWidget from '../ar/AiChatWidget'
 
@@ -22,8 +22,6 @@ const FOOTER_LINKS = [
  * SectionTag وCARD وTeamAvatar، لتبدو الصفحة جزءًا من الموقع نفسه. RTL.
  */
 export default function AboutPage() {
-  const { open } = useContact()
-
   useEffect(() => {
     const html = document.documentElement
     const prevLang = html.getAttribute('lang') ?? 'en'
@@ -38,6 +36,16 @@ export default function AboutPage() {
       document.title = 'Habibi — the digital ecosystem for your business'
     }
   }, [])
+
+  return (
+    <ContactProvider>
+      <AboutPageContent />
+    </ContactProvider>
+  )
+}
+
+function AboutPageContent() {
+  const { open } = useContact()
 
   return (
     <div dir="rtl" className="min-h-screen w-full bg-black font-arabic text-white">

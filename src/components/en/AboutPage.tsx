@@ -5,7 +5,7 @@ import DigitalHeart from '../DigitalHeart'
 import { CARD, SectionTag } from '../partner/ui'
 import TeamAvatar from '../consulting/TeamAvatar'
 import { LiquidButton } from '../ui/liquid-glass-button'
-import { useContact } from '../en/ContactProvider'
+import { ContactProvider, useContact } from '../en/ContactProvider'
 import { EN_TEAM } from './data'
 import AiChatWidget from '../en/AiChatWidget'
 
@@ -22,8 +22,6 @@ const FOOTER_LINKS = [
  * (same dark theme, SectionTag, CARD, TeamAvatar) so it reads as one site.
  */
 export default function AboutPage() {
-  const { open } = useContact()
-
   useEffect(() => {
     const html = document.documentElement
     const prevLang = html.getAttribute('lang') ?? 'en'
@@ -35,6 +33,16 @@ export default function AboutPage() {
       document.title = 'Habibi — the digital ecosystem for your business'
     }
   }, [])
+
+  return (
+    <ContactProvider>
+      <AboutPageContent />
+    </ContactProvider>
+  )
+}
+
+function AboutPageContent() {
+  const { open } = useContact()
 
   return (
     <div dir="ltr" className="min-h-screen w-full bg-black font-geist text-white">
