@@ -7,6 +7,7 @@ const FOOTER_LINKS = [
   { label: 'الأسعار', href: '#tarify' },
   { label: 'القطاعات', href: '#biznes' },
   { label: 'الأسئلة', href: '#faq' },
+  { label: 'من نحن', href: '/ar/about' },
 ]
 
 export default function Footer() {

@@ -76,16 +76,18 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Мобильное меню */}
+      {/* Мобильное меню. h-dvh (не h-screen) — на Android/Chrome 100vh считает
+          высоту БЕЗ адресной строки, из-за чего при justify-center верх
+          списка (языки) наезжал на логотип. Не центрируем + прокручиваем. */}
       <div
         className={`absolute inset-x-0 top-0 z-20 overflow-hidden bg-black/98 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
           mobileMenuOpen
-            ? 'h-screen opacity-100'
+            ? 'h-dvh opacity-100'
             : 'pointer-events-none h-0 opacity-0'
         }`}
       >
         <div
-          className={`flex h-full flex-col justify-center px-8 transition-all delay-100 duration-500 ${
+          className={`flex h-full flex-col justify-start overflow-y-auto px-8 pb-10 pt-24 transition-all delay-100 duration-500 ${
             mobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
@@ -108,7 +110,7 @@ export default function Navbar() {
               setMobileMenuOpen(false)
               open('Habibi')
             }}
-            className="mt-6 w-fit rounded-full text-white"
+            className="mt-6 w-fit shrink-0 rounded-full text-white"
           >
             Bepul boshlang
           </LiquidButton>

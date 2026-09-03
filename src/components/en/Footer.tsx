@@ -8,6 +8,7 @@ const FOOTER_LINKS = [
   { label: 'Industries', href: '#biznes' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Partners', href: '/partners' },
+  { label: 'About us', href: '/about' },
 ]
 
 export default function Footer() {

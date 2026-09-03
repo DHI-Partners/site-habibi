@@ -76,16 +76,19 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu. h-dvh (not h-screen) — on Android/Chrome 100vh counts
+          the height WITHOUT the address bar, and with justify-center the
+          top of the list (language switcher) overlapped the logo when more
+          items than fit the visible viewport. Not centered + scrollable now. */}
       <div
         className={`absolute inset-x-0 top-0 z-20 overflow-hidden bg-black/98 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
           mobileMenuOpen
-            ? 'h-screen opacity-100'
+            ? 'h-dvh opacity-100'
             : 'pointer-events-none h-0 opacity-0'
         }`}
       >
         <div
-          className={`flex h-full flex-col justify-center px-8 transition-all delay-100 duration-500 ${
+          className={`flex h-full flex-col justify-start overflow-y-auto px-8 pb-10 pt-24 transition-all delay-100 duration-500 ${
             mobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
@@ -108,7 +111,7 @@ export default function Navbar() {
               setMobileMenuOpen(false)
               open('Habibi')
             }}
-            className="mt-6 w-fit rounded-full text-white"
+            className="mt-6 w-fit shrink-0 rounded-full text-white"
           >
             Start for free
           </LiquidButton>

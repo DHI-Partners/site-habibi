@@ -75,14 +75,18 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* قائمة الجوال */}
+      {/* قائمة الجوال. h-dvh (وليس h-screen) — على Android/Chrome يحسب 100vh
+          الارتفاع بدون شريط العنوان. المحتوى غير موسّط عمودياً (justify-start)
+          وقابل للتمرير (overflow-y-auto): عدد عناصر القائمة + مبدّل اللغة +
+          زر الدعوة أكبر من الشاشة المرئية على الهاتف، وكان يتسبب في تراكب
+          مبدّل اللغة مع الشعار في الأعلى. */}
       <div
         className={`absolute inset-x-0 top-0 z-20 overflow-hidden bg-black/98 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
-          mobileMenuOpen ? 'h-screen opacity-100' : 'pointer-events-none h-0 opacity-0'
+          mobileMenuOpen ? 'h-dvh opacity-100' : 'pointer-events-none h-0 opacity-0'
         }`}
       >
         <div
-          className={`flex h-full flex-col justify-center px-8 transition-all delay-100 duration-500 ${
+          className={`flex h-full flex-col justify-start overflow-y-auto px-8 pb-10 pt-24 transition-all delay-100 duration-500 ${
             mobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
@@ -105,7 +109,7 @@ export default function Navbar() {
               setMobileMenuOpen(false)
               open('Habibi')
             }}
-            className="mt-6 w-fit rounded-full text-white"
+            className="mt-6 w-fit shrink-0 rounded-full text-white"
           >
             ابدأ مجانًا
           </LiquidButton>

@@ -8,6 +8,7 @@ const FOOTER_LINKS = [
   { label: 'Sohalar', href: '#biznes' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Hamkorlar', href: '/uz/partners' },
+  { label: 'Biz haqimizda', href: '/uz/about' },
 ]
 
 export default function Footer() {

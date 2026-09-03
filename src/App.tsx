@@ -26,6 +26,9 @@ import ArModulePage from './components/modules/ar/ArModulePage'
 import UzModulePage from './components/modules/uz/UzModulePage'
 import PartnerPage from './components/partner/PartnerPage'
 import AboutPage from './components/about/AboutPage'
+import EnAboutPage from './components/en/AboutPage'
+import ArAboutPage from './components/ar/AboutPage'
+import UzAboutPage from './components/uz/AboutPage'
 import ConsultingPage from './components/consulting/ConsultingPage'
 import { RU_CONSULTING } from './components/consulting/ru'
 import { EN_CONSULTING } from './components/consulting/en'
@@ -158,6 +161,10 @@ export default function App() {
       <Route path="/ru/partners" element={<PartnerPage />} />
       {/* О нас — команда Habibi */}
       <Route path="/ru/about" element={<AboutPage />} />
+      <Route path="/about" element={<EnAboutPage />} />
+      <Route path="/ar/about" element={<ArAboutPage />} />
+      <Route path="/uz/about" element={<UzAboutPage />} />
+      <Route path="/en/about" element={<Navigate to="/about" replace />} />
       {/* Консалтинг — индивидуальное внедрение */}
       <Route path="/ru/consulting" element={<ConsultingPage content={RU_CONSULTING} />} />
       <Route path="/consulting" element={<ConsultingPage content={EN_CONSULTING} />} />
