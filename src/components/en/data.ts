@@ -45,6 +45,14 @@ export const EN_TEAM: TeamMember[] = [
     ],
     facts: ['9+ years in development', 'Fullstack · Mobile', 'React Native · Web · AI integrations'],
   },
-  // Placeholder card — more team members will be added here as their data arrives.
-  { placeholder: true, name: 'Coming soon', role: 'A spot for the next team member' },
+  {
+    name: 'Dos Mukhammad',
+    role: 'Co-founder of Habibi, Software Developer',
+    initials: 'DM',
+    photo: '/team/dos.jpg',
+    bio: [
+      'Software developer with 7+ years of experience building web applications, backend solutions, APIs and automation systems. Specializes in building reliable, scalable and maintainable software.',
+    ],
+    facts: ['7+ years in development', 'Web applications', 'API · automation'],
+  },
 ]

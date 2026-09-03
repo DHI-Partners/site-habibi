@@ -45,6 +45,14 @@ export const UZ_TEAM: TeamMember[] = [
     ],
     facts: ['Dasturlashda 9+ yil', 'Fullstack · Mobile', 'React Native · Web · AI-integratsiyalar'],
   },
-  // Rezerv karta — jamoaning qolgan aʼzolari maʼlumotlari kelganda shu yerga qoʻshiladi.
-  { placeholder: true, name: 'Tez orada', role: 'Yangi jamoa aʼzosi uchun joy' },
+  {
+    name: 'Dos Muhammad',
+    role: 'Habibi hammuassisi, Software Developer',
+    initials: 'DM',
+    photo: '/team/dos.jpg',
+    bio: [
+      'Veb-ilovalar, server yechimlari, API va avtomatlashtirish tizimlarini yaratishda 7+ yillik tajribaga ega dasturchi. Ishonchli, kengaytiriladigan va qoʻllab-quvvatlash oson boʻlgan dasturiy yechimlar yaratishga ixtisoslashgan.',
+    ],
+    facts: ['Dasturlashda 7+ yil', 'Veb-ilovalar', 'API · avtomatlashtirish'],
+  },
 ]
