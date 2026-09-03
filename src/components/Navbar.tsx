@@ -51,7 +51,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <LangSwitcher current="ru" />
           <LiquidButton size="sm" onClick={() => open('Habibi')} className="rounded-full text-white">
-            Начать бесплатно
+            Демо доступ
           </LiquidButton>
         </div>
 
@@ -116,7 +116,7 @@ export default function Navbar() {
             }}
             className="mt-6 w-fit shrink-0 rounded-full text-white"
           >
-            Начать бесплатно
+            Демо доступ
           </LiquidButton>
         </div>
       </div>

@@ -35,7 +35,7 @@ export default function Closing() {
         <Reveal delay={0.1}>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60 md:text-lg">
             Продажи видят склад, склад видит закупки, а вы видите весь бизнес целиком. Начните с
-            бесплатного тарифа и растите вместе с Habibi.
+            демо-доступа и растите вместе с Habibi.
           </p>
         </Reveal>
         <Reveal delay={0.2}>
@@ -44,7 +44,7 @@ export default function Closing() {
             onClick={() => open('Habibi')}
             className="mt-9 rounded-full text-white"
           >
-            Начать с бесплатного тарифа
+            Начать с Демо доступа
             <ArrowRight size={18} />
           </LiquidButton>
         </Reveal>

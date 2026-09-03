@@ -107,7 +107,7 @@ function ModulePageContent({ data }: { data: ModulePageData }) {
               onClick={() => open()}
               className="rounded-full bg-white px-8 py-3.5 text-base font-semibold text-black transition-transform hover:scale-[1.03] active:scale-95"
             >
-              Начать бесплатно
+              Демо доступ
             </button>
             <a
               href="#vozmozhnosti-modulya"
@@ -456,7 +456,7 @@ function ModulePageContent({ data }: { data: ModulePageData }) {
               onClick={() => open()}
               className="rounded-full bg-white px-8 py-3.5 text-base font-semibold text-black transition-transform hover:scale-[1.03] active:scale-95"
             >
-              Начать бесплатно
+              Демо доступ
             </button>
             <a
               href="/ru#moduli"

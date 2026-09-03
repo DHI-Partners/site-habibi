@@ -45,7 +45,7 @@ export default function Footer() {
               onClick={() => open('Habibi')}
               className="w-fit rounded-full text-white"
             >
-              Начать бесплатно
+              Демо доступ
             </LiquidButton>
           </div>
         </div>
